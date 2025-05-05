@@ -40,6 +40,7 @@ const Login = () => {
       });
       if (response.ok) {
         const { message, jwtToken } = await response.json();
+        console.log(jwtToken);
         Cookies.set("jwtToken", jwtToken, { expires: 0.25 }); // 6 hours
         toast.success(message, loginSuccessToastNotificationSettings);
         navigate("/dashboard");
@@ -107,7 +108,9 @@ const Login = () => {
           </div>
 
           {errorMessage && (
-            <p className="text-red-600 font-semibold text-sm">* {errorMessage}</p>
+            <p className="text-red-600 font-semibold text-sm">
+              * {errorMessage}
+            </p>
           )}
 
           <button

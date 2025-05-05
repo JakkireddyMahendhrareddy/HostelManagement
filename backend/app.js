@@ -9,8 +9,9 @@ import hostelRoutes from "./router/hostelRouter.js";
 import cookieParser from "cookie-parser";
 import roomRoutes from "./router/roomRouter.js";
 import authRoutes from "./router/auth.js";
-import reviewRouter from "./router/reviewRouter.js"
-import meesRouter from './router/meesRouter.js'
+import reviewRouter from "./router/reviewRouter.js";
+import meesRouter from "./router/meesRouter.js";
+import tenantRouter from "./router/tenantRouter.js";
 
 const app = express();
 app.use(express.json());
@@ -34,9 +35,11 @@ app.use("/api/hostel", hostelRoutes);
 
 app.use("/api/hostel/room", roomRoutes);
 
-app.use('/api/review',reviewRouter);
+app.use("/api/review", reviewRouter);
 
-app.use('api/mess',meesRouter)
+app.use("api/mess", meesRouter);
+
+app.use("/api/tenants", tenantRouter);
 
 const initializeDBAndServer = async () => {
   try {
@@ -46,7 +49,7 @@ const initializeDBAndServer = async () => {
       console.log(`Server running on port http://localhost:${PORT}`)
     );
   } catch (error) {
-    console.log(error);                                                                                           
+    console.log(error);
   }
 };
 initializeDBAndServer();

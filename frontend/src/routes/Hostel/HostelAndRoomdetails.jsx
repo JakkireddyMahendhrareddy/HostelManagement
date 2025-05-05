@@ -1,5 +1,5 @@
 import React from "react";
-import Table from "../ui/Table/Table";
+import Table from "../../ui/Table/Table";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 
 const HostelAndRoomDetails = ({

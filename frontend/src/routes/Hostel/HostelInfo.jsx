@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { FaBed, FaDollarSign, FaCheckCircle, FaEdit } from "react-icons/fa";
-import HostelAndRoomDetails from "./HostelAndRoomdetails";
-import ConfirmModal from "./ConfirmModal";
-import { backendUrl, toastNoficationSettings } from "../utils/utils";
+import HostelAndRoomDetails from "../Hostel/HostelAndRoomdetails";
+import ConfirmModal from "../ConfirmModal";
+import { backendUrl, toastNoficationSettings } from "../../utils/utils";
 import { toast } from "react-toastify";
-import RoomFormModal from "./RoomFormModal";
+import RoomFormModal from "../RoomFormModal";
 import HostelForm from "./HostelForm";
 const HostelInfo = () => {
   const createHostelUrl = `${backendUrl}/api/hostel/add`;

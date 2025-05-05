@@ -61,3 +61,27 @@ export const validateHostelWithOwnerId = async (ownerId) => {
 
   return hostelInfo;
 };
+
+export const validateTenantData = (req) => {
+  const { name, tenantNumber, roomNumber } = req.body;
+
+  if (!name || typeof name !== "string" || name.trim().length < 2) {
+    throw new Error("Invalid tenant name");
+  }
+
+  if (
+    !tenantNumber ||
+    typeof tenantNumber !== "string" ||
+    tenantNumber.trim().length < 3
+  ) {
+    throw new Error("Invalid tenant number");
+  }
+
+  if (
+    !roomNumber ||
+    typeof roomNumber !== "string" ||
+    roomNumber.trim().length === 0
+  ) {
+    throw new Error("Invalid room number");
+  }
+};

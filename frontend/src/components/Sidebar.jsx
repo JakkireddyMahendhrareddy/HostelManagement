@@ -7,10 +7,10 @@ import {
   FaUtensils,
   FaTools,
   FaBars,
-  FaTimes
+  FaTimes,
 } from "react-icons/fa";
 import InnerDashboard from "../routes/InnerDashboard";
-import HostelInfo from "../routes/HostelInfo";
+import HostelInfo from "../routes/Hostel/HostelInfo";
 import TenantManagement from "../routes/Tenant/TenantManagement";
 import Fees from "../routes/Fees/FeesManagement";
 import MessDetails from "../routes/MessDetails";
@@ -41,13 +41,13 @@ export default function Sidebar() {
         setSidebarOpen(true);
       }
     };
-    
+
     // Set initial value
     handleResize();
-    
+
     // Add event listener
     window.addEventListener("resize", handleResize);
-    
+
     // Clean up
     return () => window.removeEventListener("resize", handleResize);
   }, []);

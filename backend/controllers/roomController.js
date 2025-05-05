@@ -31,14 +31,14 @@ export const addRoomInfo = async (req, res) => {
     ) {
       throw new Error("All Fields are Required");
     }
-    if(availableBeds < 0){
-      throw new Error('Available Beds cannot be negative');
+    if (availableBeds < 0) {
+      throw new Error("Available Beds cannot be negative");
     }
     // console.log(req.body);
     const hostelInfo = await validateHostelWithOwnerId(id);
 
     // Rooms can't be added if max rooms exceeded
-   
+
     if (hostelInfo.rooms.length >= hostelInfo.totalRooms) {
       throw new Error("Maximum Room Limit Exceeded");
     }
