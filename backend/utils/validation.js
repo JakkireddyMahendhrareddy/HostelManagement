@@ -63,25 +63,81 @@ export const validateHostelWithOwnerId = async (ownerId) => {
 };
 
 export const validateTenantData = (req) => {
-  const { name, tenantNumber, roomNumber } = req.body;
+  const { tenantName, roomNumber, joinDate, rentAmount, contact } = req.body;
 
-  if (!name || typeof name !== "string" || name.trim().length < 2) {
-    throw new Error("Invalid tenant name");
+  // Validate tenant name
+  if (
+    !tenantName ||
+    typeof tenantName !== "string" ||
+    tenantName.trim().length < 2
+  ) {
+    throw new Error(
+      "Invalid tenant name. Name must be at least 2 characters long."
+    );
   }
 
-  if (
-    !tenantNumber ||
-    typeof tenantNumber !== "string" ||
-    tenantNumber.trim().length < 3
-  ) {
-    throw new Error("Invalid tenant number");
+  // Validate room number
+  if (!roomNumber || isNaN(Number(roomNumber))) {
+    throw new Error("Invalid room number. Room number must be a valid number.");
   }
 
-  if (
-    !roomNumber ||
-    typeof roomNumber !== "string" ||
-    roomNumber.trim().length === 0
-  ) {
-    throw new Error("Invalid room number");
+  // Validate join date
+  if (!joinDate) {
+    throw new Error("Join date is required.");
+  }
+
+  const dateObj = new Date(joinDate);
+  if (dateObj.toString() === "Invalid Date") {
+    throw new Error(
+      "Invalid join date format. Please use a valid date format."
+    );
+  }
+
+  // Validate rent amount
+  if (!rentAmount || isNaN(Number(rentAmount)) || Number(rentAmount) <= 0) {
+    throw new Error("Invalid rent amount. Rent must be a positive number.");
+  }
+
+  // Validate contact - must be a 10-digit phone number
+  const phoneRegex = /^[0-9]{10}$/;
+  if (!contact || typeof contact !== "string" || !phoneRegex.test(contact)) {
+    throw new Error("Invalid contact number. Must be a 10-digit phone number.");
   }
 };
+
+// Updated Tenant model
+/*
+import mongoose from "mongoose";
+
+const tenantSchema = new mongoose.Schema({
+  tenantName: { 
+    type: String, 
+    required: true 
+  },
+  roomNumber: { 
+    type: Number, 
+    required: true 
+  },
+  joinDate: { 
+    type: Date, 
+    required: true 
+  },
+  rentAmount: { 
+    type: Number, 
+    required: true 
+  },
+  contact: {
+    type: String,
+    required: true,
+    match: [/^[0-9]{10}$/, "Please enter a valid 10-digit phone number"],
+  },
+  ownerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  }
+}, { timestamps: true });
+
+const Tenant = mongoose.model("Tenant", tenantSchema);
+export default Tenant;
+*/

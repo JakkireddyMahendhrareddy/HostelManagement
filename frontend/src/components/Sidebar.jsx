@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import InnerDashboard from "../routes/InnerDashboard";
 import HostelInfo from "../routes/Hostel/HostelInfo";
-import TenantManagement from "../routes/Tenant/TenantManagement";
+import TenantManagement from "../routes/Tenant/TenantInfo";
 import Fees from "../routes/Fees/FeesManagement";
 import MessDetails from "../routes/MessDetails";
 import Maintenance from "../routes/Maintenance";
