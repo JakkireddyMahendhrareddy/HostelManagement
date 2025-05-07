@@ -25,7 +25,7 @@ app.use(
     credentials: true,
   })
 );
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 app.use("/api/auth", authRoutes);
 

@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
-export const backendUrl = "http://localhost:5000";
+export const backendUrl = "http://localhost:5001";
 
 export const toastNoficationSettings = {
   autoClose: 3000,

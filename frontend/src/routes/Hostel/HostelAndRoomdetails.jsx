@@ -96,55 +96,6 @@ const HostelAndRoomDetails = ({
           handleDeleteRoomClick={handleDeleteRoomClick}
         />
 
-        {/* <table className="w-full mt-2 rounded-md">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="p-2 text-gray-700 font-medium">Room No.</th>
-              <th className="p-2 text-gray-700 font-medium">Room Type</th>
-              <th className="p-2 text-gray-700 font-medium">Beds</th>
-              <th className="p-2 text-gray-700 font-medium">Available Beds</th>
-              <th className="p-2 text-gray-700 font-medium">Room Rent</th>
-              <th className="p-2 text-gray-700 font-medium">Room Status</th>
-              <th className="p-2 text-gray-700 font-medium">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {displayedRooms.map((room, index) => (
-              <tr key={index} className="border-y border-gray-300">
-                <td className="p-4 text-center">{room.number}</td>
-                <td className="p-4 text-center">{room.type}</td>
-                <td className="p-4 text-center">{room.beds}</td>
-                <td className="p-4 text-center">{room.availableBeds}</td>
-                <td className="p-4 text-center">{room.rent}</td>
-                <td className="p-4 text-center font-bold">
-                  <p
-                    className={`px-2 py-1 inline-flex text-xs font-semibold rounded-full ${
-                      room.availableBeds > 0
-                        ? "bg-green-200 text-green-800"
-                        : "bg-gray-200 text-gray-800"
-                    }`}
-                  >
-                    {room.availableBeds > 0 ? "Available" : "Occupied"}
-                  </p>
-                </td>
-                <td className="p-4 flex justify-center items-center gap-2">
-                  <button
-                    onClick={() => editRoom(room.number)}
-                    className="text-gray-600"
-                  >
-                    <FaPencilAlt size={18} />
-                  </button>
-                  <button
-                    onClick={() => handleDeleteRoomClick(room.number)}
-                    className="text-gray-600"
-                  >
-                    <FaTrash size={18} />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table> */}
 
         {rooms.length === 0 && (
           <p className="text-center font-medium text-lg mt-4 text-red-500 py-4">
