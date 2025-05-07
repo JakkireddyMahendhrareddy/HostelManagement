@@ -278,7 +278,7 @@ const TenantInfo = () => {
             <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
           </div>
         ) : (
-          <div className="bg-white border border-gray-300 rounded-2xl shadow-md p-4 mt-4 space-y-4">
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-4 mt-4 space-y-4">
             {/* Search and Filter Bar */}
             <div className="flex flex-wrap gap-4 justify-between items-center">
               <div className="relative flex-grow max-w-md">
