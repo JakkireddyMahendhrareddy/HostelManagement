@@ -1,6 +1,7 @@
 import { Hostel } from "../models/hostelModel.js";
 import Tenant from "../models/Tenant.js";
 import { validateTenantData } from "../utils/validation.js";
+import mongoose from "mongoose";
 
 export const addTenantInfo = async (req, res) => {
   try {
@@ -259,56 +260,6 @@ export const updateTenantInfo = async (req, res) => {
   }
 };
 
-// API for Deleting a Tenant from a Room
-export const deleteTenantInfo = async (req, res) => {
-  try {
-    const { tenantId } = req.params;
-    const { id } = req.user;
-
-    // Check if hostel exists
-    const hostelInfo = await Hostel.findOne({ ownerId: id });
-    if (!hostelInfo) {
-      return res.status(404).json({ message: "Hostel Not Found" });
-    }
-
-    // Find tenant
-    const tenant = await Tenant.findById(tenantId);
-    if (!tenant) {
-      return res
-        .status(404)
-        .json({ message: `Tenant not found with ID ${tenantId}` });
-    }
-
-    // Verify the tenant belongs to this owner
-    if (tenant.ownerId.toString() !== id) {
-      return res
-        .status(403)
-        .json({ message: "You are not authorized to delete this tenant" });
-    }
-
-    // Find the room where the tenant resides
-    const roomIndex = hostelInfo.rooms.findIndex(
-      (room) => room.roomNumber === tenant.roomNumber
-    );
-
-    if (roomIndex !== -1) {
-      // Increment available beds in the room
-      hostelInfo.rooms[roomIndex].availableBeds += 1;
-      await hostelInfo.save();
-    }
-
-    // Delete the tenant
-    await Tenant.findByIdAndDelete(tenantId);
-
-    res.status(200).json({
-      message: `Tenant ${tenant.tenantName} Removed Successfully from Room ${tenant.roomNumber}`,
-    });
-  } catch (err) {
-    console.error("Error deleting tenant:", err.message);
-    res.status(400).json({ message: err.message });
-  }
-};
-
 // Get specific tenant info by ID (must belong to logged-in user)
 export const getTenantInfoById = async (req, res) => {
   try {
@@ -330,5 +281,95 @@ export const getTenantInfoById = async (req, res) => {
     });
   } catch (err) {
     res.status(400).json({ message: err.message });
+  }
+};
+
+export const deleteTenantInfo = async (req, res) => {
+  try {
+    const { tenantId } = req.params;
+    const { id } = req.user;
+
+    // Input validation
+    if (!tenantId || !mongoose.Types.ObjectId.isValid(tenantId)) {
+      return res.status(400).json({ message: "Invalid tenant ID format" });
+    }
+
+    // Check if hostel exists
+    const hostelInfo = await Hostel.findOne({ ownerId: id });
+    if (!hostelInfo) {
+      return res.status(404).json({ message: "Hostel Not Found" });
+    }
+
+    // Find tenant with lean() for better performance
+    const tenant = await Tenant.findById(tenantId).lean();
+    if (!tenant) {
+      return res.status(404).json({
+        message: `Tenant not found with ID ${tenantId}`,
+      });
+    }
+
+    // Verify the tenant belongs to this owner
+    if (tenant.ownerId.toString() !== id) {
+      return res.status(403).json({
+        message: "You are not authorized to delete this tenant",
+      });
+    }
+
+    // Find the room where the tenant resides using a more reliable approach
+    const roomIndex = hostelInfo.rooms.findIndex(
+      (room) => room.roomNumber.toString() === tenant.roomNumber.toString()
+    );
+
+    if (roomIndex !== -1) {
+      // Update room availability in a safer way
+      const room = hostelInfo.rooms[roomIndex];
+
+      // Check if the tenant is actually occupying a bed in this room
+      // by looking at current occupancy numbers
+      const currentOccupied = room.totalBeds - room.availableBeds;
+
+      if (currentOccupied > 0) {
+        // There are occupied beds, so we can safely free one up
+        await Hostel.updateOne(
+          {
+            _id: hostelInfo._id,
+            "rooms.roomNumber": tenant.roomNumber,
+          },
+          {
+            $inc: { "rooms.$.availableBeds": 1 },
+          }
+        );
+      } else {
+        console.warn(
+          `Room ${tenant.roomNumber} shows no occupants but tenant ${tenant._id} claims to be in this room. Proceeding with tenant deletion.`
+        );
+        // We'll still delete the tenant even if the room data is inconsistent
+      }
+    } else {
+      console.warn(
+        `Room ${tenant.roomNumber} not found in hostel for tenant ${tenantId}`
+      );
+      // Continue with deletion even if room not found
+    }
+
+    // Delete the tenant with a pre-check to ensure it still exists
+    const deletedTenant = await Tenant.findByIdAndDelete(tenantId);
+
+    if (!deletedTenant) {
+      return res.status(404).json({
+        message: "Tenant already deleted or not found",
+      });
+    }
+
+    res.status(200).json({
+      message: `Tenant ${tenant.tenantName} Removed Successfully from Room ${tenant.roomNumber}`,
+      tenantId: tenantId,
+    });
+  } catch (err) {
+    console.error("Error deleting tenant:", err);
+    res.status(500).json({
+      message: "Failed to delete tenant",
+      error: err.message,
+    });
   }
 };

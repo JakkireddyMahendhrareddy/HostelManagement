@@ -15,6 +15,7 @@ const HostelInfo = () => {
   const addRoomUrl = `${backendUrl}/api/hostel/room/add`;
   const editRoomUrl = `${backendUrl}/api/hostel/room/edit/`;
   const deleteRoomUrl = `${backendUrl}/api/hostel/room/remove/`;
+
   const [hostel, setHostel] = useState(null);
   const [rooms, setRooms] = useState([]);
   const [showAddHostelFormModal, setShowAddHostelFormModal] = useState(false);
@@ -86,6 +87,7 @@ const HostelInfo = () => {
       });
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         if (data) {
           setHostel(data);
           fetchRooms();
