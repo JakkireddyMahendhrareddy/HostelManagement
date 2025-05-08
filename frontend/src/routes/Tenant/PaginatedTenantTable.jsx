@@ -109,7 +109,9 @@ const PaginatedTenantTable = ({
         </div>
       ) : tenantsToDisplay.length === 0 ? (
         <div className="text-center py-10">
-          <p className="text-gray-500">No tenants found.</p>
+          <p className="text-gray-800 ">
+            No tenants found. Did they ghost us? 👻
+          </p>
         </div>
       ) : (
         <>
@@ -145,6 +147,7 @@ const PaginatedTenantTable = ({
                   <tr
                     key={tenant._id || index}
                     className="hover:bg-gray-100 cursor-pointer"
+                    onClick={() => handleViewClick(tenant)} // Trigger eye icon action on row click
                   >
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {index + 1}
@@ -167,8 +170,7 @@ const PaginatedTenantTable = ({
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
                         {tenant.moveInDate
-                          ? new Date(tenant.moveInDate
-                          ).toLocaleDateString()
+                          ? new Date(tenant.moveInDate).toLocaleDateString()
                           : "-"}
                       </div>
                     </td>

@@ -362,7 +362,7 @@ const HostelInfo = () => {
     (pageNumber - 1) * roomsPerPage,
     pageNumber * roomsPerPage
   );
-
+  console.log(hostel);
   return (
     <div>
       <div className="w-full pt-0 min-h-screen flex justify-center items-start relative">
