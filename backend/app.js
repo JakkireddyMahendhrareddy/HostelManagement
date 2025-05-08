@@ -25,6 +25,11 @@ app.use(
     credentials: true,
   })
 );
+
+// Increase payload size limit (default is 100kb)
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
 const PORT = process.env.PORT || 5001;
 
 app.use("/api/auth", authRoutes);

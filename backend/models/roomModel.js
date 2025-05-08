@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export const roomSchema = new mongoose.Schema({
-  roomNumber: { type: Number, required: true },
+  roomNumber: { type: String, required: true },
   sharingType: { type: String, required: true },
   rent: { type: Number, required: true },
   totalBeds: { type: Number, required: true },

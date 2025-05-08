@@ -7,6 +7,8 @@ import {
   updateTenantInfo,
   deleteTenantInfo,
   getTenantInfoById,
+  searchTenants,
+  generateTenantReports
 } from "../controllers/tenantController.js";
 
 const router = express.Router();
@@ -15,6 +17,8 @@ const router = express.Router();
 router.post("/add", auth, addTenantInfo);
 router.get("/all", auth, getAllTenantsInfo);
 router.get("/room/:roomNumber", auth, getTenantsByRoom);
+router.get("/search", auth, searchTenants);
+router.get("/reports", auth, generateTenantReports);
 router.get("/:tenantId", auth, getTenantInfoById);
 router.put("/update/:tenantId", auth, updateTenantInfo);
 router.delete("/delete/:tenantId", auth, deleteTenantInfo);

@@ -62,46 +62,91 @@ export const validateHostelWithOwnerId = async (ownerId) => {
   return hostelInfo;
 };
 
+
 export const validateTenantData = (req) => {
-  const { tenantName, roomNumber, joinDate, rentAmount, contact } = req.body;
+  const {
+    tenantName,
+    roomNumber,
+    moveInDate, // Primary field for move-in date
+    joinDate,   // Support legacy field
+    rentAmount,
+    contact,
+    dateOfBirth,
+    email,
+    aadhaarNumber,
+    passportPhoto,
+    aadhaarFront,
+    aadhaarBack,
+    digitalSignature,
+    permanentAddress,
+    isCurrentAddressSame,
+    currentAddress,
+    emergencyContact,
+    agreementStartDate,
+    policeVerificationConsent,
+    termsAgreement
+  } = req.body;
 
-  // Validate tenant name
-  if (
-    !tenantName ||
-    typeof tenantName !== "string" ||
-    tenantName.trim().length < 2
-  ) {
-    throw new Error(
-      "Invalid tenant name. Name must be at least 2 characters long."
-    );
+  // Essential fields validation - these must always be present
+  if (!tenantName) throw new Error("Tenant name is required.");
+  if (!roomNumber) throw new Error("Room number is required.");
+  if (!moveInDate && !joinDate) throw new Error("Move-in date is required."); // Support both field names
+  if (!rentAmount) throw new Error("Rent amount is required.");
+  if (!contact) throw new Error("Contact number is required.");
+
+  // Format validations for essential fields
+  if (contact && !/^[0-9]{10}$/.test(contact)) {
+    throw new Error("Contact must be a 10-digit number.");
   }
 
-  // Validate room number
-  if (!roomNumber || isNaN(Number(roomNumber))) {
-    throw new Error("Invalid room number. Room number must be a valid number.");
+  // Validate additional fields only if they're provided
+  // This makes these fields optional but validates them if present
+  
+  // Aadhaar validation - optional but validate format if provided
+  if (aadhaarNumber && !/^[0-9]{12}$/.test(aadhaarNumber)) {
+    throw new Error("Aadhaar number must be a 12-digit number.");
   }
 
-  // Validate join date
-  if (!joinDate) {
-    throw new Error("Join date is required.");
+  // Date validations - check if they're valid dates when provided
+  try {
+    if (moveInDate) new Date(moveInDate);
+    if (joinDate) new Date(joinDate);
+    if (dateOfBirth) new Date(dateOfBirth);
+    if (agreementStartDate) new Date(agreementStartDate);
+  } catch (e) {
+    throw new Error("One or more date fields have invalid format.");
   }
 
-  const dateObj = new Date(joinDate);
-  if (dateObj.toString() === "Invalid Date") {
-    throw new Error(
-      "Invalid join date format. Please use a valid date format."
-    );
+  // Email validation if provided
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw new Error("Invalid email format.");
   }
 
-  // Validate rent amount
-  if (!rentAmount || isNaN(Number(rentAmount)) || Number(rentAmount) <= 0) {
-    throw new Error("Invalid rent amount. Rent must be a positive number.");
+  // Permanent address validation - only if provided
+  if (permanentAddress) {
+    if (!permanentAddress.street) throw new Error("Street address is required in permanent address.");
+    if (!permanentAddress.city) throw new Error("City is required in permanent address.");
+    if (!permanentAddress.state) throw new Error("State is required in permanent address.");
+    if (!permanentAddress.pincode) throw new Error("Pincode is required in permanent address.");
   }
 
-  // Validate contact - must be a 10-digit phone number
-  const phoneRegex = /^[0-9]{10}$/;
-  if (!contact || typeof contact !== "string" || !phoneRegex.test(contact)) {
-    throw new Error("Invalid contact number. Must be a 10-digit phone number.");
+  // Current address validation - only if provided and not same as permanent
+  if (!isCurrentAddressSame && currentAddress) {
+    if (!currentAddress.street) throw new Error("Street address is required in current address.");
+    if (!currentAddress.city) throw new Error("City is required in current address.");
+    if (!currentAddress.state) throw new Error("State is required in current address.");
+    if (!currentAddress.pincode) throw new Error("Pincode is required in current address.");
+  }
+
+  // Emergency contact validation - only if provided
+  if (emergencyContact) {
+    if (!emergencyContact.name) throw new Error("Emergency contact name is required.");
+    if (!emergencyContact.relationship) throw new Error("Emergency contact relationship is required.");
+    if (!emergencyContact.mobile) throw new Error("Emergency contact mobile number is required.");
+    
+    if (emergencyContact.mobile && !/^[0-9]{10}$/.test(emergencyContact.mobile)) {
+      throw new Error("Emergency contact mobile must be a 10-digit number.");
+    }
   }
 };
 

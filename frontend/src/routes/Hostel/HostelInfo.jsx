@@ -12,6 +12,7 @@ const HostelInfo = () => {
   const confirmEditUrl = `${backendUrl}/api/hostel/edit`;
   const confirmDeleteUrl = `${backendUrl}/api/hostel/remove`;
   const getRoomsUrl = `${backendUrl}/api/hostel/room/get`;
+
   const addRoomUrl = `${backendUrl}/api/hostel/room/add`;
   const editRoomUrl = `${backendUrl}/api/hostel/room/edit/`;
   const deleteRoomUrl = `${backendUrl}/api/hostel/room/remove/`;
