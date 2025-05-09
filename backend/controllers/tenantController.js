@@ -282,7 +282,7 @@ export const addTenantInfo = async (req, res) => {
     // Check if hostel exists for the user
     const hostelInfo = await Hostel.findOne({ ownerId: id });
     if (!hostelInfo) {
-      return res.status(404).json({ message: "Hostel Not Found" });
+      return res.status(404).json({ message: "Hostel Not Found And No Tenants Found" });
     }
 
     // Log for debugging
@@ -445,7 +445,7 @@ export const updateTenantInfo = async (req, res) => {
     // Check if hostel exists
     const hostelInfo = await Hostel.findOne({ ownerId: id });
     if (!hostelInfo) {
-      return res.status(404).json({ message: "Hostel Not Found" });
+      return res.status(404).json({ message: "Hostel Not Foundsssssssssssss" });
     }
 
     // Find existing tenant
@@ -612,7 +612,7 @@ export const deleteTenantInfo = async (req, res) => {
     // Check if hostel exists
     const hostelInfo = await Hostel.findOne({ ownerId: id });
     if (!hostelInfo) {
-      return res.status(404).json({ message: "Hostel Not Found" });
+      return res.status(404).json({ message: "Hostel Not Foundsss" });
     }
 
     // Find tenant with lean() for better performance
@@ -702,7 +702,7 @@ export const getAllTenantsInfo = async (req, res) => {
     // Check if hostel exists
     const hostelInfo = await Hostel.findOne({ ownerId: id });
     if (!hostelInfo) {
-      return res.status(404).json({ message: "Hostel Not Found" });
+      return res.status(404).json({ message: "Hostel And Tenant Not Found " });
     }
 
     // Get total count for pagination
@@ -1077,7 +1077,7 @@ export const getTenantsByRoom = async (req, res) => {
     // Check if hostel exists
     const hostelInfo = await Hostel.findOne({ ownerId: id });
     if (!hostelInfo) {
-      return res.status(404).json({ message: "Hostel Not Found" });
+      return res.status(404).json({ message: "Hostel Not Foundsss" });
     }
 
     // Check if room exists - use string comparison

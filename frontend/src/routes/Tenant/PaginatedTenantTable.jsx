@@ -2,6 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { backendUrl, toastNoficationSettings } from "../../utils/utils";
 import { toast } from "react-toastify";
+import {
+  FaAngleDoubleLeft,
+  FaChevronLeft,
+  FaChevronRight,
+  FaAngleDoubleRight,
+} from "react-icons/fa";
 
 const PaginatedTenantTable = ({
   handleViewClick,
@@ -100,6 +106,8 @@ const PaginatedTenantTable = ({
     ? tenants.tenants
     : [];
 
+  console.log(tenants, "-------------------");
+
   return (
     <div className="w-full">
       {/* Tenants Table */}
@@ -116,8 +124,8 @@ const PaginatedTenantTable = ({
       ) : (
         <>
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-gray-200  ">
+              <thead className="bg-gray-100 shadow-lg z-100">
                 <tr>
                   <th className="px-6 py-3 text-left text-md font-bold text-gray-800 uppercase tracking-wider">
                     S.NO
@@ -146,7 +154,7 @@ const PaginatedTenantTable = ({
                 {tenantsToDisplay.map((tenant, index) => (
                   <tr
                     key={tenant._id || index}
-                    className="hover:bg-gray-100 cursor-pointer"
+                    className="hover:bg-gray-100"
                     onClick={() => handleViewClick(tenant)} // Trigger eye icon action on row click
                   >
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -183,7 +191,7 @@ const PaginatedTenantTable = ({
                       <div className="flex justify-center space-x-2">
                         <button
                           onClick={() => handleViewClick(tenant)}
-                          className="text-blue-600 hover:text-blue-900"
+                          className="text-blue-600 hover:text-blue-900 cursor-pointer"
                           title="View"
                         >
                           <span className="sr-only">View</span>
@@ -203,7 +211,7 @@ const PaginatedTenantTable = ({
                         </button>
                         <button
                           onClick={() => handleEditClick(tenant)}
-                          className="text-blue-600 hover:text-blue-900"
+                          className="text-blue-600 hover:text-blue-900 cursor-pointer"
                           title="Edit"
                         >
                           <span className="sr-only">Edit</span>
@@ -218,7 +226,7 @@ const PaginatedTenantTable = ({
                         </button>
                         <button
                           onClick={() => handleDeleteClick(tenant._id)}
-                          className="text-red-600 hover:text-red-900"
+                          className="text-red-600 hover:text-red-900 cursor-pointer"
                           title="Delete"
                         >
                           <span className="sr-only">Delete</span>
@@ -250,11 +258,17 @@ const PaginatedTenantTable = ({
               <select
                 value={tenantPerPage}
                 onChange={(e) => handleItemsPerPageChange(e.target.value)}
-                className="border rounded p-1"
+                className="border rounded p-1 cursor-pointer"
               >
-                <option value={5}>5</option>
-                <option value={10}>10</option>
-                <option value={20}>20</option>
+                <option className="cursor-pointer" value={5}>
+                  5
+                </option>
+                <option className="cursor-pointer" value={10}>
+                  10
+                </option>
+                <option className="cursor-pointer" value={20}>
+                  20
+                </option>
               </select>
             </div>
 
@@ -268,7 +282,7 @@ const PaginatedTenantTable = ({
                     : "text-blue-600 hover:bg-blue-100"
                 }`}
               >
-                «
+                <FaAngleDoubleLeft />
               </button>
               <button
                 onClick={() => handlePageChange(pageNumber - 1)}
@@ -279,7 +293,7 @@ const PaginatedTenantTable = ({
                     : "text-blue-600 hover:bg-blue-100"
                 }`}
               >
-                ‹
+                <FaChevronLeft />
               </button>
 
               <span>
@@ -296,7 +310,7 @@ const PaginatedTenantTable = ({
                     : "text-blue-600 hover:bg-blue-100"
                 }`}
               >
-                ›
+                <FaChevronRight />
               </button>
               <button
                 onClick={() => handlePageChange(totalPages)}
@@ -307,7 +321,7 @@ const PaginatedTenantTable = ({
                     : "text-blue-600 hover:bg-blue-100"
                 }`}
               >
-                »
+                <FaAngleDoubleRight />
               </button>
             </div>
           </div>

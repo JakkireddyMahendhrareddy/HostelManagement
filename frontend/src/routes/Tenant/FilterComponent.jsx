@@ -34,9 +34,9 @@ const FilterComponent = ({ filterOpen, onFilterChange, onResetFilters }) => {
 
   return (
     filterOpen && (
-      <div className="p-4 border rounded-lg bg-gray-50">
-        <h3 className="font-medium mb-3">Filter Options</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="p-4 border rounded-lg bg-gray-100">
+        <h3 className="font-bold mb-3 text-black">Filter Options</h3>
+        <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Room Numbers
@@ -45,32 +45,6 @@ const FilterComponent = ({ filterOpen, onFilterChange, onResetFilters }) => {
               type="text"
               name="roomNumber"
               value={filters.roomNumber}
-              onChange={handleFilterChange}
-              className="w-full p-2 border rounded"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Join Date From
-            </label>
-            <input
-              type="date"
-              name="joinDateFrom"
-              value={filters.joinDateFrom}
-              onChange={handleFilterChange}
-              className="w-full p-2 border rounded"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Join Date To
-            </label>
-            <input
-              type="date"
-              name="joinDateTo"
-              value={filters.joinDateTo}
               onChange={handleFilterChange}
               className="w-full p-2 border rounded"
             />
@@ -101,12 +75,38 @@ const FilterComponent = ({ filterOpen, onFilterChange, onResetFilters }) => {
               className="w-full p-2 border rounded"
             />
           </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Join Date From
+            </label>
+            <input
+              type="date"
+              name="joinDateFrom"
+              value={filters.joinDateFrom}
+              onChange={handleFilterChange}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Join Date To
+            </label>
+            <input
+              type="date"
+              name="joinDateTo"
+              value={filters.joinDateTo}
+              onChange={handleFilterChange}
+              className="w-full p-2 border rounded"
+            />
+          </div>
         </div>
 
         <div className="mt-4 flex justify-end">
           <button
             onClick={resetFilters}
-            className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 mr-2"
+            className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-800 mr-2"
           >
             Reset Filters
           </button>

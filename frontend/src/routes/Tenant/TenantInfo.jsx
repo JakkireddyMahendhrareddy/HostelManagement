@@ -2,12 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   FaUserPlus,
-  FaEdit,
-  FaTrash,
-  FaEye,
-  FaBed,
-  FaDollarSign,
-  FaCheckCircle,
+  
   FaSearch,
 } from "react-icons/fa";
 import { RiFilterLine } from "react-icons/ri";
@@ -19,7 +14,7 @@ import TenantFormModal from "./TenantFormModal";
 import TenantDetailsModal from "./TenantDetailsModal";
 import PaginatedTenantTable from "./PaginatedTenantTable";
 import FilterComponent from "./FilterComponent";
-import { useDebounce } from "use-debounce";
+import NoHostelMessage from "../NoHostelMessage";
 
 const TenantInfo = () => {
   // API URLs
@@ -31,11 +26,16 @@ const TenantInfo = () => {
   const searchTenantUrl = `${backendUrl}/api/tenants/search`;
 
   // State variables
+
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [showAddHostelFormModal, setShowAddHostelFormModal] = useState(false);
+
   const [rooms, setRooms] = useState([]);
   const [hostel, setHostel] = useState({});
   const [loading, setLoading] = useState(true);
   const [showTenantFormModal, setShowTenantFormModal] = useState(false);
-  const [showAddHostelFormModal, setShowAddHostelFormModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [tenantIdToDelete, setTenantIdToDelete] = useState(null);
@@ -43,9 +43,7 @@ const TenantInfo = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterOpen, setFilterOpen] = useState(false);
-  const [searchResults, setSearchResults] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [isError, setIsError] = useState(false);
+  
   const [tableRefreshTrigger, setTableRefreshTrigger] = useState(0);
 
   const [filters, setFilters] = useState({
@@ -66,32 +64,6 @@ const TenantInfo = () => {
     contact: "",
   });
 
-  // const fetchHostel = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const response = await axios.get(getHostelUrl, {
-  //       withCredentials: true,
-  //     });
-
-  //     if (response.status === 200) {
-  //       const data = response.data;
-  //       if (data) {
-  //         setHostel(data);
-  //         fetchRooms();
-  //       } else {
-  //         setHostel(null);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     toast.warning("Something Went Wrong", toastNoficationSettings);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchHostel();
-  // }, []);
 
   const fetchHostel = async () => {
     try {
@@ -121,17 +93,6 @@ const TenantInfo = () => {
     fetchHostel();
   }, []);
 
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
-
-  // useEffect(() => {
-  //   if (!debouncedSearchTerm) return;
-
-  //   // We'll let PaginatedTenantTable handle the search with its own API call
-  //   // Just trigger a refresh
-  //   setTableRefreshTrigger((prev) => prev + 1);
-  // }, [debouncedSearchTerm]);
-
-  // Explicit search function for search button
   const handleSearch = () => {
     setTableRefreshTrigger((prev) => prev + 1);
   };
@@ -239,7 +200,7 @@ const TenantInfo = () => {
     // Basic fields validation
     if (
       !tenantData.tenantName ||
-      !tenantData.roomNumber ||
+      !tenantData.roomNumber ||               
       !tenantData.joinDate ||
       !tenantData.rentAmount ||
       !tenantData.contact
@@ -365,30 +326,103 @@ const TenantInfo = () => {
   };
 
   // Handle edit button click
+  // const handleEditClick = (tenant) => {
+  //   setSelectedTenant(tenant);
+  //   console.log(tenant,"000000000000000000000000000")
+
+  //   // Initialize newTenant with proper fallbacks
+  //   setNewTenant({
+  //     tenantName: tenant.tenantName || "",
+  //     roomNumber: tenant.roomNumber || "",
+  //     joinDate: tenant.joinDate
+  //       ? new Date(tenant.joinDate).toISOString().split("T")[0]
+  //       : "",
+  //     agreementStartDate: tenant.agreementStartDate
+  //       ? new Date(tenant.agreementStartDate).toISOString().split("T")[0]
+  //       : "",
+  //     moveInDate: tenant.moveInDate
+  //       ? new Date(tenant.moveInDate).toISOString().split("T")[0]
+  //       : "",
+  //     rentAmount: tenant.rentAmount?.toString() || "",
+  //     contact: tenant.contact || "",
+  //     email: tenant.email || "",
+  //     aadhaarNumber: tenant.aadhaarNumber || "",
+  //     isCurrentAddressSame: tenant.isCurrentAddressSame ?? false,
+  //     policeVerificationConsent: tenant.policeVerificationConsent ?? false,
+  //     termsAgreement: tenant.termsAgreement ?? false,
+
+  //     // Address handling with nested object fallbacks
+  //     permanentAddress: {
+  //       street: tenant.permanentAddress?.street || "",
+  //       city: tenant.permanentAddress?.city || "",
+  //       state: tenant.permanentAddress?.state || "",
+  //       pincode: tenant.permanentAddress?.pincode || "",
+  //     },
+
+  //     currentAddress: {
+  //       street: tenant.currentAddress?.street || "",
+  //       city: tenant.currentAddress?.city || "",
+  //       state: tenant.currentAddress?.state || "",
+  //       pincode: tenant.currentAddress?.pincode || "",
+  //     },
+
+  //     emergencyContact: {
+  //       name: tenant.emergencyContact?.name || "",
+  //       relationship: tenant.emergencyContact?.relationship || "",
+  //       mobile: tenant.emergencyContact?.mobile || "",
+  //     },
+
+  //     // Document URLs
+  //     passportPhoto: tenant.passportPhoto || "",
+  //     aadhaarFront: tenant.aadhaarFront || "",
+  //     aadhaarBack: tenant.aadhaarBack || "",
+  //     digitalSignature: tenant.digitalSignature || "",
+
+  //     // Additional fields
+  //     dateOfBirth: tenant.dateOfBirth
+  //       ? new Date(tenant.dateOfBirth).toISOString().split("T")[0]
+  //       : "",
+  //   });
+
+  //   setIsEditing(true);
+  //   setShowTenantFormModal(true);
+
+  //   // Refresh rooms data with error handling
+  //   fetchRooms().catch((error) =>
+  //     console.error("Error fetching rooms:", error)
+  //   );
+  // };
+
   const handleEditClick = (tenant) => {
     setSelectedTenant(tenant);
-
+    console.log(tenant, "000000000000000000000000000");
+    
     // Initialize newTenant with proper fallbacks
     setNewTenant({
       tenantName: tenant.tenantName || "",
-      roomNumber: tenant.roomNumber || "",
+      // Ensure roomNumber is properly converted to string
+      roomNumber: tenant.roomNumber ? tenant.roomNumber.toString() : "",
       joinDate: tenant.joinDate
         ? new Date(tenant.joinDate).toISOString().split("T")[0]
         : "",
       agreementStartDate: tenant.agreementStartDate
         ? new Date(tenant.agreementStartDate).toISOString().split("T")[0]
         : "",
+      // Fix moveInDate formatting - ensure it's correctly parsed even if it's in a different format
       moveInDate: tenant.moveInDate
-        ? new Date(tenant.moveInDate).toISOString().split("T")[0]
+        ? (tenant.moveInDate instanceof Date)
+          ? tenant.moveInDate.toISOString().split("T")[0]
+          : new Date(tenant.moveInDate).toISOString().split("T")[0]
         : "",
       rentAmount: tenant.rentAmount?.toString() || "",
       contact: tenant.contact || "",
       email: tenant.email || "",
       aadhaarNumber: tenant.aadhaarNumber || "",
-      isCurrentAddressSame: tenant.isCurrentAddressSame ?? false,
-      policeVerificationConsent: tenant.policeVerificationConsent ?? false,
-      termsAgreement: tenant.termsAgreement ?? false,
-
+      // Fix boolean fields to ensure they're properly handled
+      isCurrentAddressSame: Boolean(tenant.isCurrentAddressSame),
+      policeVerificationConsent: Boolean(tenant.policeVerificationConsent),
+      termsAgreement: Boolean(tenant.termsAgreement),
+      
       // Address handling with nested object fallbacks
       permanentAddress: {
         street: tenant.permanentAddress?.street || "",
@@ -396,35 +430,35 @@ const TenantInfo = () => {
         state: tenant.permanentAddress?.state || "",
         pincode: tenant.permanentAddress?.pincode || "",
       },
-
+      
       currentAddress: {
         street: tenant.currentAddress?.street || "",
         city: tenant.currentAddress?.city || "",
         state: tenant.currentAddress?.state || "",
         pincode: tenant.currentAddress?.pincode || "",
       },
-
+      
       emergencyContact: {
         name: tenant.emergencyContact?.name || "",
         relationship: tenant.emergencyContact?.relationship || "",
         mobile: tenant.emergencyContact?.mobile || "",
       },
-
+      
       // Document URLs
       passportPhoto: tenant.passportPhoto || "",
       aadhaarFront: tenant.aadhaarFront || "",
       aadhaarBack: tenant.aadhaarBack || "",
       digitalSignature: tenant.digitalSignature || "",
-
+      
       // Additional fields
       dateOfBirth: tenant.dateOfBirth
         ? new Date(tenant.dateOfBirth).toISOString().split("T")[0]
         : "",
     });
-
+    
     setIsEditing(true);
     setShowTenantFormModal(true);
-
+    
     // Refresh rooms data with error handling
     fetchRooms().catch((error) =>
       console.error("Error fetching rooms:", error)
@@ -463,44 +497,7 @@ const TenantInfo = () => {
     setTableRefreshTrigger((prev) => prev + 1);
   };
 
-  const NoHostelMessage = () => (
-    <div className="min-h-[calc(100vh-200px)] flex flex-col items-center justify-center px-4 text-center">
-      <h2 className="text-red-700 font-bold text-2xl mb-10 max-w-xl">
-        You haven't listed any hostel yet!
-      </h2>
-      <p className="text-gray-600 text-lg mb-8 max-w-xl">
-        Start managing your hostel digitally – add your property and control
-        every detail with ease.
-      </p>
-
-      <button
-        onClick={() => setShowAddHostelFormModal(true)}
-        className="bg-radial from-blue-400 via-blue-500 to-blue-600 text-white px-6 py-3 rounded-full cursor-pointer hover:scale-105 transition duration-300"
-      >
-        List Your Hostel
-      </button>
-
-      <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-gray-700">
-        <div className="flex flex-col items-center">
-          <FaBed size={40} className="w-12 mb-4 text-blue-500" />
-          <p>Room & Bed Management</p>
-        </div>
-        <div className="flex flex-col items-center">
-          <FaDollarSign size={40} className="w-12 mb-4 text-blue-500" />
-          <p>Update Rent Anytime</p>
-        </div>
-        <div className="flex flex-col items-center">
-          <FaCheckCircle size={40} className="w-12 mb-4 text-blue-500" />
-          <p>Track Availability</p>
-        </div>
-        <div className="flex flex-col items-center">
-          <FaEdit size={40} className="w-12 mb-4 text-blue-500" />
-          <p>Edit Hostel Info</p>
-        </div>
-      </div>
-    </div>
-  );
-  console.log(hostel);
+  
 
   return (
     <div className="w-full pt-0 min-h-screen flex justify-center items-start relative">
@@ -512,7 +509,7 @@ const TenantInfo = () => {
           </div>
         ) : !hostel || Object.keys(hostel).length === 0 ? (
           // No hostel message
-          <NoHostelMessage />
+          <NoHostelMessage/>
         ) : (
           <div>
             <h1 className="text-2xl font-bold mb-6">Tenant Management</h1>
@@ -521,17 +518,17 @@ const TenantInfo = () => {
             <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-4 mt-4 space-y-4">
               {/* Search and Filter Bar */}
               <div className="flex flex-wrap gap-4 justify-between items-center">
-                <div className="relative flex-grow max-w-md flex">
+                <div className="relative  max-w-md flex">
                   <input
                     type="text"
                     placeholder="Search tenant details..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full p-3 pr-10 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="w-full text-black border-blue-00 p-3 pr-10 border rounded-l-lg focus:outline-none shadow-md z-50 "
                   />
                   <button
                     onClick={handleSearch}
-                    className="bg-blue-500 text-white py-2 px-4 rounded-r-lg hover:bg-blue-600 transition duration-200"
+                    className="bg-blue-500 text-white py-2 px-4 rounded-r-lg hover:bg-blue-600  shadow-md z-50 duration-200 cursor-pointer"
                   >
                     <FaSearch />
                   </button>
@@ -540,7 +537,8 @@ const TenantInfo = () => {
                 <div className="flex gap-2">
                   <button
                     onClick={() => setFilterOpen(!filterOpen)}
-                    className="flex items-center gap-2 px-4 py-2 border rounded-lg bg-gray-100 hover:bg-gray-200"
+                    //  flex items-center gap-2 px-4 py-2 border rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer shadow-md z-50
+                    className="flex items-center shadow-md z-50 gap-2 px-4 py-2 w-50% border rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer"
                     aria-expanded={filterOpen}
                     aria-controls="filter-panel"
                   >
@@ -552,7 +550,7 @@ const TenantInfo = () => {
                       resetForm();
                       setShowTenantFormModal(true);
                     }}
-                    className="bg-blue-500 text-white py-2 px-4 flex items-center gap-2 rounded-lg hover:bg-blue-700 hover:scale-105 transition duration-200"
+                    className="bg-blue-500 text-white shadow-md z-50 py-2 px-4 flex items-center gap-2 rounded-lg hover:bg-blue-700 hover:scale-105 transition duration-200 cursor-pointer"
                   >
                     <FaUserPlus className="text-white" />
                     Create New
@@ -617,3 +615,5 @@ const TenantInfo = () => {
 };
 
 export default TenantInfo;
+
+

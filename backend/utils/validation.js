@@ -23,6 +23,8 @@ export const validateHostelData = (req) => {
   }
 };
 
+
+
 export const validateUserProfileInputData = (req) => {
   const { name, avatarUrl, mobileNumber } = req.body;
   const ALLOWED_FIELDS = ["name", "avatarUrl", "mobileNumber"];

@@ -66,6 +66,7 @@ const App = () => {
             }
           />
 
+
           {/* 404 */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>
