@@ -532,49 +532,176 @@ const TenantInfo = () => {
   };
 
   return (
+    // <div className="w-full pt-0 min-h-screen flex justify-center items-start relative">
+    //   <div className="w-full pt-4 max-w-7xl px-4">
+    //     {loading && tenants.length === 0 ? (
+    //       // Loading spinner
+    //       <div className="flex justify-center items-center h-60">
+    //         <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
+    //       </div>
+    //     ) : !hostel || Object.keys(hostel).length === 0 ? (
+    //       // No hostel message
+    //       <NoHostelMessage />
+    //     ) : (
+    //       <div>
+    //         <h1 className="text-2xl font-bold mb-6">Tenant Management</h1>
+
+    //         {/* Main content area */}
+    //         <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-4 mt-4 space-y-4">
+    //           {/* Search and Filter Bar */}
+    //           <div className="flex flex-wrap gap-4 justify-between items-center">
+    //             <div className="relative max-w-md flex">
+    //               <input
+    //                 type="text"
+    //                 placeholder="Search tenant details..."
+    //                 value={searchTerm}
+    //                 onChange={(e) => setSearchTerm(e.target.value)}
+    //                 className="w-full text-black border-gray-200 p-3 pr-10 border rounded-l-lg shadow-md z-50"
+    //                 onKeyPress={(e) => {
+    //                   if (e.key === "Enter") {
+    //                     handleSearch();
+    //                   }
+    //                 }}
+    //               />
+    //               <button
+    //                 onClick={handleSearch}
+    //                 className="bg-blue-500 text-white py-2 px-4 rounded-r-lg hover:bg-blue-600 duration-200 cursor-pointer"
+    //               >
+    //                 <FaSearch />
+    //               </button>
+    //             </div>
+
+    //             <div className="flex gap-2">
+    //               <button
+    //                 onClick={() => setFilterOpen(!filterOpen)}
+    //                 className="flex items-center shadow-md z-50 gap-2 px-4 py-2 w-50% border rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer"
+    //                 aria-expanded={filterOpen}
+    //                 aria-controls="filter-panel"
+    //               >
+    //                 {filterOpen ? "Hide Filters" : "Show Filters"}
+    //                 <RiFilterLine />
+    //               </button>
+    //               <button
+    //                 onClick={() => {
+    //                   resetForm();
+    //                   setShowTenantFormModal(true);
+    //                 }}
+    //                 className="bg-blue-500 text-white shadow-md z-50 py-2 px-4 flex items-center gap-2 rounded-lg hover:bg-blue-700 hover:scale-105 transition duration-200 cursor-pointer"
+    //               >
+    //                 <FaUserPlus className="text-white" />
+    //                 Create New
+    //               </button>
+    //             </div>
+    //           </div>
+
+    //           {/* Filter panel */}
+    //           <FilterComponent
+    //             filterOpen={filterOpen}
+    //             onFilterChange={handleFilterChange}
+    //             onResetFilters={handleResetFilters}
+    //             filters={filters}
+    //           />
+
+    //           {/* Show loading or no results message */}
+    //           {isSearching && tenants.length === 0 ? (
+    //             <div className="flex justify-center items-center py-4">
+    //               <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
+    //               <span className="ml-2">Searching...</span>
+    //             </div>
+    //           ) : tenants.length === 0 && !loading ? (
+    //             <div className="text-center py-6 text-gray-500">
+    //               No tenants found. Try adjusting your search or filters.
+    //             </div>
+    //           ) : null}
+
+    //           {/* Tenants Table with Pagination */}
+    //           <PaginatedTenantTable
+    //             tenants={tenants}
+    //             handleViewClick={handleViewClick}
+    //             handleEditClick={handleEditClick}
+    //             handleDeleteClick={handleDeleteClick}
+    //             loading={loading && tenants.length > 0}
+    //             currentPage={pageNumber}
+    //             totalItems={totalTenants}
+    //             itemsPerPage={tenantPerPage}
+    //             onPageChange={handlePageChange}
+    //             onItemsPerPageChange={handleItemsPerPageChange}
+    //           />
+    //         </div>
+    //       </div>
+    //     )}
+
+    //     {/* Tenant Form Modal */}
+    //     {showTenantFormModal && (
+    //       <TenantFormModal
+    //         setShowTenantFormModal={setShowTenantFormModal}
+    //         newTenant={newTenant}
+    //         handleTenantChange={handleTenantChange}
+    //         handleTenantSubmit={handleTenantSubmit}
+    //         isEditing={isEditing}
+    //         rooms={rooms}
+    //         resetForm={resetForm}
+    //       />
+    //     )}
+
+    //     {/* Tenant Details Modal */}
+    //     {showDetailsModal && (
+    //       <TenantDetailsModal
+    //         tenant={selectedTenant}
+    //         setShowDetailsModal={setShowDetailsModal}
+    //       />
+    //     )}
+
+    //     {/* Confirm Delete Modal */}
+    //     {showConfirmModal && (
+    //       <ConfirmModal
+    //         confirmType="tenant"
+    //         confirmDelete={deleteTenant}
+    //         setShowConfirmModal={setShowConfirmModal}
+    //       />
+    //     )}
+    //   </div>
+    // </div>
     <div className="w-full pt-0 min-h-screen flex justify-center items-start relative">
       <div className="w-full pt-4 max-w-7xl px-4">
         {loading && tenants.length === 0 ? (
-          // Loading spinner
           <div className="flex justify-center items-center h-60">
             <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
           </div>
         ) : !hostel || Object.keys(hostel).length === 0 ? (
-          // No hostel message
           <NoHostelMessage />
         ) : (
           <div>
             <h1 className="text-2xl font-bold mb-6">Tenant Management</h1>
 
-            {/* Main content area */}
             <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-4 mt-4 space-y-4">
               {/* Search and Filter Bar */}
-              <div className="flex flex-wrap gap-4 justify-between items-center">
-                <div className="relative max-w-md flex">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                {/* Search input */}
+                <div className="w-full sm:w-auto flex-grow relative flex">
                   <input
                     type="text"
                     placeholder="Search tenant details..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full text-black border-gray-200 p-3 pr-10 border rounded-l-lg shadow-md z-50"
                     onKeyPress={(e) => {
-                      if (e.key === "Enter") {
-                        handleSearch();
-                      }
+                      if (e.key === "Enter") handleSearch();
                     }}
+                    className="w-full text-black border-gray-200 p-3 pr-10 border rounded-l-lg shadow-md"
                   />
                   <button
                     onClick={handleSearch}
-                    className="bg-blue-500 text-white py-2 px-4 rounded-r-lg hover:bg-blue-600 duration-200 cursor-pointer"
+                    className="bg-blue-500 text-white py-2 px-4 rounded-r-lg hover:bg-blue-600 transition duration-200"
                   >
                     <FaSearch />
                   </button>
                 </div>
 
-                <div className="flex gap-2">
+                {/* Filter and Create New Buttons */}
+                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                   <button
                     onClick={() => setFilterOpen(!filterOpen)}
-                    className="flex items-center shadow-md z-50 gap-2 px-4 py-2 w-50% border rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer"
+                    className="flex items-center gap-2 justify-center px-4 py-2 border rounded-lg bg-gray-100 hover:bg-gray-200 shadow-md"
                     aria-expanded={filterOpen}
                     aria-controls="filter-panel"
                   >
@@ -586,7 +713,7 @@ const TenantInfo = () => {
                       resetForm();
                       setShowTenantFormModal(true);
                     }}
-                    className="bg-blue-500 text-white shadow-md z-50 py-2 px-4 flex items-center gap-2 rounded-lg hover:bg-blue-700 hover:scale-105 transition duration-200 cursor-pointer"
+                    className="flex items-center justify-center gap-2 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 hover:scale-105 transition duration-200 shadow-md"
                   >
                     <FaUserPlus className="text-white" />
                     Create New
@@ -594,7 +721,7 @@ const TenantInfo = () => {
                 </div>
               </div>
 
-              {/* Filter panel */}
+              {/* Filter Panel */}
               <FilterComponent
                 filterOpen={filterOpen}
                 onFilterChange={handleFilterChange}
@@ -602,7 +729,7 @@ const TenantInfo = () => {
                 filters={filters}
               />
 
-              {/* Show loading or no results message */}
+              {/* Loader or No Results */}
               {isSearching && tenants.length === 0 ? (
                 <div className="flex justify-center items-center py-4">
                   <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
@@ -614,7 +741,7 @@ const TenantInfo = () => {
                 </div>
               ) : null}
 
-              {/* Tenants Table with Pagination */}
+              {/* Tenant Table */}
               <PaginatedTenantTable
                 tenants={tenants}
                 handleViewClick={handleViewClick}

@@ -52,7 +52,7 @@ const paymentSchema = new mongoose.Schema(
     },
     rentStatus: {
       type: String,
-      enum: ["Paid", "Due", "Partially Paid"],
+      enum: ["Paid", "Due"],
       default: "Due",
     },
     // Status fields

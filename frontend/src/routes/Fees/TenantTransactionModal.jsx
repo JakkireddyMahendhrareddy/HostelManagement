@@ -10,6 +10,8 @@ const TenantTransactionModal = ({
 }) => {
   if (!showModal) return null;
 
+  console.log(transactions,"///////////////////")
+
   return (
     <div className="fixed inset-0 z-10 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
