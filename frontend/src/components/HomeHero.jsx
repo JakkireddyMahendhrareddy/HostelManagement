@@ -6,7 +6,6 @@ const HomeHero = () => {
   return (
     <section className="px-4 sm:px-10 lg:px-28 w-full py-16 md:py-24 lg:py-32 min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
       <div className="flex flex-col gap-6 text-center items-center max-w-3xl w-full">
-        
         {/* Heading */}
         <h1 className="text-xl sm:text-2xl md:text-3xl font-normal leading-snug text-blue-600 dark:text-blue-400">
           Tired of Hostel Hassles?{" "}
@@ -31,7 +30,7 @@ const HomeHero = () => {
         <div className="flex flex-wrap justify-center gap-4 mt-4">
           <button
             onClick={() => navigate("/auth/login")}
-            className="bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 text-white px-6 py-2 rounded text-sm sm:text-base hover:from-blue-500 hover:to-blue-700 transition duration-200"
+            className="bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 text-white px-6 py-2 rounded text-sm sm:text-base hover:from-blue-500 hover:to-blue-700 transition duration-200 cursor-pointer"
           >
             Get Started
           </button>

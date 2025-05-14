@@ -96,7 +96,6 @@ const HostelAndRoomDetails = ({
           handleDeleteRoomClick={handleDeleteRoomClick}
         />
 
-
         {rooms.length === 0 && (
           <p className="text-center font-medium text-lg mt-4 text-red-500 py-4">
             No rooms available. Add a new room to get started.

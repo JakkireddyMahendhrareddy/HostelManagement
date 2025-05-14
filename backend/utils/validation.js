@@ -23,8 +23,6 @@ export const validateHostelData = (req) => {
   }
 };
 
-
-
 export const validateUserProfileInputData = (req) => {
   const { name, avatarUrl, mobileNumber } = req.body;
   const ALLOWED_FIELDS = ["name", "avatarUrl", "mobileNumber"];
@@ -64,13 +62,12 @@ export const validateHostelWithOwnerId = async (ownerId) => {
   return hostelInfo;
 };
 
-
 export const validateTenantData = (req) => {
   const {
     tenantName,
     roomNumber,
     moveInDate, // Primary field for move-in date
-    joinDate,   // Support legacy field
+    joinDate, // Support legacy field
     rentAmount,
     contact,
     dateOfBirth,
@@ -86,7 +83,7 @@ export const validateTenantData = (req) => {
     emergencyContact,
     agreementStartDate,
     policeVerificationConsent,
-    termsAgreement
+    termsAgreement,
   } = req.body;
 
   // Essential fields validation - these must always be present
@@ -103,7 +100,7 @@ export const validateTenantData = (req) => {
 
   // Validate additional fields only if they're provided
   // This makes these fields optional but validates them if present
-  
+
   // Aadhaar validation - optional but validate format if provided
   if (aadhaarNumber && !/^[0-9]{12}$/.test(aadhaarNumber)) {
     throw new Error("Aadhaar number must be a 12-digit number.");
@@ -126,65 +123,158 @@ export const validateTenantData = (req) => {
 
   // Permanent address validation - only if provided
   if (permanentAddress) {
-    if (!permanentAddress.street) throw new Error("Street address is required in permanent address.");
-    if (!permanentAddress.city) throw new Error("City is required in permanent address.");
-    if (!permanentAddress.state) throw new Error("State is required in permanent address.");
-    if (!permanentAddress.pincode) throw new Error("Pincode is required in permanent address.");
+    if (!permanentAddress.street)
+      throw new Error("Street address is required in permanent address.");
+    if (!permanentAddress.city)
+      throw new Error("City is required in permanent address.");
+    if (!permanentAddress.state)
+      throw new Error("State is required in permanent address.");
+    if (!permanentAddress.pincode)
+      throw new Error("Pincode is required in permanent address.");
   }
 
   // Current address validation - only if provided and not same as permanent
   if (!isCurrentAddressSame && currentAddress) {
-    if (!currentAddress.street) throw new Error("Street address is required in current address.");
-    if (!currentAddress.city) throw new Error("City is required in current address.");
-    if (!currentAddress.state) throw new Error("State is required in current address.");
-    if (!currentAddress.pincode) throw new Error("Pincode is required in current address.");
+    if (!currentAddress.street)
+      throw new Error("Street address is required in current address.");
+    if (!currentAddress.city)
+      throw new Error("City is required in current address.");
+    if (!currentAddress.state)
+      throw new Error("State is required in current address.");
+    if (!currentAddress.pincode)
+      throw new Error("Pincode is required in current address.");
   }
 
   // Emergency contact validation - only if provided
   if (emergencyContact) {
-    if (!emergencyContact.name) throw new Error("Emergency contact name is required.");
-    if (!emergencyContact.relationship) throw new Error("Emergency contact relationship is required.");
-    if (!emergencyContact.mobile) throw new Error("Emergency contact mobile number is required.");
-    
-    if (emergencyContact.mobile && !/^[0-9]{10}$/.test(emergencyContact.mobile)) {
+    if (!emergencyContact.name)
+      throw new Error("Emergency contact name is required.");
+    if (!emergencyContact.relationship)
+      throw new Error("Emergency contact relationship is required.");
+    if (!emergencyContact.mobile)
+      throw new Error("Emergency contact mobile number is required.");
+
+    if (
+      emergencyContact.mobile &&
+      !/^[0-9]{10}$/.test(emergencyContact.mobile)
+    ) {
       throw new Error("Emergency contact mobile must be a 10-digit number.");
     }
   }
 };
 
-// Updated Tenant model
-/*
-import mongoose from "mongoose";
+import { createError } from "../utils/error.js";
 
-const tenantSchema = new mongoose.Schema({
-  tenantName: { 
-    type: String, 
-    required: true 
-  },
-  roomNumber: { 
-    type: Number, 
-    required: true 
-  },
-  joinDate: { 
-    type: Date, 
-    required: true 
-  },
-  rentAmount: { 
-    type: Number, 
-    required: true 
-  },
-  contact: {
-    type: String,
-    required: true,
-    match: [/^[0-9]{10}$/, "Please enter a valid 10-digit phone number"],
-  },
-  ownerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true
+// Validate payment data
+export const validatePaymentData = (req) => {
+  const { tenantId, paymentAmount, paymentMode, transactionId, remarks } =
+    req.body;
+
+  // Essential fields validation
+  if (!tenantId) throw new Error("Tenant ID is required.");
+  if (!paymentAmount) throw new Error("Payment amount is required.");
+  if (!paymentMode) throw new Error("Payment mode is required.");
+
+  // Validate payment amount is a positive number
+  if (
+    paymentAmount &&
+    (!Number.isFinite(Number(paymentAmount)) || Number(paymentAmount) <= 0)
+  ) {
+    throw new Error("Payment amount must be a positive number.");
   }
-}, { timestamps: true });
 
-const Tenant = mongoose.model("Tenant", tenantSchema);
-export default Tenant;
-*/
+  // Validate payment mode
+  const validPaymentModes = ["Cash", "UPI", "Bank Transfer", "Check", "Other"];
+  if (paymentMode && !validPaymentModes.includes(paymentMode)) {
+    throw new Error(
+      `Payment mode must be one of: ${validPaymentModes.join(", ")}.`
+    );
+  }
+
+  // Validate transaction ID format if provided for electronic payments
+  if (paymentMode !== "Cash" && paymentMode !== "Other" && !transactionId) {
+    throw new Error("Transaction ID is required for electronic payments.");
+  }
+
+  // Optional field validation
+  if (remarks && remarks.length > 500) {
+    throw new Error("Remarks must be less than 500 characters.");
+  }
+};
+
+// Validate update payment data
+export const validateUpdatePaymentData = (req) => {
+  const { paymentAmount, paymentMode, transactionId, remarks } = req.body;
+
+  const ALLOWED_FIELDS = [
+    "paymentAmount",
+    "paymentMode",
+    "transactionId",
+    "remarks",
+  ];
+
+  // Check if all fields in request are allowed
+  const isUpdateAllowed = Object.keys(req.body).every((key) =>
+    ALLOWED_FIELDS.includes(key)
+  );
+
+  if (!isUpdateAllowed) {
+    throw new Error("One or more fields are not allowed for update.");
+  }
+
+  // If fields are present, validate them
+  if (paymentAmount !== undefined) {
+    if (!Number.isFinite(Number(paymentAmount)) || Number(paymentAmount) <= 0) {
+      throw new Error("Payment amount must be a positive number.");
+    }
+  }
+
+  if (paymentMode !== undefined) {
+    const validPaymentModes = [
+      "Cash",
+      "UPI",
+      "Bank Transfer",
+      "Check",
+      "Other",
+    ];
+    if (!validPaymentModes.includes(paymentMode)) {
+      throw new Error(
+        `Payment mode must be one of: ${validPaymentModes.join(", ")}.`
+      );
+    }
+  }
+
+  if (remarks !== undefined && remarks.length > 500) {
+    throw new Error("Remarks must be less than 500 characters.");
+  }
+
+  return isUpdateAllowed;
+};
+
+// Validate date range for payment queries
+export const validateDateRange = (req) => {
+  const { startDate, endDate } = req.query;
+
+  if (!startDate || !endDate) {
+    throw new Error("Both start date and end date are required.");
+  }
+
+  // Check if dates are valid
+  try {
+    new Date(startDate);
+    new Date(endDate);
+  } catch (e) {
+    throw new Error("Invalid date format. Use YYYY-MM-DD format.");
+  }
+
+  // Check if start date is before end date
+  if (new Date(startDate) > new Date(endDate)) {
+    throw new Error("Start date must be before end date.");
+  }
+
+  // Check if date range is not more than 1 year
+  const oneYearInMs = 365 * 24 * 60 * 60 * 1000;
+  if (new Date(endDate) - new Date(startDate) > oneYearInMs) {
+    throw new Error("Date range cannot be more than 1 year.");
+  }
+};

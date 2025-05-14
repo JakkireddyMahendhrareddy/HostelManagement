@@ -88,16 +88,23 @@ const Registration = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen pt-8 pb-4 bg-gray-100 px-4">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center">Create Account</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center">
+        Create Account
+      </h1>
       <div className="w-full sm:max-w-md lg:max-w-lg bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-md">
         <form onSubmit={onHandleFormSubmit}>
           <div className="mb-5">
-            <label htmlFor="full-name" className="block font-medium mb-1">Full Name</label>
+            <label htmlFor="full-name" className="block font-medium mb-1">
+              Full Name
+            </label>
             <input
               type="text"
               id="full-name"
               value={fullName}
-              onChange={(e) => { setFullName(e.target.value); setErrorMessage(""); }}
+              onChange={(e) => {
+                setFullName(e.target.value);
+                setErrorMessage("");
+              }}
               placeholder="Enter your name"
               required
               className="w-full border-b-2 border-gray-300 focus:border-blue-500 outline-none py-2 px-1"
@@ -105,12 +112,17 @@ const Registration = () => {
           </div>
 
           <div className="mb-5">
-            <label htmlFor="email" className="block font-medium mb-1">Email</label>
+            <label htmlFor="email" className="block font-medium mb-1">
+              Email
+            </label>
             <input
               type="email"
               id="email"
               value={email}
-              onChange={(e) => { setEmail(e.target.value); setErrorMessage(""); }}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setErrorMessage("");
+              }}
               placeholder="Enter your email"
               required
               className="w-full border-b-2 border-gray-300 focus:border-blue-500 outline-none py-2 px-1"
@@ -118,12 +130,17 @@ const Registration = () => {
           </div>
 
           <div className="mb-5">
-            <label htmlFor="mobile" className="block font-medium mb-1">Mobile Number</label>
+            <label htmlFor="mobile" className="block font-medium mb-1">
+              Mobile Number
+            </label>
             <input
               type="tel"
               id="mobile"
               value={mobileNumber}
-              onChange={(e) => { setMobileNumber(e.target.value); setErrorMessage(""); }}
+              onChange={(e) => {
+                setMobileNumber(e.target.value);
+                setErrorMessage("");
+              }}
               maxLength="10"
               placeholder="Enter 10-digit mobile number"
               required
@@ -132,13 +149,18 @@ const Registration = () => {
           </div>
 
           <div className="mb-5">
-            <label htmlFor="password" className="block font-medium mb-1">Password</label>
+            <label htmlFor="password" className="block font-medium mb-1">
+              Password
+            </label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
                 value={password}
-                onChange={(e) => { setPassword(e.target.value); setErrorMessage(""); }}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setErrorMessage("");
+                }}
                 placeholder="Enter your password"
                 required
                 className="w-full border-b-2 border-gray-300 focus:border-blue-500 outline-none py-2 px-1 pr-10"
@@ -148,7 +170,11 @@ const Registration = () => {
                 className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? <IoEyeOutline size={20} /> : <IoEyeOffOutline size={20} />}
+                {showPassword ? (
+                  <IoEyeOutline size={20} />
+                ) : (
+                  <IoEyeOffOutline size={20} />
+                )}
               </button>
             </div>
           </div>
@@ -161,7 +187,7 @@ const Registration = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md transition-all"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md transition-all cursor-pointer"
           >
             Register
           </button>
@@ -175,7 +201,7 @@ const Registration = () => {
           <button
             type="button"
             onClick={onHandleLoginBtn}
-            className="w-full border border-blue-500 text-blue-500 hover:bg-blue-50 py-2 rounded-md transition-all"
+            className="w-full border border-blue-500 text-blue-500 hover:bg-blue-50 py-2 rounded-md transition-all cursor-pointer"
           >
             Login
           </button>

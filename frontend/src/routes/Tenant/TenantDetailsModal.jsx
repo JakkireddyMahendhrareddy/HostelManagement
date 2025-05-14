@@ -10,6 +10,11 @@ import {
   FaIdCard,
   FaMapMarkerAlt,
   FaPhoneVolume,
+  FaFileContract,
+  FaHome,
+  FaBirthdayCake,
+  FaCheckCircle,
+  FaClipboardCheck,
 } from "react-icons/fa";
 
 const TenantDetailsModal = ({ tenant = {}, setShowDetailsModal }) => {
@@ -17,11 +22,13 @@ const TenantDetailsModal = ({ tenant = {}, setShowDetailsModal }) => {
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
-    return date.toLocaleDateString();
+    return isNaN(date.getTime()) ? "N/A" : date.toLocaleDateString();
   };
 
   // Handle undefined or null fields safely - use optional chaining
-  const joinDate = tenant?.joinDate || tenant?.moveInDate;
+  const moveInDate = tenant?.moveInDate;
+  const agreementStartDate = tenant?.agreementStartDate;
+  const dateOfBirth = tenant?.dateOfBirth;
 
   // Safety check for the entire component
   if (!tenant) {
@@ -72,6 +79,17 @@ const TenantDetailsModal = ({ tenant = {}, setShowDetailsModal }) => {
             </div>
           </div>
 
+          {/* Date of Birth */}
+          <div className="flex items-center space-x-3">
+            <FaBirthdayCake size={22} className="text-blue-600" />
+            <div>
+              <span className="text-sm text-gray-600">Date of Birth</span>
+              <span className="font-medium block text-lg">
+                {formatDate(dateOfBirth)}
+              </span>
+            </div>
+          </div>
+
           {/* Room Number */}
           <div className="flex items-center space-x-3">
             <FaDoorOpen size={22} className="text-blue-600" />
@@ -83,13 +101,26 @@ const TenantDetailsModal = ({ tenant = {}, setShowDetailsModal }) => {
             </div>
           </div>
 
-          {/* Join Date */}
+          {/* Move-In Date */}
           <div className="flex items-center space-x-3">
-            <FaCalendarAlt size={22} className="text-blue-600" />
+            <FaHome size={22} className="text-blue-600" />
             <div>
-              <span className="text-sm text-gray-600">Join Date</span>
+              <span className="text-sm text-gray-600">Move-In Date</span>
               <span className="font-medium block text-lg">
-                {formatDate(joinDate)}
+                {formatDate(moveInDate)}
+              </span>
+            </div>
+          </div>
+
+          {/* Agreement Start Date */}
+          <div className="flex items-center space-x-3">
+            <FaFileContract size={22} className="text-blue-600" />
+            <div>
+              <span className="text-sm text-gray-600">
+                Agreement Start Date
+              </span>
+              <span className="font-medium block text-lg">
+                {formatDate(agreementStartDate)}
               </span>
             </div>
           </div>
@@ -117,30 +148,60 @@ const TenantDetailsModal = ({ tenant = {}, setShowDetailsModal }) => {
           </div>
 
           {/* Email */}
-          {tenant.email && (
-            <div className="flex items-center space-x-3">
-              <FaEnvelope size={22} className="text-blue-600" />
-              <div>
-                <span className="text-sm text-gray-600">Email</span>
-                <span className="font-medium block text-lg">
-                  {tenant.email}
-                </span>
-              </div>
+          <div className="flex items-center space-x-3">
+            <FaEnvelope size={22} className="text-blue-600" />
+            <div>
+              <span className="text-sm text-gray-600">Email</span>
+              <span className="font-medium block text-lg">
+                {tenant.email || "N/A"}
+              </span>
             </div>
-          )}
+          </div>
 
           {/* Aadhaar Number */}
-          {tenant.aadharNumber && (
-            <div className="flex items-center space-x-3">
-              <FaIdCard size={22} className="text-blue-600" />
-              <div>
-                <span className="text-sm text-gray-600">Aadhaar Number</span>
-                <span className="font-medium block text-lg">
-                  {tenant.aadharNumber}
-                </span>
-              </div>
+          <div className="flex items-center space-x-3">
+            <FaIdCard size={22} className="text-blue-600" />
+            <div>
+              <span className="text-sm text-gray-600">Aadhaar Number</span>
+              <span className="font-medium block text-lg">
+                {tenant.aadhaarNumber || "N/A"}
+              </span>
             </div>
-          )}
+          </div>
+
+          {/* Police Verification Consent */}
+          <div className="flex items-center space-x-3">
+            <FaClipboardCheck size={22} className="text-blue-600" />
+            <div>
+              <span className="text-sm text-gray-600">Police Verification</span>
+              <span className="font-medium block text-lg">
+                {tenant.policeVerificationConsent ? (
+                  <span className="text-green-600 flex items-center">
+                    <FaCheckCircle className="mr-2" /> Consented
+                  </span>
+                ) : (
+                  <span className="text-red-600">Not Consented</span>
+                )}
+              </span>
+            </div>
+          </div>
+
+          {/* Terms Agreement */}
+          <div className="flex items-center space-x-3">
+            <FaFileContract size={22} className="text-blue-600" />
+            <div>
+              <span className="text-sm text-gray-600">Terms Agreement</span>
+              <span className="font-medium block text-lg">
+                {tenant.termsAgreement ? (
+                  <span className="text-green-600 flex items-center">
+                    <FaCheckCircle className="mr-2" /> Agreed
+                  </span>
+                ) : (
+                  <span className="text-red-600">Not Agreed</span>
+                )}
+              </span>
+            </div>
+          </div>
         </div>
 
         {/* Address Information - Full width */}
@@ -156,14 +217,14 @@ const TenantDetailsModal = ({ tenant = {}, setShowDetailsModal }) => {
                   {tenant.permanentAddress.city || ""},
                   {tenant.permanentAddress.state || ""}
                   {tenant.permanentAddress.pincode
-                    ? `- ${tenant.permanentAddress.pincode}`
+                    ? ` - ${tenant.permanentAddress.pincode}`
                     : ""}
                 </span>
               </div>
             </div>
           )}
 
-          {/* Current Address */}
+          {/* Current Address - Only show if not same as permanent address */}
           {tenant.isCurrentAddressSame === false && tenant.currentAddress && (
             <div className="flex items-start space-x-3">
               <FaMapMarkerAlt size={22} className="text-blue-600 mt-1" />
@@ -174,8 +235,23 @@ const TenantDetailsModal = ({ tenant = {}, setShowDetailsModal }) => {
                   {tenant.currentAddress.city || ""},
                   {tenant.currentAddress.state || ""}
                   {tenant.currentAddress.pincode
-                    ? `- ${tenant.currentAddress.pincode}`
+                    ? ` - ${tenant.currentAddress.pincode}`
                     : ""}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* If current address is same as permanent address */}
+          {tenant.isCurrentAddressSame === true && (
+            <div className="flex items-start space-x-3">
+              <FaMapMarkerAlt size={22} className="text-blue-600 mt-1" />
+              <div>
+                <span className="text-sm text-gray-600">Current Address</span>
+                <span className="font-medium block text-lg">
+                  <span className="text-gray-600 italic">
+                    Same as permanent address
+                  </span>
                 </span>
               </div>
             </div>

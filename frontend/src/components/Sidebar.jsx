@@ -12,7 +12,7 @@ import {
 import InnerDashboard from "../routes/InnerDashboard";
 import HostelInfo from "../routes/Hostel/HostelInfo";
 import TenantManagement from "../routes/Tenant/TenantInfo";
-import Fees from "../routes/Fees/FeesManagement";
+import Fees from "../routes/Fees/FeesInfo";
 import MessDetails from "../routes/MessDetails";
 import Maintenance from "../routes/Maintenance";
 import Topbar from "./Topbar";
@@ -109,7 +109,8 @@ export default function Sidebar() {
       >
         <Link to="/" className="flex-shrink-0">
           <div className="bg-blue-500 text-white font-bold text-xl md:text-2xl h-16 flex items-center justify-start px-4 md:px-6 text-start shadow-lg">
-            logo
+            <div className="text-4xl">🏨</div>
+            <p className="text-xl font-semibold mt-2">My Hostel</p>
           </div>
         </Link>
 

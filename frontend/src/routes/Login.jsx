@@ -115,14 +115,17 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-all duration-200"
+            className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-all duration-200 cursor-pointer"
           >
             Login
           </button>
 
           <div className="text-sm text-center text-gray-600 space-x-2">
             Don't have an account?{" "}
-            <Link to="/auth/register" className="text-blue-500 underline">
+            <Link
+              to="/auth/register"
+              className="text-blue-500 underline cursor-pointer"
+            >
               Register here
             </Link>
           </div>

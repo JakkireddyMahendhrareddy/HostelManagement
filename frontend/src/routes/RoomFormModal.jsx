@@ -66,18 +66,6 @@ const RoomFormModal = ({
                   <option value="Four Sharing">Four Sharing</option>
                 </select>
               </div>
-              {/* <div className="flex flex-col gap-2">
-                <label className="font-semibold">Total Beds</label>
-                <input
-                  type="number"
-                  min="0"
-                  name="beds"
-                  placeholder="Beds"
-                  value={newRoom.beds}
-                  onChange={handleRoomChange}
-                  className="shadow border rounded w-full md:w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div> */}
               <div className="flex flex-col gap-2">
                 <label className="font-semibold">Available Beds</label>
                 <input

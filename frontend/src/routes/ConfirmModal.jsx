@@ -23,13 +23,13 @@ const ConfirmModal = ({ confirmType, confirmDelete, setShowConfirmModal }) => {
           <div className="flex justify-center gap-4">
             <button
               onClick={confirmDelete}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
+              className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer"
             >
               Confirm
             </button>
             <button
               onClick={() => setShowConfirmModal(false)}
-              className="bg-gray-300 px-4 py-2 rounded"
+              className="bg-gray-300 px-4 py-2 rounded cursor-pointer"
             >
               Cancel
             </button>

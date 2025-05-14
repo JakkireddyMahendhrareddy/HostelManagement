@@ -3,7 +3,6 @@
 // dotenv.config();
 // import mongoose from "mongoose";
 
-
 // import cors from "cors";
 // import userRoutes from "./router/userRouter.js";
 // import hostelRoutes from "./router/hostelRouter.js";
@@ -13,7 +12,6 @@
 // import reviewRouter from "./router/reviewRouter.js";
 // import meesRouter from "./router/meesRouter.js";
 // import tenantRouter from "./router/tenantRouter.js";
-
 
 // const app = express();
 // app.use(express.json());
@@ -31,8 +29,6 @@
 // //Increase payload size limit (default is 100kb)
 // app.use(express.json({ limit: '50mb' }));
 // app.use(express.urlencoded({ limit: '50mb', extended: true }));
-
-
 
 // const PORT = process.env.PORT || 5001;
 
@@ -63,7 +59,6 @@
 // };
 // initializeDBAndServer();
 
-
 import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
@@ -77,12 +72,13 @@ import authRoutes from "./router/auth.js";
 import reviewRouter from "./router/reviewRouter.js";
 import meesRouter from "./router/meesRouter.js";
 import tenantRouter from "./router/tenantRouter.js";
+import paymentsRouter from "./router/paymentRouter.js";
 
 const app = express();
 
 // IMPORTANT: Set payload size limits BEFORE other middleware
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(cookieParser());
 app.use(
@@ -103,6 +99,7 @@ app.use("/api/review", reviewRouter);
 // Fix: missing forward slash in the path
 app.use("/api/mess", meesRouter);
 app.use("/api/tenants", tenantRouter);
+app.use("/api/payments", paymentsRouter);
 
 const initializeDBAndServer = async () => {
   try {

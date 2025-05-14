@@ -15,9 +15,7 @@ export default function Navbar() {
       <div className="flex justify-between items-center px-4 sm:px-8 md:px-16 lg:px-28 py-3">
         {/* Logo */}
         <Link to="/">
-          <div className="text-blue-600 text-2xl font-bold tracking-wide">
-            logo
-          </div>
+          <div className="text-4xl">🏨</div>
         </Link>
 
         {/* Desktop Navigation */}
