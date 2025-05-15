@@ -72,7 +72,7 @@ import authRoutes from "./router/auth.js";
 import reviewRouter from "./router/reviewRouter.js";
 import meesRouter from "./router/meesRouter.js";
 import tenantRouter from "./router/tenantRouter.js";
-import paymentsRouter from "./router/paymentRouter.js";
+import paymentsRoutes from "./router/paymentRoutes.js";
 
 const app = express();
 
@@ -99,7 +99,7 @@ app.use("/api/review", reviewRouter);
 // Fix: missing forward slash in the path
 app.use("/api/mess", meesRouter);
 app.use("/api/tenants", tenantRouter);
-app.use("/api/payments", paymentsRouter);
+app.use("/api/payments", paymentsRoutes);
 
 const initializeDBAndServer = async () => {
   try {

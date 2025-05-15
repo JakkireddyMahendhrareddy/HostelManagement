@@ -1,309 +1,67 @@
+// paymentController.js
 import Payment from "../models/Payment.js";
-import Tenant from "../models/Tenant.js";
+import mongoose from "mongoose";
 
-// Get all payments for an owner
-export const getPayments = async (req, res) => {
-  try {
-    const { ownerId } = req.user;
-
-    // Populate tenant details to show tenant name, contact, etc. in payment records
-    const payments = await Payment.find({ ownerId })
-      .populate(
-        "tenantId",
-        "name email phone roomNumber rentAmount joiningDate"
-      )
-      .sort({ dueDate: -1 });
-
-    // Format the response to include tenant details directly
-    const formattedPayments = payments.map((payment) => {
-      const tenant = payment.tenantId;
-      return {
-        paymentId: payment._id,
-        tenantId: tenant._id,
-        tenant: tenant.name,
-        contact: tenant.phone,
-        room: payment.roomNumber,
-        joinDate: tenant.joiningDate,
-        rent: payment.rentAmount,
-        paymentDate: payment.paymentDate,
-        paymentAmount: payment.paymentAmount,
-        paymentMode: payment.paymentMode,
-        transactionId: payment.transactionId,
-        remarks: payment.remarks,
-        rentStatus: payment.rentStatus,
-        dueDate: payment.dueDate,
-        dueAmount: payment.dueAmount,
-        isActive: payment.isActive,
-        createdAt: payment.createdAt,
-        updatedAt: payment.updatedAt,
-      };
-    });
-
-    res.status(200).json({
-      success: true,
-      count: formattedPayments.length,
-      data: formattedPayments,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch payments",
-      error: error.message,
-    });
-  }
-};
-
-// Get template for creating a new payment for tenant (used when manually adding new payments)
-export const getTenantPaymentTemplate = async (req, res) => {
-  try {
-    const { tenantId } = req.params;
-    const { ownerId } = req.user;
-
-    // Verify tenant exists and belongs to current owner
-    const tenant = await Tenant.findOne({
-      _id: tenantId,
-      ownerId,
-    });
-
-    if (!tenant) {
-      return res.status(404).json({
-        success: false,
-        message: "Tenant not found or doesn't belong to this owner",
-      });
-    }
-
-    // Create template with tenant details and empty payment fields
-    const paymentTemplate = {
-      tenantId: tenant._id,
-      tenant: tenant.name,
-      contact: tenant.phone,
-      room: tenant.roomNumber,
-      joinDate: tenant.joiningDate,
-      rent: tenant.rentAmount,
-      paymentDate: new Date(), // Default to today
-      paymentAmount: 0, // Empty initially
-      paymentMode: "", // Empty initially
-      transactionId: "", // Empty initially
-      remarks: "", // Empty initially
-      rentStatus: "Due", // Default status
-      dueDate: null, // Empty initially
-      dueAmount: tenant.rentAmount, // Full rent is due initially
-    };
-
-    res.status(200).json({
-      success: true,
-      data: paymentTemplate,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to generate payment template",
-      error: error.message,
-    });
-  }
-};
-
-// Get payments for a specific tenant
-export const getTenantPayments = async (req, res) => {
-  try {
-    const { tenantId } = req.params;
-    const { ownerId } = req.user;
-
-    // Verify tenant exists and belongs to owner
-    const tenant = await Tenant.findOne({
-      _id: tenantId,
-      ownerId,
-    });
-
-    if (!tenant) {
-      return res.status(404).json({
-        success: false,
-        message: "Tenant not found or doesn't belong to this owner",
-      });
-    }
-
-    // Get all payments for this tenant
-    const payments = await Payment.find({
-      tenantId,
-      ownerId,
-    }).sort({ dueDate: -1 });
-
-    // Format payments to include tenant details
-    const formattedPayments = payments.map((payment) => {
-      return {
-        paymentId: payment._id,
-        tenantId: tenant._id,
-        tenant: tenant.name,
-        contact: tenant.phone,
-        room: payment.roomNumber,
-        joinDate: tenant.joiningDate,
-        rent: payment.rentAmount,
-        paymentDate: payment.paymentDate,
-        paymentAmount: payment.paymentAmount,
-        paymentMode: payment.paymentMode,
-        transactionId: payment.transactionId,
-        remarks: payment.remarks,
-        rentStatus: payment.rentStatus,
-        dueDate: payment.dueDate,
-        dueAmount: payment.dueAmount,
-        isActive: payment.isActive,
-        createdAt: payment.createdAt,
-        updatedAt: payment.updatedAt,
-      };
-    });
-
-    res.status(200).json({
-      success: true,
-      count: formattedPayments.length,
-      data: formattedPayments,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch tenant payments",
-      error: error.message,
-    });
-  }
-};
-
-// Get payment by ID
-export const getPaymentById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { ownerId } = req.user;
-
-    const payment = await Payment.findOne({
-      _id: id,
-      ownerId,
-    }).populate(
-      "tenantId",
-      "name email phone roomNumber rentAmount joiningDate"
-    );
-
-    if (!payment) {
-      return res.status(404).json({
-        success: false,
-        message: "Payment not found",
-      });
-    }
-
-    const tenant = payment.tenantId;
-    const formattedPayment = {
-      paymentId: payment._id,
-      tenantId: tenant._id,
-      tenant: tenant.name,
-      contact: tenant.phone,
-      room: payment.roomNumber,
-      joinDate: tenant.joiningDate,
-      rent: payment.rentAmount,
-      paymentDate: payment.paymentDate,
-      paymentAmount: payment.paymentAmount,
-      paymentMode: payment.paymentMode,
-      transactionId: payment.transactionId,
-      remarks: payment.remarks,
-      rentStatus: payment.rentStatus,
-      dueDate: payment.dueDate,
-      dueAmount: payment.dueAmount,
-      isActive: payment.isActive,
-      createdAt: payment.createdAt,
-      updatedAt: payment.updatedAt,
-    };
-
-    res.status(200).json({
-      success: true,
-      data: formattedPayment,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch payment",
-      error: error.message,
-    });
-  }
-};
-
-// Create a new payment
+/**
+ * Create a new payment record
+ * @route POST /api/payments
+ */
 export const createPayment = async (req, res) => {
   try {
-    const { ownerId } = req.user;
     const {
       tenantId,
+      // ownerId,
       roomNumber,
+      paymentDate,
       dueDate,
       rentAmount,
       paymentAmount,
+      dueAmount,
       paymentMode,
       transactionId,
       remarks,
+      rentStatus,
     } = req.body;
 
-    // Validate tenant exists and belongs to owner
-    const tenant = await Tenant.findOne({
-      _id: tenantId,
-      ownerId,
-    });
-
-    if (!tenant) {
-      return res.status(404).json({
+    // Validate required fields
+    if (!tenantId || !roomNumber || !rentAmount) {
+      //|| !ownerId
+      return res.status(400).json({
         success: false,
-        message: "Tenant not found or doesn't belong to this owner",
+        message: "Missing required fields",
       });
     }
 
-    // Calculate due amount and status
-    const dueAmount = rentAmount - (paymentAmount || 0);
-    let rentStatus = "Due";
+    // Calculate due amount if not provided
+    const calculatedDueAmount = dueAmount || rentAmount - paymentAmount || 0;
 
-    if (paymentAmount >= rentAmount) {
-      rentStatus = "Paid";
-    } else if (paymentAmount > 0) {
-      rentStatus = "Partially Paid";
-    }
+    // Set rent status based on due amount if not provided
+    const calculatedRentStatus =
+      rentStatus || (calculatedDueAmount > 0 ? "Due" : "Paid");
 
-    const payment = new Payment({
+    const newPayment = new Payment({
       tenantId,
-      ownerId,
-      roomNumber: roomNumber || tenant.roomNumber,
-      dueDate,
-      rentAmount: rentAmount || tenant.rentAmount,
+      // ownerId,
+      roomNumber,
+      paymentDate: paymentDate || new Date(),
+      dueDate: dueDate || null,
+      rentAmount,
       paymentAmount: paymentAmount || 0,
-      dueAmount,
+      dueAmount: calculatedDueAmount,
       paymentMode: paymentMode || "Cash",
-      rentStatus,
       transactionId: transactionId || "",
       remarks: remarks || "",
+      rentStatus: calculatedRentStatus,
     });
 
-    const savedPayment = await payment.save();
-
-    // Format the response with tenant details
-    const formattedPayment = {
-      paymentId: savedPayment._id,
-      tenantId: tenant._id,
-      tenant: tenant.name,
-      contact: tenant.phone,
-      room: savedPayment.roomNumber,
-      joinDate: tenant.joiningDate,
-      rent: savedPayment.rentAmount,
-      paymentDate: savedPayment.paymentDate,
-      paymentAmount: savedPayment.paymentAmount,
-      paymentMode: savedPayment.paymentMode,
-      transactionId: savedPayment.transactionId,
-      remarks: savedPayment.remarks,
-      rentStatus: savedPayment.rentStatus,
-      dueDate: savedPayment.dueDate,
-      dueAmount: savedPayment.dueAmount,
-      isActive: savedPayment.isActive,
-      createdAt: savedPayment.createdAt,
-      updatedAt: savedPayment.updatedAt,
-    };
+    const savedPayment = await newPayment.save();
 
     res.status(201).json({
       success: true,
-      message: "Payment created successfully",
-      data: formattedPayment,
+      data: savedPayment,
     });
   } catch (error) {
+    console.error("Error creating payment:", error);
     res.status(500).json({
       success: false,
       message: "Failed to create payment",
@@ -312,85 +70,143 @@ export const createPayment = async (req, res) => {
   }
 };
 
-// Update payment
-export const updatePayment = async (req, res) => {
+/**
+ * Get all payments or filter by query parameters
+ * @route GET /api/payments
+ */
+export const getPayments = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { ownerId } = req.user;
-    const {
-      paymentAmount,
-      paymentMode,
-      transactionId,
-      remarks,
-      dueDate,
-      isActive,
-    } = req.body;
+    const { tenantId, roomNumber, rentStatus, startDate, endDate } = req.query; // ownerId,
 
-    const payment = await Payment.findOne({
-      _id: id,
-      ownerId,
-    });
+    // Build filter object based on query parameters
+    const filter = {};
 
-    if (!payment) {
-      return res.status(404).json({
-        success: false,
-        message: "Payment not found or doesn't belong to this owner",
-      });
+    if (tenantId) filter.tenantId = tenantId;
+    // if (ownerId) filter.ownerId = ownerId;
+    if (roomNumber) filter.roomNumber = roomNumber;
+    if (rentStatus) filter.rentStatus = rentStatus;
+
+    // Date range filter
+    if (startDate || endDate) {
+      filter.paymentDate = {};
+      if (startDate) filter.paymentDate.$gte = new Date(startDate);
+      if (endDate) filter.paymentDate.$lte = new Date(endDate);
     }
 
-    // Update fields if provided
-    if (paymentAmount !== undefined) {
-      payment.paymentAmount = paymentAmount;
-      payment.dueAmount = payment.rentAmount - paymentAmount;
-
-      if (paymentAmount >= payment.rentAmount) {
-        payment.rentStatus = "Paid";
-      } else if (paymentAmount > 0) {
-        payment.rentStatus = "Partially Paid";
-      } else {
-        payment.rentStatus = "Due";
-      }
+    // Only return active payments by default
+    if (filter.isActive === undefined) {
+      filter.isActive = true;
     }
 
-    if (paymentMode !== undefined) payment.paymentMode = paymentMode;
-    if (transactionId !== undefined) payment.transactionId = transactionId;
-    if (remarks !== undefined) payment.remarks = remarks;
-    if (dueDate !== undefined) payment.dueDate = dueDate;
-    if (isActive !== undefined) payment.isActive = isActive;
-
-    const updatedPayment = await payment.save();
-
-    // Get tenant details for the response
-    const tenant = await Tenant.findById(payment.tenantId);
-
-    // Format the response
-    const formattedPayment = {
-      paymentId: updatedPayment._id,
-      tenantId: tenant._id,
-      tenant: tenant.name,
-      contact: tenant.phone,
-      room: updatedPayment.roomNumber,
-      joinDate: tenant.joiningDate,
-      rent: updatedPayment.rentAmount,
-      paymentDate: updatedPayment.paymentDate,
-      paymentAmount: updatedPayment.paymentAmount,
-      paymentMode: updatedPayment.paymentMode,
-      transactionId: updatedPayment.transactionId,
-      remarks: updatedPayment.remarks,
-      rentStatus: updatedPayment.rentStatus,
-      dueDate: updatedPayment.dueDate,
-      dueAmount: updatedPayment.dueAmount,
-      isActive: updatedPayment.isActive,
-      createdAt: updatedPayment.createdAt,
-      updatedAt: updatedPayment.updatedAt,
-    };
+    const payments = await Payment.find(filter)
+      .sort({ paymentDate: -1 })
+      .populate("tenantId", "name contact") // Assuming tenant model has these fields
+      .exec();
 
     res.status(200).json({
       success: true,
-      message: "Payment updated successfully",
-      data: formattedPayment,
+      count: payments.length,
+      data: payments,
     });
   } catch (error) {
+    console.error("Error fetching payments:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch payments",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * Get a single payment by ID
+ * @route GET /api/payments/:id
+ */
+// Get transaction count by tenant ID
+export const getPaymentsByTenantId = async (req, res) => {
+  try {
+    const { tenantId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(tenantId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid tenant ID format",
+      });
+    }
+
+    // Find all payments for this tenant
+    const payments = await Payment.find({ tenantId })
+      .sort({ createdAt: -1 })
+      .exec();
+
+    return res.status(200).json({
+      success: true,
+      count: payments.length,
+      data: payments,
+    });
+  } catch (error) {
+    console.error("Error fetching tenant payments:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch tenant payments",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * Update payment by ID
+ * @route PUT /api/payments/:id
+ */
+export const updatePayment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid payment ID format",
+      });
+    }
+
+    // Calculate due amount if payment amount was updated
+    if (
+      updateData.paymentAmount !== undefined &&
+      updateData.rentAmount !== undefined
+    ) {
+      updateData.dueAmount = updateData.rentAmount - updateData.paymentAmount;
+
+      // Update rent status based on due amount
+      updateData.rentStatus = updateData.dueAmount > 0 ? "Due" : "Paid";
+    } else if (updateData.paymentAmount !== undefined) {
+      // Get the current payment to access the rent amount
+      const currentPayment = await Payment.findById(id);
+      if (currentPayment) {
+        updateData.dueAmount =
+          currentPayment.rentAmount - updateData.paymentAmount;
+        updateData.rentStatus = updateData.dueAmount > 0 ? "Due" : "Paid";
+      }
+    }
+
+    const updatedPayment = await Payment.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedPayment) {
+      return res.status(404).json({
+        success: false,
+        message: "Payment not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: updatedPayment,
+    });
+  } catch (error) {
+    console.error("Error updating payment:", error);
     res.status(500).json({
       success: false,
       message: "Failed to update payment",
@@ -399,40 +215,111 @@ export const updatePayment = async (req, res) => {
   }
 };
 
-// Delete payment
+/**
+ * Delete payment by ID (soft delete)
+ * @route DELETE /api/payments/:id
+ */
 export const deletePayment = async (req, res) => {
   try {
     const { id } = req.params;
-    const { ownerId } = req.user;
 
-    const payment = await Payment.findOne({
-      _id: id,
-      ownerId,
-    });
+    // Validate transaction ID format
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid transaction ID format",
+      });
+    }
+
+    // Find the payment first to get tenant info before deletion
+    const payment = await Payment.findById(id);
 
     if (!payment) {
       return res.status(404).json({
         success: false,
-        message: "Payment not found or doesn't belong to this owner",
+        message: "Transaction not found",
       });
     }
 
-    await payment.deleteOne();
+    // Store tenant ID for potential updates
+    const tenantId = payment.tenantId;
+
+    // Delete the payment
+    const deletedPayment = await Payment.findByIdAndDelete(id);
+
+    if (!deletedPayment) {
+      return res.status(404).json({
+        success: false,
+        message: "Transaction could not be deleted",
+      });
+    }
+
+    // If you're tracking payment totals in the Tenant model,
+    // you might need to update the tenant's payment status here
+    // For example:
+    /*
+    if (tenantId) {
+      // Recalculate tenant payment status
+      const allPayments = await Payment.find({ tenantId });
+      const totalPaid = allPayments.reduce((sum, payment) => sum + payment.paymentAmount, 0);
+      
+      // Update tenant's payment status if needed
+      await Tenant.findByIdAndUpdate(tenantId, { 
+        totalPaid,
+        // Update other payment-related fields as needed
+      });
+    }
+    */
+
+    return res.status(200).json({
+      success: true,
+      message: "Transaction deleted successfully",
+      data: deletedPayment,
+    });
+  } catch (error) {
+    console.error("Error deleting transaction:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to delete transaction",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * Hard delete payment by ID (for admin purposes)
+ * @route DELETE /api/payments/:id/hard
+ */
+export const hardDeletePayment = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid payment ID format",
+      });
+    }
+
+    const deletedPayment = await Payment.findByIdAndDelete(id);
+
+    if (!deletedPayment) {
+      return res.status(404).json({
+        success: false,
+        message: "Payment not found",
+      });
+    }
 
     res.status(200).json({
       success: true,
-      message: "Payment deleted successfully",
+      message: "Payment permanently deleted",
     });
   } catch (error) {
+    console.error("Error deleting payment:", error);
     res.status(500).json({
       success: false,
       message: "Failed to delete payment",
       error: error.message,
     });
   }
-};
-
-// Get payment statistics
-export const getPaymentStats = async (req, res) => {
-  // Implementation for payment statistics...
 };

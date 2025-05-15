@@ -1,9 +1,14 @@
-// import React, { useState } from "react";
+// import React, { useState, useEffect } from "react";
 // import { RxCrossCircled } from "react-icons/rx";
 // import { Tooltip as ReactTooltip } from "react-tooltip";
 
-// const TenantPaymentForm = ({ setShowDetailsModal, tenant, handleSubmit }) => {
-  
+// const TenantPaymentForm = ({
+//   setShowDetailsModal,
+//   tenant,
+//   paymentDetails: initialPaymentDetails,
+//   onSuccess,
+// }) => {
+//   // Form state
 //   const [tenantName, setTenantName] = useState("");
 //   const [contact, setContact] = useState("");
 //   const [roomNumber, setRoomNumber] = useState("");
@@ -19,12 +24,48 @@
 //   const [transactionId, setTransactionId] = useState("");
 //   const [remarks, setRemarks] = useState("");
 
+//   // Initialize form with tenant data and payment details if available
+//   useEffect(() => {
+//     if (tenant) {
+//       setTenantName(tenant.tenantName || "");
+//       setContact(tenant.contact || "");
+//       setRoomNumber(tenant.roomNumber || "");
+//       setJoinDate(tenant.joinDate || "");
+//       setRent(tenant.rentAmount || "");
+//     }
+
+//     // If payment details are provided, initialize form with them
+//     if (initialPaymentDetails) {
+//       setRentStatus(initialPaymentDetails.rentStatus || "Due");
+//       setDueDate(initialPaymentDetails.dueDate || "");
+//       setPayingDate(
+//         initialPaymentDetails.payingDate ||
+//           new Date().toISOString().split("T")[0]
+//       );
+//       setPayingAmount(initialPaymentDetails.payingAmount || "");
+//       setPaymentMode(initialPaymentDetails.paymentMode || "Cash");
+//       setTransactionId(initialPaymentDetails.transactionId || "");
+//       setRemarks(initialPaymentDetails.remarks || "");
+//     }
+//   }, [tenant, initialPaymentDetails]);
+
 //   const resetForm = () => {
-//     setTenantName("");
-//     setContact("");
-//     setRoomNumber("");
-//     setJoinDate("");
-//     setRent("");
+//     // Reset to tenant data
+//     if (tenant) {
+//       setTenantName(tenant.tenantName || "");
+//       setContact(tenant.contact || "");
+//       setRoomNumber(tenant.roomNumber || "");
+//       setJoinDate(tenant.joinDate || "");
+//       setRent(tenant.rentAmount || "");
+//     } else {
+//       setTenantName("");
+//       setContact("");
+//       setRoomNumber("");
+//       setJoinDate("");
+//       setRent("");
+//     }
+
+//     // Reset payment details
 //     setRentStatus("Due");
 //     setDueDate("");
 //     setPayingDate(new Date().toISOString().split("T")[0]);
@@ -34,14 +75,16 @@
 //     setRemarks("");
 //   };
 
-//   const handleSubmit = () => {
+//   const handleFormSubmit = () => {
 //     const paymentDetails = {
-//       tenantName: tenant?.tenantName || "",
-//       contact: tenant?.contact || "",
-//       roomNumber: tenant?.roomNumber || "",
-//       joinDate: tenant?.joinDate || "",
-//       rent: tenant?.rentAmount || "",
-//       dueAmount: tenant?.rentAmount - payingAmount || "",
+//       tenantName: tenantName || tenant?.tenantName || "",
+//       contact: contact || tenant?.contact || "",
+//       roomNumber: roomNumber || tenant?.roomNumber || "",
+//       joinDate: joinDate || tenant?.joinDate || "",
+//       rent: rent || tenant?.rentAmount || "",
+//       dueAmount:
+//         parseFloat(rent || tenant?.rentAmount || 0) -
+//         parseFloat(payingAmount || 0),
 //       payingDate,
 //       payingAmount,
 //       paymentMode,
@@ -53,8 +96,13 @@
 
 //     console.log("Payment Details Submitted:", paymentDetails);
 
-//     setShowDetailsModal(false);
-//     resetForm();
+//     // Call onSuccess if provided
+//     if (onSuccess) {
+//       onSuccess(paymentDetails);
+//     } else {
+//       // Just close the modal if no success handler
+//       setShowDetailsModal(false);
+//     }
 //   };
 
 //   return (
@@ -98,10 +146,11 @@
 //                 <label>Tenant Name</label>
 //                 <input
 //                   type="text"
-//                   value={tenant.tenantName}
+//                   value={tenantName || tenant?.tenantName || ""}
 //                   onChange={(e) => setTenantName(e.target.value)}
 //                   className="w-full mt-1 p-3 border rounded-lg"
 //                   placeholder="Ravi Kumar"
+//                   readOnly={!!tenant}
 //                 />
 //               </div>
 
@@ -109,10 +158,11 @@
 //                 <label>Contact</label>
 //                 <input
 //                   type="text"
-//                   value={tenant.contact}
+//                   value={contact || tenant?.contact || ""}
 //                   onChange={(e) => setContact(e.target.value)}
 //                   className="w-full mt-1 p-3 border rounded-lg"
 //                   placeholder="9876543210"
+//                   readOnly={!!tenant}
 //                 />
 //               </div>
 
@@ -120,10 +170,11 @@
 //                 <label>Room Number</label>
 //                 <input
 //                   type="text"
-//                   value={tenant.roomNumber}
+//                   value={roomNumber || tenant?.roomNumber || ""}
 //                   onChange={(e) => setRoomNumber(e.target.value)}
 //                   className="w-full mt-1 p-3 border rounded-lg"
 //                   placeholder="101"
+//                   readOnly={!!tenant}
 //                 />
 //               </div>
 
@@ -131,9 +182,10 @@
 //                 <label>Join Date</label>
 //                 <input
 //                   type="date"
-//                   value={tenant.joinDate}
+//                   value={joinDate || tenant?.joinDate || ""}
 //                   onChange={(e) => setJoinDate(e.target.value)}
 //                   className="w-full mt-1 p-3 border rounded-lg"
+//                   readOnly={!!tenant}
 //                 />
 //               </div>
 //               <div>
@@ -150,10 +202,11 @@
 //                 <label>Rent Amount</label>
 //                 <input
 //                   type="number"
-//                   value={tenant.rentAmount}
+//                   value={rent || tenant?.rentAmount || ""}
 //                   onChange={(e) => setRent(e.target.value)}
 //                   className="w-full mt-1 p-3 border rounded-lg"
 //                   placeholder="5000"
+//                   readOnly={!!tenant}
 //                 />
 //               </div>
 
@@ -170,7 +223,10 @@
 //                 <label>Due Amount</label>
 //                 <input
 //                   type="number"
-//                   value={tenant.rentAmount - payingAmount}
+//                   value={
+//                     parseFloat(rent || tenant?.rentAmount || 0) -
+//                     parseFloat(payingAmount || 0)
+//                   }
 //                   readOnly
 //                   className="w-full mt-1 p-3 border rounded-lg bg-gray-100 text-gray-600"
 //                   placeholder="Auto-calculated"
@@ -245,7 +301,7 @@
 //                 Reset
 //               </button>
 //               <button
-//                 onClick={handleSubmit}
+//                 onClick={handleFormSubmit}
 //                 className="w-full sm:w-auto rounded-lg px-4 py-2 bg-blue-500 text-white hover:bg-blue-700 cursor-pointer"
 //               >
 //                 Save
@@ -260,18 +316,16 @@
 
 // export default TenantPaymentForm;
 
-
 import React, { useState, useEffect } from "react";
 import { RxCrossCircled } from "react-icons/rx";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
-const TenantPaymentForm = ({ 
-  setShowDetailsModal, 
-  tenant, 
-  paymentDetails: initialPaymentDetails, 
-  onSuccess 
+const TenantPaymentForm = ({
+  setShowDetailsModal,
+  tenant,
+  paymentDetails: initialPaymentDetails,
+  onSuccess,
 }) => {
-  
   // Form state
   const [tenantName, setTenantName] = useState("");
   const [contact, setContact] = useState("");
@@ -287,6 +341,7 @@ const TenantPaymentForm = ({
   const [paymentMode, setPaymentMode] = useState("Cash");
   const [transactionId, setTransactionId] = useState("");
   const [remarks, setRemarks] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   // Initialize form with tenant data and payment details if available
   useEffect(() => {
@@ -297,12 +352,15 @@ const TenantPaymentForm = ({
       setJoinDate(tenant.joinDate || "");
       setRent(tenant.rentAmount || "");
     }
-    
+
     // If payment details are provided, initialize form with them
     if (initialPaymentDetails) {
       setRentStatus(initialPaymentDetails.rentStatus || "Due");
       setDueDate(initialPaymentDetails.dueDate || "");
-      setPayingDate(initialPaymentDetails.payingDate || new Date().toISOString().split("T")[0]);
+      setPayingDate(
+        initialPaymentDetails.payingDate ||
+          new Date().toISOString().split("T")[0]
+      );
       setPayingAmount(initialPaymentDetails.payingAmount || "");
       setPaymentMode(initialPaymentDetails.paymentMode || "Cash");
       setTransactionId(initialPaymentDetails.transactionId || "");
@@ -325,7 +383,7 @@ const TenantPaymentForm = ({
       setJoinDate("");
       setRent("");
     }
-    
+
     // Reset payment details
     setRentStatus("Due");
     setDueDate("");
@@ -336,31 +394,49 @@ const TenantPaymentForm = ({
     setRemarks("");
   };
 
-  const handleFormSubmit = () => {
-    const paymentDetails = {
-      tenantName: tenantName || tenant?.tenantName || "",
-      contact: contact || tenant?.contact || "",
-      roomNumber: roomNumber || tenant?.roomNumber || "",
-      joinDate: joinDate || tenant?.joinDate || "",
-      rent: rent || tenant?.rentAmount || "",
-      dueAmount: parseFloat(rent || tenant?.rentAmount || 0) - parseFloat(payingAmount || 0),
-      payingDate,
-      payingAmount,
-      paymentMode,
-      transactionId,
-      remarks,
-      rentStatus,
-      dueDate,
-    };
+  const handleFormSubmit = async () => {
+    try {
+      setSubmitting(true);
 
-    console.log("Payment Details Submitted:", paymentDetails);
-    
-    // Call onSuccess if provided
-    if (onSuccess) {
-      onSuccess(paymentDetails);
-    } else {
-      // Just close the modal if no success handler
-      setShowDetailsModal(false);
+      // Validate required fields
+      if (!payingAmount || parseFloat(payingAmount) <= 0) {
+        alert("Please enter a valid payment amount");
+        return;
+      }
+
+      // Create payment details object
+      const paymentDetails = {
+        tenantName: tenantName || tenant?.tenantName || "",
+        contact: contact || tenant?.contact || "",
+        roomNumber: roomNumber || tenant?.roomNumber || "",
+        joinDate: joinDate || tenant?.joinDate || "",
+        rent: rent || tenant?.rentAmount || "",
+        dueAmount:
+          parseFloat(rent || tenant?.rentAmount || 0) -
+          parseFloat(payingAmount || 0),
+        payingDate,
+        payingAmount,
+        paymentMode,
+        transactionId: transactionId || `TXN-${Date.now()}`, // Generate transaction ID if not provided
+        remarks,
+        rentStatus,
+        dueDate,
+      };
+
+      console.log("Payment Details Submitted:", paymentDetails);
+
+      // Call onSuccess if provided
+      if (onSuccess) {
+        await onSuccess(paymentDetails);
+      } else {
+        // Just close the modal if no success handler
+        setShowDetailsModal(false);
+      }
+    } catch (error) {
+      console.error("Error submitting payment form:", error);
+      alert("Failed to process payment. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -389,6 +465,7 @@ const TenantPaymentForm = ({
                 className="absolute top-5 right-5"
                 data-tooltip-id="close-tooltip"
                 data-tooltip-content="Close"
+                disabled={submitting}
               >
                 <RxCrossCircled className="text-2xl text-red-600 cursor-pointer hover:text-red-900" />
               </button>
@@ -410,6 +487,7 @@ const TenantPaymentForm = ({
                   className="w-full mt-1 p-3 border rounded-lg"
                   placeholder="Ravi Kumar"
                   readOnly={!!tenant}
+                  disabled={submitting}
                 />
               </div>
 
@@ -422,6 +500,7 @@ const TenantPaymentForm = ({
                   className="w-full mt-1 p-3 border rounded-lg"
                   placeholder="9876543210"
                   readOnly={!!tenant}
+                  disabled={submitting}
                 />
               </div>
 
@@ -434,6 +513,7 @@ const TenantPaymentForm = ({
                   className="w-full mt-1 p-3 border rounded-lg"
                   placeholder="101"
                   readOnly={!!tenant}
+                  disabled={submitting}
                 />
               </div>
 
@@ -445,6 +525,7 @@ const TenantPaymentForm = ({
                   onChange={(e) => setJoinDate(e.target.value)}
                   className="w-full mt-1 p-3 border rounded-lg"
                   readOnly={!!tenant}
+                  disabled={submitting}
                 />
               </div>
               <div>
@@ -454,6 +535,7 @@ const TenantPaymentForm = ({
                   value={payingDate}
                   onChange={(e) => setPayingDate(e.target.value)}
                   className="w-full mt-1 p-3 border rounded-lg"
+                  disabled={submitting}
                 />
               </div>
 
@@ -466,6 +548,7 @@ const TenantPaymentForm = ({
                   className="w-full mt-1 p-3 border rounded-lg"
                   placeholder="5000"
                   readOnly={!!tenant}
+                  disabled={submitting}
                 />
               </div>
 
@@ -476,16 +559,22 @@ const TenantPaymentForm = ({
                   value={payingAmount}
                   onChange={(e) => setPayingAmount(e.target.value)}
                   className="w-full mt-1 p-3 border rounded-lg"
+                  disabled={submitting}
+                  required
                 />
               </div>
               <div>
                 <label>Due Amount</label>
                 <input
                   type="number"
-                  value={parseFloat(rent || tenant?.rentAmount || 0) - parseFloat(payingAmount || 0)}
+                  value={
+                    parseFloat(rent || tenant?.rentAmount || 0) -
+                    parseFloat(payingAmount || 0)
+                  }
                   readOnly
                   className="w-full mt-1 p-3 border rounded-lg bg-gray-100 text-gray-600"
                   placeholder="Auto-calculated"
+                  disabled={submitting}
                 />
               </div>
 
@@ -495,9 +584,11 @@ const TenantPaymentForm = ({
                   value={rentStatus}
                   onChange={(e) => setRentStatus(e.target.value)}
                   className="w-full mt-1 p-3 border rounded-lg bg-gray-50"
+                  disabled={submitting}
                 >
                   <option value="Paid">Paid</option>
                   <option value="Due">Due</option>
+                  <option value="Partial">Partial</option>
                 </select>
               </div>
 
@@ -508,6 +599,7 @@ const TenantPaymentForm = ({
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
                   className="w-full mt-1 p-3 border rounded-lg"
+                  disabled={submitting}
                 />
               </div>
 
@@ -517,6 +609,7 @@ const TenantPaymentForm = ({
                   value={paymentMode}
                   onChange={(e) => setPaymentMode(e.target.value)}
                   className="w-full mt-1 p-3 border rounded-lg bg-gray-50"
+                  disabled={submitting}
                 >
                   <option>Cash</option>
                   <option>UPI</option>
@@ -533,7 +626,8 @@ const TenantPaymentForm = ({
                   value={transactionId}
                   onChange={(e) => setTransactionId(e.target.value)}
                   className="w-full mt-1 p-3 border rounded-lg"
-                  placeholder="Optional if applicable"
+                  placeholder="Optional - auto-generated if empty"
+                  disabled={submitting}
                 />
               </div>
 
@@ -545,6 +639,7 @@ const TenantPaymentForm = ({
                   onChange={(e) => setRemarks(e.target.value)}
                   className="w-full mt-1 p-3 border rounded-lg"
                   placeholder="Optional"
+                  disabled={submitting}
                 />
               </div>
             </div>
@@ -553,14 +648,16 @@ const TenantPaymentForm = ({
               <button
                 onClick={resetForm}
                 className="w-full sm:w-auto rounded-lg border border-gray-300 px-4 py-2 bg-white text-gray-700 hover:bg-gray-50 cursor-pointer"
+                disabled={submitting}
               >
                 Reset
               </button>
               <button
                 onClick={handleFormSubmit}
-                className="w-full sm:w-auto rounded-lg px-4 py-2 bg-blue-500 text-white hover:bg-blue-700 cursor-pointer"
+                className="w-full sm:w-auto rounded-lg px-4 py-2 bg-blue-500 text-white hover:bg-blue-700 cursor-pointer disabled:bg-blue-300"
+                disabled={submitting}
               >
-                Save
+                {submitting ? "Processing..." : "Save Payment"}
               </button>
             </div>
           </div>

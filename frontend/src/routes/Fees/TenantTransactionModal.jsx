@@ -1,20 +1,149 @@
-import React from "react";
+// import React from "react";
+// import { RxCrossCircled } from "react-icons/rx";
+// import { FaEdit, FaTrash } from "react-icons/fa";
+
+// const TenantTransactionModal = ({
+//   showModal,
+//   setShowModal,
+//   tenantName,
+//   transactions,
+//   onEditTransaction,
+//   onDeleteTransaction,
+// }) => {
+//   if (!showModal) return null;
+
+//   return (
+//     <div className="fixed inset-0 z-10 overflow-y-auto">
+//       <div className="flex items-center justify-center min-h-screen px-4 pb-20 text-center sm:block sm:p-0">
+//         <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+//           <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+//         </div>
+
+//         <span
+//           className="hidden sm:inline-block sm:align-middle sm:h-screen"
+//           aria-hidden="true"
+//         >
+//           &#8203;
+//         </span>
+
+//         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-6 sm:align-middle sm:max-w-5xl sm:w-full">
+//           <div className="bg-white px-6 pt-5 pb-6">
+//             <div className="flex justify-between items-start">
+//               <h2 className="text-2xl font-bold mb-6 text-gray-700">
+//                 Transaction History for {tenantName}
+//               </h2>
+//               <button
+//                 onClick={() => setShowModal(false)}
+//                 className="absolute top-5 right-5"
+//               >
+//                 <RxCrossCircled className="text-2xl text-red-600 hover:text-red-900" />
+//               </button>
+//             </div>
+
+//             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+//               {transactions?.length > 0 ? (
+//                 transactions.map((txn, index) => (
+//                   <div
+//                     key={txn._id}
+//                     className="bg-gray-100 p-4 rounded-lg shadow-md space-y-1 relative"
+//                   >
+//                     <p>
+//                       <strong>Transaction ID:</strong> {txn.transactionId}
+//                     </p>
+//                     <p>
+//                       <strong>Rent Amount:</strong> ₹{txn.rentAmount}
+//                     </p>
+//                     <p>
+//                       <strong>Due Amount:</strong> ₹{txn.dueAmount}
+//                     </p>
+//                     <p>
+//                       <strong>Payment Amount:</strong> ₹{txn.paymentAmount}
+//                     </p>
+//                     <p>
+//                       <strong>Payment Mode:</strong> {txn.paymentMode}
+//                     </p>
+//                     <p>
+//                       <strong>Rent Status:</strong> {txn.rentStatus}
+//                     </p>
+//                     <p>
+//                       <strong>Payment Date:</strong>{" "}
+//                       {new Date(txn.paymentDate).toLocaleDateString()}
+//                     </p>
+//                     <p>
+//                       <strong>Due Date:</strong>{" "}
+//                       {new Date(txn.dueDate).toLocaleDateString()}
+//                     </p>
+//                     <p>
+//                       <strong>Room Number:</strong> {txn.roomNumber}
+//                     </p>
+//                     <p>
+//                       <strong>Remarks:</strong> {txn.remarks || "N/A"}
+//                     </p>
+
+//                     {/* Buttons */}
+//                     <div className="mt-3 flex gap-3">
+//                       <button
+//                         onClick={() => onEditTransaction(txn)}
+//                         className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded flex items-center gap-1"
+//                       >
+//                         <FaEdit size={12} /> Edit
+//                       </button>
+//                       <button
+//                         onClick={() => onDeleteTransaction(txn._id)}
+//                         className="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded flex items-center gap-1"
+//                       >
+//                         <FaTrash size={12} /> Delete
+//                       </button>
+//                     </div>
+//                   </div>
+//                 ))
+//               ) : (
+//                 <div className="text-center text-gray-500">
+//                   No transactions found.
+//                 </div>
+//               )}
+//             </div>
+
+//             <div className="mt-6 flex justify-end">
+//               <button
+//                 onClick={() => setShowModal(false)}
+//                 className="px-4 py-2 bg-gray-100 rounded-lg text-gray-700 hover:bg-gray-200"
+//               >
+//                 Close
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default TenantTransactionModal;
+
+import React, { useState, useEffect } from "react";
 import { RxCrossCircled } from "react-icons/rx";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 const TenantTransactionModal = ({
   showModal,
   setShowModal,
   tenantName,
   transactions,
+  onEditTransaction,
+  onDeleteTransaction,
+  onUpdateTenant,
 }) => {
   if (!showModal) return null;
 
-  console.log(transactions,"///////////////////")
+  // Sort transactions by date, most recent first
+  const sortedTransactions = transactions?.sort(
+    (a, b) => new Date(b.paymentDate) - new Date(a.paymentDate)
+  );
 
   return (
     <div className="fixed inset-0 z-10 overflow-y-auto">
-      <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div className="flex items-center justify-center min-h-screen px-4 pb-20 text-center sm:block sm:p-0">
         <div className="fixed inset-0 transition-opacity" aria-hidden="true">
           <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
         </div>
@@ -26,57 +155,132 @@ const TenantTransactionModal = ({
           &#8203;
         </span>
 
-        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-6 sm:align-middle sm:max-w-4xl sm:w-full">
-          <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-6 sm:align-middle sm:max-w-5xl sm:w-full">
+          <div className="bg-white px-6 pt-5 pb-6">
             <div className="flex justify-between items-start">
-              <h2 className="text-2xl font-bold mb-6 text-center text-gray-700">
+              <h2 className="text-2xl font-bold mb-6 text-gray-700">
                 Transaction History for {tenantName}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
                 className="absolute top-5 right-5"
               >
-                <RxCrossCircled className="text-2xl text-red-600 cursor-pointer hover:text-red-900" />
+                <RxCrossCircled className="text-2xl text-red-600 hover:text-red-900" />
               </button>
             </div>
 
-            {/* Transaction List */}
-            <div className="space-y-4">
-              {transactions.length > 0 ? (
-                transactions.map((transaction, index) => (
-                  <div
-                    key={index}
-                    className="bg-gray-100 p-4 rounded-lg shadow-md flex flex-col space-y-2"
-                  >
-                    <div>
-                      <span className="font-medium">Transaction ID: </span>
-                      <span>{transaction.transactionId}</span>
-                    </div>
-                    <div>
-                      <span className="font-medium">Amount Paid: </span>
-                      <span>{transaction.amountPaid}</span>
-                    </div>
-                    <div>
-                      <span className="font-medium">Payment Mode: </span>
-                      <span>{transaction.paymentMode}</span>
-                    </div>
-                    <div>
-                      <span className="font-medium">Date: </span>
-                      <span>{transaction.paymentDate}</span>
-                    </div>
-                    <div>
-                      <span className="font-medium">Remarks: </span>
-                      <span>{transaction.remarks || "N/A"}</span>
-                    </div>
-                    <button
-                      onClick={() => handleEditClick(tenant)}
-                      className="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded hover:bg-gray-300 shadow-sm flex items-center gap-1 transition cursor-pointer"
+            <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+              {sortedTransactions?.length > 0 ? (
+                sortedTransactions.map((txn, index) => {
+                  // Format dates for display
+                  const paymentDate = new Date(
+                    txn.paymentDate
+                  ).toLocaleDateString();
+                  const dueDate = new Date(txn.dueDate).toLocaleDateString();
+
+                  // Check if payment is late
+                  const isPastDue =
+                    new Date(txn.paymentDate) > new Date(txn.dueDate);
+
+                  return (
+                    <div
+                      key={txn._id}
+                      className={`p-4 rounded-lg shadow-md space-y-1 relative ${
+                        index === 0
+                          ? "bg-green-50 border-l-4 border-green-500"
+                          : "bg-gray-100"
+                      }`}
                     >
-                      <FaEdit size={12} />
-                      Edit
-                    </button>
-                  </div>
-                ))
+                      <div className="flex justify-between">
+                        <div className="flex-1">
+                          <p>
+                            <strong>Transaction ID:</strong> {txn.transactionId}
+                          </p>
+                          <p>
+                            <strong>Rent Amount:</strong> ₹{txn.rentAmount}
+                          </p>
+                          <p>
+                            <strong>Due Amount:</strong> ₹{txn.dueAmount}
+                          </p>
+                          <p>
+                            <strong>Payment Amount:</strong> ₹
+                            {txn.paymentAmount}
+                          </p>
+                          <p>
+                            <strong>Payment Mode:</strong> {txn.paymentMode}
+                          </p>
+                          <p>
+                            <strong>Rent Status:</strong>{" "}
+                            <span
+                              className={
+                                txn.rentStatus === "Paid"
+                                  ? "text-green-600 font-medium"
+                                  : "text-red-600 font-medium"
+                              }
+                            >
+                              {txn.rentStatus}
+                            </span>
+                          </p>
+                          <p>
+                            <strong>Payment Date:</strong>{" "}
+                            <span
+                              className={
+                                isPastDue ? "text-red-600 font-medium" : ""
+                              }
+                            >
+                              {paymentDate}
+                            </span>
+                            {isPastDue && (
+                              <span className="ml-2 text-xs text-red-600">
+                                (Late payment)
+                              </span>
+                            )}
+                          </p>
+                          <p>
+                            <strong>Due Date:</strong> {dueDate}
+                          </p>
+                          <p>
+                            <strong>Room Number:</strong> {txn.roomNumber}
+                          </p>
+                          <p>
+                            <strong>Remarks:</strong> {txn.remarks || "N/A"}
+                          </p>
+                        </div>
+
+                        {index === 0 && (
+                          <div className="ml-2">
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              Latest
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Buttons */}
+                      <div className="mt-3 flex gap-3">
+                        <button
+                          onClick={() => onEditTransaction(txn)}
+                          className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded flex items-center gap-1"
+                        >
+                          <FaEdit size={12} /> Edit
+                        </button>
+                        <button
+                          onClick={() => {
+                            onDeleteTransaction(txn._id);
+                            // If this is the latest transaction, update UI based on next transaction
+                            if (index === 0 && sortedTransactions.length > 1) {
+                              const nextLatestTxn = sortedTransactions[1];
+                              onUpdateTenant(nextLatestTxn);
+                            }
+                          }}
+                          className="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded flex items-center gap-1"
+                        >
+                          <FaTrash size={12} /> Delete
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })
               ) : (
                 <div className="text-center text-gray-500">
                   No transactions found.
@@ -84,10 +288,10 @@ const TenantTransactionModal = ({
               )}
             </div>
 
-            <div className="mt-6 flex justify-end items-center gap-4">
+            <div className="mt-6 flex justify-end">
               <button
                 onClick={() => setShowModal(false)}
-                className="w-full sm:w-auto inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="px-4 py-2 bg-gray-100 rounded-lg text-gray-700 hover:bg-gray-200"
               >
                 Close
               </button>

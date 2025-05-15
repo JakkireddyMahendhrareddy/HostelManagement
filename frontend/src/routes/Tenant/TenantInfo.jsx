@@ -687,7 +687,7 @@ const TenantInfo = () => {
                     onKeyPress={(e) => {
                       if (e.key === "Enter") handleSearch();
                     }}
-                    className="w-full text-black border-gray-200 p-3 pr-10 border rounded-l-lg shadow-md"
+                    className="w-[30%] text-black border-gray-200 p-3 pr-10 border rounded-l-lg shadow-md"
                   />
                   <button
                     onClick={handleSearch}

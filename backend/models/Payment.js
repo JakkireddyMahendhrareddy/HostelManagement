@@ -1,3 +1,4 @@
+// Payment.js (Model file)
 import mongoose from "mongoose";
 
 const paymentSchema = new mongoose.Schema(
@@ -7,11 +8,11 @@ const paymentSchema = new mongoose.Schema(
       ref: "Tenant",
       required: true,
     },
-    ownerId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
+    // ownerId: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "User",
+    //   required: true,
+    // },
     roomNumber: {
       type: String,
       required: true,
@@ -66,7 +67,7 @@ const paymentSchema = new mongoose.Schema(
 
 // Create indexes for faster queries
 paymentSchema.index({ tenantId: 1, dueDate: -1 });
-paymentSchema.index({ ownerId: 1, dueDate: -1 });
+// paymentSchema.index({ ownerId: 1, dueDate: -1 });
 
 const Payment = mongoose.model("Payment", paymentSchema);
 export default Payment;
