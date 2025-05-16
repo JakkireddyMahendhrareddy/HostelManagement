@@ -524,7 +524,7 @@ const FeesInfo = () => {
                     placeholder="Search tenant details..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="w-[60%] text-black border-gray-200 p-3 border rounded-l-lg shadow-md relative"
+                    className="w-[50%] text-black border-gray-200 p-3 border rounded-l-lg shadow-md relative"
                   />
                   <button
                     onClick={handleSubmit}
