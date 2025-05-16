@@ -571,7 +571,7 @@ const TenantInfo = () => {
                 <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                   <button
                     onClick={() => setFilterOpen(!filterOpen)}
-                    className="flex items-center gap-2 justify-center px-4 py-2 border rounded-lg bg-gray-100 hover:bg-gray-200 shadow-md"
+                    className="flex items-center gap-2 justify-center px-4 py-2 border rounded-lg bg-gray-100 hover:bg-gray-200 shadow-md cursor-pointer"
                     aria-expanded={filterOpen}
                     aria-controls="filter-panel"
                   >
@@ -583,7 +583,7 @@ const TenantInfo = () => {
                       resetForm();
                       setShowTenantFormModal(true);
                     }}
-                    className="flex items-center justify-center gap-2 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 hover:scale-105 transition duration-200 shadow-md"
+                    className="flex items-center justify-center gap-2 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 hover:scale-105 transition duration-200 shadow-md cursor-pointer"
                   >
                     <FaUserPlus className="text-white" />
                     Create New

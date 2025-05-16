@@ -1,126 +1,3 @@
-// import React from "react";
-// import { RxCrossCircled } from "react-icons/rx";
-// import { FaEdit, FaTrash } from "react-icons/fa";
-
-// const TenantTransactionModal = ({
-//   showModal,
-//   setShowModal,
-//   tenantName,
-//   transactions,
-//   onEditTransaction,
-//   onDeleteTransaction,
-// }) => {
-//   if (!showModal) return null;
-
-//   return (
-//     <div className="fixed inset-0 z-10 overflow-y-auto">
-//       <div className="flex items-center justify-center min-h-screen px-4 pb-20 text-center sm:block sm:p-0">
-//         <div className="fixed inset-0 transition-opacity" aria-hidden="true">
-//           <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-//         </div>
-
-//         <span
-//           className="hidden sm:inline-block sm:align-middle sm:h-screen"
-//           aria-hidden="true"
-//         >
-//           &#8203;
-//         </span>
-
-//         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-6 sm:align-middle sm:max-w-5xl sm:w-full">
-//           <div className="bg-white px-6 pt-5 pb-6">
-//             <div className="flex justify-between items-start">
-//               <h2 className="text-2xl font-bold mb-6 text-gray-700">
-//                 Transaction History for {tenantName}
-//               </h2>
-//               <button
-//                 onClick={() => setShowModal(false)}
-//                 className="absolute top-5 right-5"
-//               >
-//                 <RxCrossCircled className="text-2xl text-red-600 hover:text-red-900" />
-//               </button>
-//             </div>
-
-//             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
-//               {transactions?.length > 0 ? (
-//                 transactions.map((txn, index) => (
-//                   <div
-//                     key={txn._id}
-//                     className="bg-gray-100 p-4 rounded-lg shadow-md space-y-1 relative"
-//                   >
-//                     <p>
-//                       <strong>Transaction ID:</strong> {txn.transactionId}
-//                     </p>
-//                     <p>
-//                       <strong>Rent Amount:</strong> ₹{txn.rentAmount}
-//                     </p>
-//                     <p>
-//                       <strong>Due Amount:</strong> ₹{txn.dueAmount}
-//                     </p>
-//                     <p>
-//                       <strong>Payment Amount:</strong> ₹{txn.paymentAmount}
-//                     </p>
-//                     <p>
-//                       <strong>Payment Mode:</strong> {txn.paymentMode}
-//                     </p>
-//                     <p>
-//                       <strong>Rent Status:</strong> {txn.rentStatus}
-//                     </p>
-//                     <p>
-//                       <strong>Payment Date:</strong>{" "}
-//                       {new Date(txn.paymentDate).toLocaleDateString()}
-//                     </p>
-//                     <p>
-//                       <strong>Due Date:</strong>{" "}
-//                       {new Date(txn.dueDate).toLocaleDateString()}
-//                     </p>
-//                     <p>
-//                       <strong>Room Number:</strong> {txn.roomNumber}
-//                     </p>
-//                     <p>
-//                       <strong>Remarks:</strong> {txn.remarks || "N/A"}
-//                     </p>
-
-//                     {/* Buttons */}
-//                     <div className="mt-3 flex gap-3">
-//                       <button
-//                         onClick={() => onEditTransaction(txn)}
-//                         className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded flex items-center gap-1"
-//                       >
-//                         <FaEdit size={12} /> Edit
-//                       </button>
-//                       <button
-//                         onClick={() => onDeleteTransaction(txn._id)}
-//                         className="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded flex items-center gap-1"
-//                       >
-//                         <FaTrash size={12} /> Delete
-//                       </button>
-//                     </div>
-//                   </div>
-//                 ))
-//               ) : (
-//                 <div className="text-center text-gray-500">
-//                   No transactions found.
-//                 </div>
-//               )}
-//             </div>
-
-//             <div className="mt-6 flex justify-end">
-//               <button
-//                 onClick={() => setShowModal(false)}
-//                 className="px-4 py-2 bg-gray-100 rounded-lg text-gray-700 hover:bg-gray-200"
-//               >
-//                 Close
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default TenantTransactionModal;
-
 import React, { useState, useEffect } from "react";
 import { RxCrossCircled } from "react-icons/rx";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -142,12 +19,14 @@ const TenantTransactionModal = ({
   );
 
   return (
-    <div className="fixed inset-0 z-10 overflow-y-auto">
-      <div className="flex items-center justify-center min-h-screen px-4 pb-20 text-center sm:block sm:p-0">
+    <div className="fixed inset-10 z-50 overflow-y-auto">
+      <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        {/* Overlay */}
         <div className="fixed inset-0 transition-opacity" aria-hidden="true">
           <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
         </div>
 
+        {/* Modal positioning */}
         <span
           className="hidden sm:inline-block sm:align-middle sm:h-screen"
           aria-hidden="true"
@@ -155,17 +34,18 @@ const TenantTransactionModal = ({
           &#8203;
         </span>
 
-        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-6 sm:align-middle sm:max-w-5xl sm:w-full">
-          <div className="bg-white px-6 pt-5 pb-6">
-            <div className="flex justify-between items-start">
-              <h2 className="text-2xl font-bold mb-6 text-gray-700">
+        {/* Modal content */}
+        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+          <div className="bg-white px-6 py-6 sm:p-10">
+            <div className="flex justify-between items-center border-b pb-4 mb-6">
+              <h2 className="text-2xl font-bold text-gray-800">
                 Transaction History for {tenantName}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
-                className="absolute top-5 right-5"
+                className="text-gray-400 hover:text-red-600 transition-colors cursor-pointer"
               >
-                <RxCrossCircled className="text-2xl text-red-600 hover:text-red-900" />
+                <RxCrossCircled className="text-3xl" />
               </button>
             </div>
 
@@ -260,7 +140,7 @@ const TenantTransactionModal = ({
                       <div className="mt-3 flex gap-3">
                         <button
                           onClick={() => onEditTransaction(txn)}
-                          className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded flex items-center gap-1"
+                          className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded flex items-center gap-1 cursor-pointer"
                         >
                           <FaEdit size={12} /> Edit
                         </button>
@@ -273,7 +153,7 @@ const TenantTransactionModal = ({
                               onUpdateTenant(nextLatestTxn);
                             }
                           }}
-                          className="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded flex items-center gap-1"
+                          className="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded flex items-center gap-1 cursor-pointer"
                         >
                           <FaTrash size={12} /> Delete
                         </button>
@@ -291,7 +171,7 @@ const TenantTransactionModal = ({
             <div className="mt-6 flex justify-end">
               <button
                 onClick={() => setShowModal(false)}
-                className="px-4 py-2 bg-gray-100 rounded-lg text-gray-700 hover:bg-gray-200"
+                className="px-4 py-2 bg-gray-100 rounded-lg text-gray-700 hover:bg-red-500 cursor-pointer"
               >
                 Close
               </button>
