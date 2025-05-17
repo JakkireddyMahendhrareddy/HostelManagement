@@ -40,6 +40,8 @@ const TenantFormModal = ({
     setAddressesSame(e.target.checked);
   };
 
+  console.log(newTenant, ".............");
+
   // Compress image before uploading
   const compressImage = (
     file,
@@ -138,9 +140,16 @@ const TenantFormModal = ({
       errors.contact = "Valid 10-digit mobile number is required";
     if (!newTenant.roomNumber)
       errors.roomNumber = "Room number must be selected";
-    if (!newTenant.joinDate) errors.joinDate = "Move-in date is required";
+
+    // Changed joinDate to moveInDate
+    if (!newTenant.moveInDate) errors.moveInDate = "Move-in date is required";
+
     if (!newTenant.rentAmount || newTenant.rentAmount <= 0)
       errors.rentAmount = "Valid rent amount is required";
+
+    // Agreement Start Date validation
+    if (!newTenant.agreementStartDate)
+      errors.agreementStartDate = "Agreement start date is required";
 
     // Validate addresses
     if (!newTenant.permanentAddress?.street?.trim())
@@ -166,7 +175,10 @@ const TenantFormModal = ({
   const submitForm = async (e) => {
     e.preventDefault();
 
-    if (validateForm()) {
+    // Validate form first
+    const isValid = validateForm();
+
+    if (isValid) {
       setIsSubmitting(true);
 
       try {
@@ -202,7 +214,6 @@ const TenantFormModal = ({
     }
   };
 
-  // Render error message helper
   const renderError = (fieldName) => {
     return formErrors[fieldName] ? (
       <p className="mt-1 text-sm text-red-600">{formErrors[fieldName]}</p>
@@ -258,26 +269,6 @@ const TenantFormModal = ({
   );
 
   return (
-    // <div className="fixed inset-0 z-50 overflow-y-auto">
-    //   <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-    //     <div className="hidden md:flex md:w-1/5 bg-gradient-to-br from-blue-500 to-teal-400 rounded-l-lg p-8 flex justify-center items-center text-white">
-    //       <h3 className="text-xl font-semibold">
-    //         {isEditing ? "Edit Tenant" : "Add New Tenant"}{" "}
-    //       </h3>
-    //       <button
-    //         onClick={() => {
-    //           resetForm();
-    //           setShowTenantFormModal(false);
-    //         }}
-    //         className="text-white hover:text-red-300 transition-colors cursor-pointer"
-    //         aria-label="Close"
-    //       >
-    //         <FaTimes size={20} />
-    //       </button>
-    //     </div>
-    //     {/* Form */}
-    //   </div>
-    // </div>
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
         {/* Overlay */}
@@ -786,7 +777,7 @@ const TenantFormModal = ({
                       <select
                         id="roomNumber"
                         name="roomNumber"
-                        value={newTenant.roomNumber || ""}
+                        value={newTenant.roomNumber ?? ""}
                         onChange={handleTenantChange}
                         className={`w-full p-2 border rounded-md cursor-pointer ${
                           formErrors.roomNumber
@@ -811,27 +802,30 @@ const TenantFormModal = ({
                       </select>
                       {renderError("roomNumber")}
                     </div>
-
-                    <div className={formErrors.joinDate ? "error-field" : ""}>
+                    <div className="form-group">
                       <label
-                        htmlFor="joinDate"
+                        htmlFor="moveInDate"
                         className="block text-sm font-medium text-gray-700 mb-1"
                       >
-                        Join-in-Date <span className="text-red-500">*</span>
+                        Move-in Date <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="date"
-                        id="joinDate"
-                        name="joinDate"
-                        value={newTenant.joinDate || ""}
+                        id="moveInDate"
+                        name="moveInDate"
+                        value={newTenant.moveInDate || ""}
                         onChange={handleTenantChange}
                         className={`w-full p-2 border rounded-md cursor-pointer ${
-                          formErrors.joinDate
+                          formErrors.moveInDate
                             ? "border-red-500"
                             : "border-gray-300"
                         }`}
                       />
-                      {renderError("joinDate")}
+                      {formErrors.moveInDate && (
+                        <div className="text-red-500 text-sm mt-1">
+                          {formErrors.moveInDate}
+                        </div>
+                      )}
                     </div>
 
                     <div

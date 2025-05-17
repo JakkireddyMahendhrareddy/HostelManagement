@@ -42,25 +42,25 @@ const PaginatedTenantTable = ({
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-100 shadow-lg ">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-16">
+                  <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-16">
                     S.No
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-40">
+                  <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-40">
                     Tenant
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-32">
+                  <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-32">
                     Contact
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-24">
+                  <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-24">
                     Room
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-28">
+                  <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-28">
                     Join Date
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider w-24">
+                  <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-24">
                     Rent
                   </th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider w-32">
+                  <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-32">
                     Actions
                   </th>
                 </tr>
@@ -73,27 +73,27 @@ const PaginatedTenantTable = ({
                     className="hover:bg-gray-100 group relative"
                   >
                     {/* Column 1: S.No */}
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 w-16">
+                    <td className="px-6 py-4 whitespace-nowrap text- text-gray-900 w-16">
                       {(currentPage - 1) * itemsPerPage + index + 1}
                     </td>
 
                     {/* Column 2: Tenant Name */}
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 w-40">
+                    <td className="px-6 py-4 whitespace-nowrap text- text-gray-900 w-40">
                       {tenant.tenantName}
                     </td>
 
                     {/* Column 3: Contact */}
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 w-32">
+                    <td className="px-6 py-4 whitespace-nowrap text- text-gray-900 w-32">
                       {tenant.contact}
                     </td>
 
                     {/* Column 4: Room Number */}
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 w-24">
+                    <td className="px-6 py-4 whitespace-nowrap text- text-gray-900 w-24">
                       {tenant.roomNumber}
                     </td>
 
                     {/* Column 5: Join Date */}
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 w-28">
+                    <td className="px-6 py-4 whitespace-nowrap text- text-gray-900 w-28">
                       {tenant.moveInDate
                         ? new Date(tenant.moveInDate).toLocaleDateString()
                         : tenant.joinDate
@@ -102,13 +102,13 @@ const PaginatedTenantTable = ({
                     </td>
 
                     {/* Column 6: Rent Amount */}
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 w-24">
+                    <td className="px-6 py-4 whitespace-nowrap text- text-gray-900 w-24">
                       {tenant.rentAmount}
                     </td>
 
                     {/* Column 7: Actions */}
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 w-32">
-                      <div className="flex justify-center space-x-5">
+                    <td className="px-6 py-4 whitespace-nowrap text- text-gray-900 w-32">
+                      <div className="flex justify-start space-x-5">
                         <button
                           onClick={() => handleViewClick(tenant)}
                           className="text-gray-700 hover:text-gray-900 cursor-pointer"
@@ -139,8 +139,8 @@ const PaginatedTenantTable = ({
           </div>
 
           {/* Pagination Controls */}
-          <div className="flex flex-wrap justify-between items-center mt-6 text-sm">
-            <div className="flex items-center mb-2 sm:mb-0">
+          <div className="flex flex-wrap justify-between items-center mt-6 text-">
+            <div className="flex items-center mb-2 :mb-0">
               <span className="mr-2">Items per page:</span>
               <select
                 value={itemsPerPage}

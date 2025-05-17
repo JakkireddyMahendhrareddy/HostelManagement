@@ -518,13 +518,13 @@ const FeesInfo = () => {
             <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-4 mt-4 space-y-4">
               <div className="flex flex-wrap sm:flex-nowrap justify-between items-center p-4 rounded-lg gap-4 w-full">
                 {/* Search Bar */}
-                <div className="flex w-full sm:max-w-md">
+                <div className="flex w-full sm:max-w-md ml-0">
                   <input
                     type="text"
                     placeholder="Search tenant details..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="w-[50%] text-black border-gray-200 p-3 border rounded-l-lg shadow-md relative"
+                    className="w-[60%] text-black border-gray-200 p-3 border rounded-l-lg shadow-md relative"
                   />
                   <button
                     onClick={handleSubmit}
@@ -638,6 +638,7 @@ const FeesInfo = () => {
                 tenantPerPage={tenantPerPage}
                 totalTenants={totalTenants}
                 transactions={tenantTransactions}
+                paymentTransactions={paymentTransactions}
               />
             </div>
           </div>

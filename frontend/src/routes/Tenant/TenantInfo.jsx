@@ -8,7 +8,7 @@ import ConfirmModal from "../ConfirmModal";
 import TenantFormModal from "./TenantFormModal";
 import TenantDetailsModal from "./TenantDetailsModal";
 import PaginatedTenantTable from "./PaginatedTenantTable";
-import FilterComponent from "./FilterComponent";
+// import FilterComponent from "./FilterComponent";
 import NoHostelMessage from "../NoHostelMessage";
 import { backendUrl, toastNoficationSettings } from "../../utils/utils";
 
@@ -42,6 +42,9 @@ const TenantInfo = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterOpen, setFilterOpen] = useState(false);
   const [tableRefreshTrigger, setTableRefreshTrigger] = useState(0);
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [addressesSame, setAddressesSame] = useState(false);
 
   // Pagination states
   const [pageNumber, setPageNumber] = useState(1);
@@ -56,9 +59,38 @@ const TenantInfo = () => {
   const [newTenant, setNewTenant] = useState({
     tenantName: "",
     roomNumber: "",
-    joinDate: "",
+    moveInDate: "",
+    agreementStartDate: "",
     rentAmount: "",
     contact: "",
+    email: "",
+    aadhaarNumber: "",
+    isCurrentAddressSame: false,
+    policeVerificationConsent: false,
+    termsAgreement: false,
+    permanentAddress: {
+      street: "",
+      city: "",
+      state: "",
+      pincode: "",
+    },
+    currentAddress: {
+      street: "",
+      city: "",
+      state: "",
+      pincode: "",
+    },
+    emergencyContact: {
+      name: "",
+      relationship: "",
+      mobile: "",
+    },
+    passportPhoto: "",
+    aadhaarFront: "",
+    aadhaarBack: "",
+    digitalSignature: "",
+    dateOfBirth: "",
+    ownerId: "",
   });
 
   // Fetch tenants based on search term, filters, and pagination
@@ -144,56 +176,96 @@ const TenantInfo = () => {
       // Handle checkbox inputs
       if (type === "checkbox") {
         setNewTenant((prev) => ({ ...prev, [name]: checked }));
+
+        // If isCurrentAddressSame checkbox changes, update state
+        if (name === "isCurrentAddressSame") {
+          setAddressesSame(checked);
+
+          // If checked, copy permanent address to current address
+          if (checked) {
+            setNewTenant((prev) => ({
+              ...prev,
+              currentAddress: { ...prev.permanentAddress },
+            }));
+          }
+        }
       } else {
         setNewTenant((prev) => ({ ...prev, [name]: value }));
       }
     }
   };
 
-  // Validate tenant data
-  const validateTenantData = (tenantData) => {
-    // Basic fields validation
-    if (
-      !tenantData.tenantName ||
-      !tenantData.roomNumber ||
-      !tenantData.joinDate ||
-      !tenantData.rentAmount ||
-      !tenantData.contact
-    ) {
-      toast.error("Required fields are missing", toastNoficationSettings);
-      return false;
+  // Validate form data
+  const validateForm = () => {
+    // Log the tenant data to debug validation issues
+    console.log("Validating tenant data:", newTenant);
+
+    const errors = {};
+
+    // Essential fields validation
+    if (!newTenant.tenantName?.trim()) {
+      errors.tenantName = "Name is required";
     }
 
-    // Contact validation - allow formats: XXX-XXX-XXXX or XXXXXXXXXX
-    if (
-      tenantData.contact &&
-      !/^\d{3}[-]?\d{3}[-]?\d{4}$/.test(tenantData.contact)
-    ) {
-      toast.error(
-        "Contact should be in format XXX-XXX-XXXX",
-        toastNoficationSettings
-      );
-      return false;
+    if (!newTenant.dateOfBirth) {
+      errors.dateOfBirth = "Date of birth is required";
     }
 
-    // Email validation if provided
-    if (
-      tenantData.email &&
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(tenantData.email)
-    ) {
-      toast.error(
-        "Please enter a valid email address",
-        toastNoficationSettings
-      );
-      return false;
+    if (!newTenant.contact || !/^[0-9]{10}$/.test(newTenant.contact)) {
+      errors.contact = "Valid 10-digit mobile number is required";
     }
 
-    return true;
+    if (!newTenant.roomNumber) {
+      errors.roomNumber = "Room number must be selected";
+    }
+
+    // The key fix: validate moveInDate, not joinDate
+    if (!newTenant.moveInDate) {
+      errors.moveInDate = "Move-in date is required";
+    }
+
+    if (!newTenant.rentAmount || newTenant.rentAmount <= 0) {
+      errors.rentAmount = "Valid rent amount is required";
+    }
+
+    // Validate addresses
+    if (!newTenant.permanentAddress?.street?.trim()) {
+      errors.permanentAddressStreet = "Permanent address is required";
+    }
+
+    if (!addressesSame && !newTenant.currentAddress?.street?.trim()) {
+      errors.currentAddressStreet = "Current address is required";
+    }
+
+    // Emergency contact validation
+    if (!newTenant.emergencyContact?.name?.trim()) {
+      errors.emergencyName = "Emergency contact name is required";
+    }
+
+    if (
+      !newTenant.emergencyContact?.mobile ||
+      !/^[0-9]{10}$/.test(newTenant.emergencyContact.mobile)
+    ) {
+      errors.emergencyMobile =
+        "Valid 10-digit emergency contact number is required";
+    }
+
+    setFormErrors(errors);
+
+    // If there are errors, display them in the console for debugging
+    if (Object.keys(errors).length > 0) {
+      console.error("Form validation errors:", errors);
+    }
+
+    return Object.keys(errors).length === 0;
   };
 
   const handleTenantSubmit = async () => {
     try {
-      if (!validateTenantData(newTenant)) return;
+      if (!validateForm()) {
+        toast.error("Please fill all required fields", toastNoficationSettings);
+        return;
+      }
 
       const url = isEditing
         ? `${editTenantUrl}${selectedTenant._id}`
@@ -201,7 +273,8 @@ const TenantInfo = () => {
 
       const method = isEditing ? "PUT" : "POST";
 
-      console.log("Sending request to:", url, "with method:", method);
+      // console.log("Sending request to:", url, "with method:", method);
+      // console.log("Submitting tenant data:", newTenant);
 
       const response = await axios({
         method,
@@ -373,7 +446,6 @@ const TenantInfo = () => {
   };
 
   const handleEditClick = (tenant) => {
-    console.log("Original tenant data:", tenant); // Log the original data
     setSelectedTenant(tenant);
 
     // Helper function to format date properly
@@ -399,17 +471,14 @@ const TenantInfo = () => {
     };
 
     // Log the moveInDate specifically to debug
-    console.log("Original moveInDate:", tenant.moveInDate);
     const formattedMoveInDate = formatDate(tenant.moveInDate);
-    console.log("Formatted moveInDate:", formattedMoveInDate);
 
     // Initialize newTenant with proper fallbacks
     setNewTenant({
       tenantName: tenant.tenantName || "",
       roomNumber: tenant.roomNumber ? tenant.roomNumber.toString() : "",
-      joinDate: formatDate(tenant.joinDate),
+      moveInDate: formattedMoveInDate, // Set moveInDate correctly
       agreementStartDate: formatDate(tenant.agreementStartDate),
-      moveInDate: formattedMoveInDate, // Use the variable we logged
       rentAmount: tenant.rentAmount?.toString() || "",
       contact: tenant.contact || "",
       email: tenant.email || "",
@@ -452,6 +521,9 @@ const TenantInfo = () => {
       ownerId: tenant.ownerId || "",
     });
 
+    // Update the addressesSame state based on the tenant data
+    setAddressesSame(Boolean(tenant.isCurrentAddressSame));
+
     setIsEditing(true);
     setShowTenantFormModal(true);
 
@@ -485,7 +557,8 @@ const TenantInfo = () => {
     setNewTenant({
       tenantName: "",
       roomNumber: "",
-      joinDate: "",
+      moveInDate: "", // Ensure this is moveInDate, not joinDate
+      agreementStartDate: "",
       rentAmount: "",
       contact: "",
       email: "",
@@ -515,7 +588,9 @@ const TenantInfo = () => {
       aadhaarBack: "",
       digitalSignature: "",
       dateOfBirth: "",
+      ownerId: "",
     });
+    setFormErrors({});
     setIsEditing(false);
     setSelectedTenant(null);
   };
@@ -529,6 +604,46 @@ const TenantInfo = () => {
   const handleItemsPerPageChange = (newItemsPerPage) => {
     setTenantPerPage(newItemsPerPage);
     setPageNumber(1); // Reset to first page when changing items per page
+  };
+
+  // Submit form with validation
+  const submitForm = async (e) => {
+    if (e) e.preventDefault();
+
+    if (validateForm()) {
+      setIsSubmitting(true);
+
+      try {
+        // Notify user of submission
+        toast.info("Submitting tenant information...");
+
+        await handleTenantSubmit();
+
+        // Success notification
+        toast.success("Tenant information saved successfully!");
+
+        // Reset form and close modal
+        resetForm();
+        setShowTenantFormModal(false);
+      } catch (error) {
+        console.error("Error submitting tenant form:", error);
+        toast.error("Error saving tenant information. Please try again.");
+
+        setFormErrors({
+          general: "There was an error saving the tenant. Please try again.",
+        });
+      } finally {
+        setIsSubmitting(false);
+      }
+    } else {
+      toast.warning("Please correct the errors in the form");
+
+      // Scroll to first error
+      const firstErrorField = document.querySelector(".error-field");
+      if (firstErrorField) {
+        firstErrorField.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
   };
 
   return (
@@ -557,7 +672,7 @@ const TenantInfo = () => {
                     onKeyPress={(e) => {
                       if (e.key === "Enter") handleSearch();
                     }}
-                    className="w-[40%] text-black border-gray-200 p-3 pr-10 border rounded-l-lg shadow-md"
+                    className="w-[30%] text-black border-gray-200 p-3 pr-10 border rounded-l-lg shadow-md"
                   />
                   <button
                     onClick={handleSearch}
@@ -569,7 +684,7 @@ const TenantInfo = () => {
 
                 {/* Filter and Create New Buttons */}
                 <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                  <button
+                  {/* <button
                     onClick={() => setFilterOpen(!filterOpen)}
                     className="flex items-center gap-2 justify-center px-4 py-2 border rounded-lg bg-gray-100 hover:bg-gray-200 shadow-md cursor-pointer"
                     aria-expanded={filterOpen}
@@ -577,7 +692,7 @@ const TenantInfo = () => {
                   >
                     {filterOpen ? "Hide Filters" : "Show Filters"}
                     <RiFilterLine />
-                  </button>
+                  </button> */}
                   <button
                     onClick={() => {
                       resetForm();
@@ -592,12 +707,12 @@ const TenantInfo = () => {
               </div>
 
               {/* Filter Panel */}
-              <FilterComponent
+              {/* <FilterComponent
                 filterOpen={filterOpen}
                 onFilterChange={handleFilterChange}
                 onResetFilters={handleResetFilters}
                 filters={filters}
-              />
+              /> */}
 
               {/* Loader or No Results */}
               {isSearching && tenants.length === 0 ? (
@@ -634,10 +749,13 @@ const TenantInfo = () => {
             setShowTenantFormModal={setShowTenantFormModal}
             newTenant={newTenant}
             handleTenantChange={handleTenantChange}
-            handleTenantSubmit={handleTenantSubmit}
+            handleTenantSubmit={submitForm} // Use the new submitForm function instead
             isEditing={isEditing}
             rooms={rooms}
             resetForm={resetForm}
+            formErrors={formErrors} // Pass form errors to the modal
+            isSubmitting={isSubmitting} // Pass submission state
+            addressesSame={addressesSame} // Pass addressesSame state
           />
         )}
 
