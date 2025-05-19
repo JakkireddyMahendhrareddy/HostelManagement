@@ -7,6 +7,7 @@ import {
   FaChevronRight,
   FaAngleDoubleRight,
 } from "react-icons/fa";
+import { useState } from "react";
 
 const PaginatedTenantTable = ({
   tenants,
@@ -19,10 +20,11 @@ const PaginatedTenantTable = ({
   itemsPerPage,
   onPageChange,
   onItemsPerPageChange,
+  handleSort,
+  sortConfig
 }) => {
   // Calculate total pages
   const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
-
   return (
     <div className="w-full">
       {/* Tenants Table */}
@@ -65,6 +67,71 @@ const PaginatedTenantTable = ({
                   </th>
                 </tr>
               </thead>
+              {/* <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    S.NO
+                  </th>
+                  <th
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                    onClick={() => handleSort("tenantName")}
+                  >
+                    Tenant
+                    {sortConfig.field === "tenantName" && (
+                      <span className="ml-1">
+                        {sortConfig.direction === "asc" ? "↑" : "↓"}
+                      </span>
+                    )}
+                  </th>
+                  <th
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                    onClick={() => handleSort("contact")}
+                  >
+                    Contact
+                    {sortConfig.field === "contact" && (
+                      <span className="ml-1">
+                        {sortConfig.direction === "asc" ? "↑" : "↓"}
+                      </span>
+                    )}
+                  </th>
+                  <th
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                    onClick={() => handleSort("roomNumber")}
+                  >
+                    Room
+                    {sortConfig.field === "roomNumber" && (
+                      <span className="ml-1">
+                        {sortConfig.direction === "asc" ? "↑" : "↓"}
+                      </span>
+                    )}
+                  </th>
+                  <th
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                    onClick={() => handleSort("moveInDate")}
+                  >
+                    Join Date
+                    {sortConfig.field === "moveInDate" && (
+                      <span className="ml-1">
+                        {sortConfig.direction === "asc" ? "↑" : "↓"}
+                      </span>
+                    )}
+                  </th>
+                  <th
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                    onClick={() => handleSort("rentAmount")}
+                  >
+                    Rent
+                    {sortConfig.field === "rentAmount" && (
+                      <span className="ml-1">
+                        {sortConfig.direction === "asc" ? "↑" : "↓"}
+                      </span>
+                    )}
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead> */}
 
               <tbody className="bg-white divide-y divide-gray-200">
                 {tenants.map((tenant, index) => (
@@ -92,12 +159,23 @@ const PaginatedTenantTable = ({
                       {tenant.roomNumber}
                     </td>
 
-                    {/* Column 5: Join Date */}
                     <td className="px-6 py-4 whitespace-nowrap text- text-gray-900 w-28">
                       {tenant.moveInDate
-                        ? new Date(tenant.moveInDate).toLocaleDateString()
+                        ? new Date(tenant.moveInDate)
+                            .toLocaleDateString("en-GB", {
+                              day: "numeric",
+                              month: "numeric",
+                              year: "numeric",
+                            })
+                            .replace(/\//g, "-")
                         : tenant.joinDate
-                        ? new Date(tenant.joinDate).toLocaleDateString()
+                        ? new Date(tenant.joinDate)
+                            .toLocaleDateString("en-GB", {
+                              day: "numeric",
+                              month: "numeric",
+                              year: "numeric",
+                            })
+                            .replace(/\//g, "-")
                         : "-"}
                     </td>
 

@@ -15,21 +15,21 @@ const tenantSchema = new mongoose.Schema(
       required: true,
       match: [/^[0-9]{12}$/, "Please enter a valid 12-digit Aadhaar number"],
     },
-    passportPhoto: { type: String, required: false }, // URL or file path
-    aadhaarFront: { type: String, required: false },
-    aadhaarBack: { type: String, required: false },
-    digitalSignature: { type: String, required: false },
+    passportPhoto: { type: String, required: true }, // URL or file path
+    aadhaarFront: { type: String, required: true },
+    aadhaarBack: { type: String, required: true },
+    digitalSignature: { type: String, required: true },
 
     // Permanent Address
     permanentAddress: {
-      street: { type: String, required: false },
-      city: { type: String, required: false },
-      state: { type: String, required: false },
-      pincode: { type: String, required: false },
+      street: { type: String, required: true },
+      city: { type: String, required: true },
+      state: { type: String, required: true },
+      pincode: { type: String, required: true },
     },
 
     // Current Address (optional if same as permanent)
-    isCurrentAddressSame: { type: Boolean, default: false },
+    isCurrentAddressSame: { type: Boolean, default: true },
     currentAddress: {
       street: { type: String },
       city: { type: String },
@@ -50,13 +50,13 @@ const tenantSchema = new mongoose.Schema(
 
     // Accommodation Details
     roomNumber: { type: String, required: true }, // updated from Number to String
-    moveInDate: { type: Date, required: false },
-    agreementStartDate: { type: Date, required: false },
-    rentAmount: { type: Number, required: false },
+    moveInDate: { type: Date, required: true },
+    agreementStartDate: { type: Date, required: true },
+    rentAmount: { type: Number, required: true },
 
     // Legal
-    policeVerificationConsent: { type: Boolean, default: false },
-    termsAgreement: { type: Boolean, default: false },
+    policeVerificationConsent: { type: Boolean, default: true },
+    termsAgreement: { type: Boolean, default: true },
 
     // Reference to owner
     ownerId: {

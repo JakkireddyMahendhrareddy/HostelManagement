@@ -912,14 +912,14 @@ const TenantFormModal = ({
 
                   <div className="flex items-center cursor-pointer">
                     <input
-                      id="termsAccepted"
-                      name="termsAccepted"
+                      id="termsAgreement"
+                      name="termsAgreement"
                       type="checkbox"
-                      checked={newTenant.termsAccepted || false}
+                      checked={newTenant.termsAgreement  || false}
                       onChange={(e) =>
                         handleTenantChange({
                           target: {
-                            name: "termsAccepted",
+                            name: "termsAgreement",
                             value: e.target.checked,
                           },
                         })

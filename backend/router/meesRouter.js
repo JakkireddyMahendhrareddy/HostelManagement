@@ -12,7 +12,7 @@ const router = express.Router();
 router.get("/", getAllMess);
 router.get("/:day", getMessByDay);
 router.post("/", createMess);
-router.put("/:day", updateMess);
-router.delete("/:day", deleteMess);
+router.put("/edit/:day", updateMess);
+router.delete("/delete/:day", deleteMess);
 
 export default router;

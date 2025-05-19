@@ -50,7 +50,11 @@ export const updateMess = async (req, res) => {
   const { day } = req.params;
   const { meals } = req.body;
   try {
-    const updatedMess = await Mess.findOneAndUpdate({ day }, { meals }, { new: true });
+    const updatedMess = await Mess.findOneAndUpdate(
+      { day },
+      { meals },
+      { new: true }
+    );
     if (!updatedMess) {
       return res.status(404).json({ message: "Mess data not found for this day" });
     }
@@ -74,4 +78,3 @@ export const deleteMess = async (req, res) => {
     res.status(500).json({ message: "Failed to delete mess entry", error });
   }
 };
- 

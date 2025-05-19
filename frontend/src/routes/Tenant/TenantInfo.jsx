@@ -20,6 +20,7 @@ const TenantInfo = () => {
   const deleteTenantUrl = `${backendUrl}/api/tenants/delete/`;
   const getRoomsUrl = `${backendUrl}/api/hostel/room/get`;
   const getTenantUrl = `${backendUrl}/api/tenants/all`;
+  const searchTenantUrl = `${backendUrl}/api/tenants/search`;
 
   // State variables
   const [filters, setFilters] = useState({
@@ -45,6 +46,8 @@ const TenantInfo = () => {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [addressesSame, setAddressesSame] = useState(false);
+    const [sortConfig, setSortConfig] = useState({ field: 'joinDate', direction: 'desc' });
+
 
   // Pagination states
   const [pageNumber, setPageNumber] = useState(1);
@@ -151,12 +154,6 @@ const TenantInfo = () => {
     }
   };
 
-  // Handle search button click
-  const handleSearch = () => {
-    setIsSearching(true);
-    setPageNumber(1); // Reset to first page when searching
-    fetchTenants(); // This will use the current searchTerm
-  };
 
   // Handle form input changes
   const handleTenantChange = (e) => {
@@ -615,7 +612,7 @@ const TenantInfo = () => {
 
       try {
         // Notify user of submission
-        toast.info("Submitting tenant information...");
+        // toast.info("Submitting tenant information...");
 
         await handleTenantSubmit();
 
@@ -644,6 +641,72 @@ const TenantInfo = () => {
         firstErrorField.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     }
+  };
+
+  // New function for searching, filtering and sorting tenants
+  const searchTenants = async () => {
+    try {
+      setLoading(true);
+      setIsError(false);
+      setIsSearching(true);
+
+      // Create params object for query parameters
+      const params = {
+        page: pageNumber,
+        limit: tenantPerPage,
+        sortBy: sortConfig.field,
+        sortOrder: sortConfig.direction,
+      };
+
+      // Only add search term if it's not empty
+      if (searchTerm && searchTerm.trim() !== "") {
+        params.search = searchTerm.trim();
+      }
+
+      // Add filters if they exist and have values
+      if (filters.roomNumber) params.roomNumber = filters.roomNumber;
+      if (filters.joinDateFrom) params.joinDateFrom = filters.joinDateFrom;
+      if (filters.joinDateTo) params.joinDateTo = filters.joinDateTo;
+      if (filters.rentAmountMin) params.rentAmountMin = filters.rentAmountMin;
+      if (filters.rentAmountMax) params.rentAmountMax = filters.rentAmountMax;
+
+      console.log("Searching tenants with params:", params);
+
+      const response = await axios.get(searchTenantUrl, {
+        params,
+        withCredentials: true,
+      });
+      if (response.data) {
+        // API returns pagination data structure
+        setTenants(response.data.tenants || []);
+        setTotalTenants(response.data.totalItems || 0);
+      } else {
+        setTenants([]);
+        setTotalTenants(0);
+      }
+    } catch (error) {
+      console.error("Error searching tenants:", error);
+      setIsError(true);
+      toast.error("Failed to search tenants");
+      setTenants([]);
+      setTotalTenants(0);
+    } finally {
+      setLoading(false);
+      setIsSearching(false);
+    }
+  };
+
+  const handleSearch = () => {
+    setPageNumber(1); // Reset to first page when searching
+    fetchTenants(); 
+  };
+
+  // Handle sorting
+  const handleSort = (field) => {
+    // If clicking the same field, toggle direction
+    const direction = sortConfig.field === field && sortConfig.direction === 'asc' ? 'desc' : 'asc';
+    setSortConfig({ field, direction });
+    // fetchTenants will be called by the useEffect
   };
 
   return (
@@ -714,19 +777,19 @@ const TenantInfo = () => {
                 filters={filters}
               /> */}
 
-              {/* Loader or No Results */}
-              {isSearching && tenants.length === 0 ? (
-                <div className="flex justify-center items-center py-4">
-                  <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
-                  <span className="ml-2">Searching...</span>
-                </div>
-              ) : tenants.length === 0 && !loading ? (
-                <div className="text-center py-6 text-gray-500">
-                  No tenants found. Try adjusting your search or filters.
-                </div>
-              ) : null}
-
               {/* Tenant Table */}
+              {/* <PaginatedTenantTable
+                tenants={tenants}
+                handleViewClick={handleViewClick}
+                handleEditClick={handleEditClick}
+                handleDeleteClick={handleDeleteClick}
+                loading={loading && tenants.length > 0}
+                currentPage={pageNumber}
+                totalItems={totalTenants}
+                itemsPerPage={tenantPerPage}
+                onPageChange={handlePageChange}
+                onItemsPerPageChange={handleItemsPerPageChange}
+              /> */}
               <PaginatedTenantTable
                 tenants={tenants}
                 handleViewClick={handleViewClick}
@@ -738,6 +801,8 @@ const TenantInfo = () => {
                 itemsPerPage={tenantPerPage}
                 onPageChange={handlePageChange}
                 onItemsPerPageChange={handleItemsPerPageChange}
+                sortConfig={sortConfig}
+                handleSort={handleSort}
               />
             </div>
           </div>
