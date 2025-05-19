@@ -46,8 +46,10 @@ const TenantInfo = () => {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [addressesSame, setAddressesSame] = useState(false);
-    const [sortConfig, setSortConfig] = useState({ field: 'joinDate', direction: 'desc' });
-
+  const [sortConfig, setSortConfig] = useState({
+    field: "joinDate",
+    direction: "desc",
+  });
 
   // Pagination states
   const [pageNumber, setPageNumber] = useState(1);
@@ -153,7 +155,6 @@ const TenantInfo = () => {
       setIsSearching(false);
     }
   };
-
 
   // Handle form input changes
   const handleTenantChange = (e) => {
@@ -698,13 +699,16 @@ const TenantInfo = () => {
 
   const handleSearch = () => {
     setPageNumber(1); // Reset to first page when searching
-    fetchTenants(); 
+    fetchTenants();
   };
 
   // Handle sorting
   const handleSort = (field) => {
     // If clicking the same field, toggle direction
-    const direction = sortConfig.field === field && sortConfig.direction === 'asc' ? 'desc' : 'asc';
+    const direction =
+      sortConfig.field === field && sortConfig.direction === "asc"
+        ? "desc"
+        : "asc";
     setSortConfig({ field, direction });
     // fetchTenants will be called by the useEffect
   };
