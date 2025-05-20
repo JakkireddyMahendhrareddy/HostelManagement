@@ -1,25 +1,51 @@
-// meesModel.js
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const messSchema = new mongoose.Schema({
-  day: { type: String, required: true, unique: true },
-
-  meals: {
-    breakfast: {
-      item: { type: String, required: true },
-      time: { type: String, default: "8:00 AM" }
+const messSchema = new mongoose.Schema(
+  {
+    day: {
+      type: String,
+      required: [true, 'Day is required'],
+      enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      unique: true
     },
-    lunch: {
-      item: { type: String, required: true },
-      time: { type: String, default: "1:00 PM" }
-    },
-    dinner: {
-      item: { type: String, required: true },
-      time: { type: String, default: "8:00 PM" }
+    meals: {
+      breakfast: {
+        item: {
+          type: String,
+          required: [true, 'Breakfast item is required']
+        },
+        time: {
+          type: String,
+          required: [true, 'Breakfast time is required']
+        }
+      },
+      lunch: {
+        item: {
+          type: String,
+          required: [true, 'Lunch item is required']
+        },
+        time: {
+          type: String,
+          required: [true, 'Lunch time is required']
+        }
+      },
+      dinner: {
+        item: {
+          type: String,
+          required: [true, 'Dinner item is required']
+        },
+        time: {
+          type: String,
+          required: [true, 'Dinner time is required']
+        }
+      }
     }
+  },
+  {
+    timestamps: true
   }
-});
+);
 
-const Mess = mongoose.model("Mess", messSchema);
+const Mess = mongoose.model('Mess', messSchema);
 
 export default Mess;

@@ -233,90 +233,90 @@ const MessInfo = () => {
   };
 
   const deleteMessMenu = async () => {
-    // Step 1: Check if we have an ID to delete
-    if (!messDayDelete) {
-      console.error("No menu ID to delete");
-      toast.error(
-        "Error: No menu selected for deletion",
-        toastNoficationSettings
-      );
-      setShowConfirmModal(false);
-      return;
-    }
-
-    const idToDelete = messDayDelete;
-    console.log("Attempting to delete menu with ID:", idToDelete);
-
-    try {
-      // Step 2: Construct the delete URL with proper format
-      const deleteUrl = `${deleteMessDetailsUrl}/${idToDelete}`;
-      console.log("Delete URL:", deleteUrl);
-
-      // Step 3: Send the delete request to the server
-      const response = await axios.delete(deleteUrl, {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      // Step 4: Handle successful response
-      if (response.status === 200 || response.status === 204) {
-        toast.success(
-          "Mess menu deleted successfully",
+  // Step 1: Check if we have an ID to delete
+  if (!messDayDelete) {
+    console.error("No menu ID to delete");
+    toast.error(
+      "Error: No menu selected for deletion",
+      toastNoficationSettings
+    );
+    setShowConfirmModal(false);
+    return;
+  }
+  
+  const idToDelete = messDayDelete;
+  console.log("Attempting to delete menu with ID:", idToDelete);
+  
+  try {
+    // Step 2: Construct the delete URL with proper format
+    const deleteUrl = `${deleteMessDetailsUrl}/${idToDelete}`;
+    console.log("Delete URL:", deleteUrl);
+    
+    // Step 3: Send the delete request to the server
+    const response = await axios.delete(deleteUrl, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+      
+    // Step 4: Handle successful response
+    console.log("Delete successful, response:", response);
+    toast.success(
+      "Mess menu deleted successfully",
+      toastNoficationSettings
+    );
+    // Refresh the list to show updated data
+    await fetchMessMenu();
+    
+  } catch (error) {
+    console.error("Error deleting mess menu:", error);
+    
+    // Step 5: Handle specific error cases
+    if (error.response) {
+      // Server responded with an error status code
+      console.error("Error response:", error.response);
+      console.error("Error response status:", error.response.status);
+      console.error("Error response data:", error.response.data);
+      
+      // Handle different error status codes
+      if (error.response.status === 404) {
+        toast.error(
+          "Menu item not found. It may have been deleted already.",
           toastNoficationSettings
         );
-        // Refresh the list to show updated data
+        // Refresh to show current state - might need to be outside this condition
         await fetchMessMenu();
       } else {
-        // This else branch is unlikely to be reached as non-2xx responses trigger the catch block
-        // But included for completeness
-        console.error("Delete failed with status:", response.status);
-        toast.error("Failed to delete mess menu", toastNoficationSettings);
-      }
-    } catch (error) {
-      console.error("Error deleting mess menu:", error);
-
-      // Step 5: Handle specific error cases
-      if (error.response) {
-        // Server responded with an error status code
-        console.error("Error response status:", error.response.status);
-
-        if (error.response.status === 404) {
-          // If the item is not found, it might have been deleted already
-          toast.error(
-            "Menu item not found or already deleted",
-            toastNoficationSettings
-          );
-          // Refresh to show current state
-          await fetchMessMenu();
-        } else {
-          // For other error status codes
-          const errorMessage =
-            error.response.data && error.response.data.message
-              ? error.response.data.message
-              : "Server error";
-          toast.error(
-            `Failed to delete: ${errorMessage}`,
-            toastNoficationSettings
-          );
-        }
-      } else if (error.request) {
-        // No response received from server
+        // Extract error message from response if available
+        const errorMessage = 
+          error.response.data && 
+          (error.response.data.message || error.response.data.error || JSON.stringify(error.response.data))
+            ? (error.response.data.message || error.response.data.error || JSON.stringify(error.response.data))
+            : "Server error";
+        
         toast.error(
-          "Network error: No response from server",
+          `Failed to delete: ${errorMessage}`,
           toastNoficationSettings
         );
-      } else {
-        // Other errors
-        toast.error(`Error: ${error.message}`, toastNoficationSettings);
       }
-    } finally {
-      // Step 6: Always clean up the state regardless of success or failure
-      setShowConfirmModal(false);
-      setMessDayDelete(null);
+    } else if (error.request) {
+      // No response received from server
+      console.error("Error request:", error.request);
+      toast.error(
+        "Network error: No response from server",
+        toastNoficationSettings
+      );
+    } else {
+      // Other errors
+      toast.error(`Error: ${error.message}`, toastNoficationSettings);
     }
-  };
+  } finally {
+    // Step 6: Always clean up the state regardless of success or failure
+    setShowConfirmModal(false);
+    setMessDayDelete(null);
+  }
+};
 
   // Initial data loading
   useEffect(() => {

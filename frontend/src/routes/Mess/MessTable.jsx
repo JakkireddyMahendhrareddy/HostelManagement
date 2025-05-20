@@ -103,31 +103,6 @@ const MessTable = ({
                     </div>
                   </div>
                 </td>
-                {/* <td className="py-3 px-4">
-                  <div className="flex justify-center items-center space-x-2">
-                    <button
-                      onClick={() => handleViewClick(menu)}
-                      className="p-1.5 bg-blue-100 text-blue-600 rounded-md hover:bg-blue-200 transition-colors"
-                      title="View Details"
-                    >
-                      <Eye size={18} />
-                    </button>
-                    <button
-                      onClick={() => handleEditClick(menu)}
-                      className="p-1.5 bg-amber-100 text-amber-600 rounded-md hover:bg-amber-200 transition-colors"
-                      title="Edit Menu"
-                    >
-                      <Edit size={18} />
-                    </button>
-                    <button
-                      onClick={() => handleDeleteClick(menu.id)}
-                      className="p-1.5 bg-red-100 text-red-600 rounded-md hover:bg-red-200 transition-colors"
-                      title="Delete Menu"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  </div>
-                </td> */}
                 <td className="px-6 py-4 whitespace-nowrap text- text-gray-900 w-32">
                   <div className="flex justify-start space-x-5">
                     <button

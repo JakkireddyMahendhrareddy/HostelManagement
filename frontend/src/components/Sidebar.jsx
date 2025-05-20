@@ -14,7 +14,7 @@ import HostelInfo from "../routes/Hostel/HostelInfo";
 import TenantManagement from "../routes/Tenant/TenantInfo";
 import Fees from "../routes/Fees/FeesInfo";
 import MessDetails from "../routes/Mess/MessInfo";
-import Maintenance from "../routes/Maintenance";
+import Maintenance from "../routes/Maintenance/MaintenanceInfo";
 import Topbar from "./Topbar";
 import { Link } from "react-router-dom";
 

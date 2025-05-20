@@ -40,12 +40,54 @@ const Topbar = () => {
     getProfileData();
   }, []);
 
+  // const handleProfilePicChange = (e) => {
+  //   const file = e.target.files[0];
+
+  //   if (!file) return;
+
+  //   // Prevent re-uploading same file
+  //   if (file.name === lastUploadedFileName) {
+  //     toast.info("This image is already uploaded.", toastNoficationSettings);
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append("avatar", file);
+
+  //   updateUserImage(formData);
+  //   setLastUploadedFileName(file.name); // Save current file name
+  // };
+
+  // const updateUserImage = async (formData) => {
+  //   try {
+  //     // Show a loading toast and store its id
+  //     const loadingToastId = toast.loading("Updating profile picture...");
+
+  //     const response = await fetch(`${backendUrl}/api/user/edit-profile`, {
+  //       method: "PATCH",
+  //       credentials: "include",
+  //       body: formData,
+  //     });
+
+  //     // Clear loading toast
+  //     toast.dismiss(loadingToastId);
+
+  //     if (response.ok) {
+  //       getProfileData(); // Refresh user info on UI
+  //     } else {
+  //       const error = await response.json();
+  //       toast.error(error.message || "Upload failed", toastNoficationSettings);
+  //     }
+  //   } catch (err) {
+  //     console.error("Profile Upload Error:", err);
+  //     toast.error("Something went wrong", toastNoficationSettings);
+  //   }
+  // };
+
   const handleProfilePicChange = (e) => {
     const file = e.target.files[0];
-
     if (!file) return;
 
-    // Prevent re-uploading same file
     if (file.name === lastUploadedFileName) {
       toast.info("This image is already uploaded.", toastNoficationSettings);
       return;
@@ -55,25 +97,22 @@ const Topbar = () => {
     formData.append("avatar", file);
 
     updateUserImage(formData);
-    setLastUploadedFileName(file.name); // Save current file name
+    setLastUploadedFileName(file.name);
   };
 
   const updateUserImage = async (formData) => {
     try {
-      // Show a loading toast and store its id
       const loadingToastId = toast.loading("Updating profile picture...");
-
       const response = await fetch(`${backendUrl}/api/user/edit-profile`, {
         method: "PATCH",
         credentials: "include",
         body: formData,
       });
 
-      // Clear loading toast
       toast.dismiss(loadingToastId);
 
       if (response.ok) {
-        getProfileData(); // Refresh user info on UI
+        getProfileData(); // Refresh UI
       } else {
         const error = await response.json();
         toast.error(error.message || "Upload failed", toastNoficationSettings);
@@ -103,8 +142,8 @@ const Topbar = () => {
               </span>
             </h1>
 
-            <p className="text-xs sm:text-sm text-gray-600 mt-0 sm:mt-1 italic hidden sm:block">
-              Hope your rooms are filling fast today!
+            <p className="text-xs sm:text-sm text-blue-600 mt-0 sm:mt-1  hidden sm:block tracking-wide">
+              Hope your rooms are filling fast today 🙂!
             </p>
           </div>
         ) : (

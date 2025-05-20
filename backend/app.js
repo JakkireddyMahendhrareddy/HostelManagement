@@ -12,6 +12,8 @@ import reviewRouter from "./router/reviewRouter.js";
 import meesRouter from "./router/meesRouter.js";
 import tenantRouter from "./router/tenantRouter.js";
 import paymentsRoutes from "./router/paymentRoutes.js";
+import maintenanceRouter from "./router/maintenanceRouter.js";
+
 
 const app = express();
 
@@ -35,9 +37,11 @@ app.use("/api/user", userRoutes);
 app.use("/api/hostel", hostelRoutes);
 app.use("/api/hostel/room", roomRoutes);
 app.use("/api/review", reviewRouter);
-app.use("/api/mess", meesRouter);
+app.use("/api", meesRouter);
 app.use("/api/tenants", tenantRouter);
 app.use("/api/payments", paymentsRoutes);
+app.use("/api/", maintenanceRouter);
+
 
 const initializeDBAndServer = async () => {
   try {
