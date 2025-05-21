@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: backend
+    env: node
+    rootDir: backend
+    buildCommand: npm run server
+    startCommand: node app.js
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+
+  - type: web
+    name: frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm run dev && npm run build
+    staticPublishPath: dist
