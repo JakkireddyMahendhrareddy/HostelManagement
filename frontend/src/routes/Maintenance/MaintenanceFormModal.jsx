@@ -29,19 +29,26 @@ const MaintenanceFormModal = ({
         </span>
         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
           <div className="bg-white px-6 py-6 sm:p-8">
-            <div className="flex justify-between items-center border-b pb-4 mb-6">
-              <h2 className="text-2xl font-bold text-center text-gray-700">
-                {isEditing ? "Edit Maintenance Issue" : "Report New Maintenance Issue"}
-              </h2>
+            <div className="relative border-b pb-4 mb-6">
+              {/* Close Button */}
               <button
                 onClick={() => setShowFormModal(false)}
-                className="absolute top-5 right-5"
+                className="absolute top-0 right-0 mt-2 mr-2 sm:mt-3 sm:mr-3"
                 data-tooltip-id="close-tooltip"
                 data-tooltip-content="Close"
                 disabled={isSubmitting}
               >
                 <RxCrossCircled className="text-2xl text-red-600 cursor-pointer hover:text-red-900" />
               </button>
+
+              {/* Title (Responsive Centered) */}
+              <h2 className="text-xl sm:text-2xl font-bold text-center text-gray-700 px-4">
+                {isEditing
+                  ? "Edit Maintenance Issue"
+                  : "Report New Maintenance Issue"}
+              </h2>
+
+              {/* Tooltip */}
               <ReactTooltip
                 id="close-tooltip"
                 place="left"
@@ -80,7 +87,7 @@ const MaintenanceFormModal = ({
                       </p>
                     )}
                   </div>
-                  
+
                   <div>
                     <label className="block text-gray-700 font-medium mb-2">
                       Priority *
@@ -90,7 +97,9 @@ const MaintenanceFormModal = ({
                       value={newIssue.priority}
                       onChange={handleIssueChange}
                       className={`w-full p-3 border rounded-lg ${
-                        formErrors.priority ? "border-red-500" : "border-gray-300"
+                        formErrors.priority
+                          ? "border-red-500"
+                          : "border-gray-300"
                       }`}
                       disabled={isSubmitting}
                       required
@@ -157,7 +166,7 @@ const MaintenanceFormModal = ({
                       </p>
                     )}
                   </div>
-                  
+
                   <div>
                     <label className="block text-gray-700 font-medium mb-2">
                       Request Date *
@@ -168,7 +177,9 @@ const MaintenanceFormModal = ({
                       value={newIssue.createdDate}
                       onChange={handleIssueChange}
                       className={`w-full p-3 border rounded-lg ${
-                        formErrors.createdDate ? "border-red-500" : "border-gray-300"
+                        formErrors.createdDate
+                          ? "border-red-500"
+                          : "border-gray-300"
                       }`}
                       disabled={isSubmitting}
                       required
@@ -192,7 +203,9 @@ const MaintenanceFormModal = ({
                       value={newIssue.requestedBy}
                       onChange={handleIssueChange}
                       className={`w-full p-3 border rounded-lg ${
-                        formErrors.requestedBy ? "border-red-500" : "border-gray-300"
+                        formErrors.requestedBy
+                          ? "border-red-500"
+                          : "border-gray-300"
                       }`}
                       placeholder="Person who reported the issue"
                       disabled={isSubmitting}
@@ -204,7 +217,7 @@ const MaintenanceFormModal = ({
                       </p>
                     )}
                   </div>
-                  
+
                   <div>
                     <label className="block text-gray-700 font-medium mb-2">
                       Assigned To

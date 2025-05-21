@@ -53,7 +53,7 @@ const TenantInfo = () => {
 
   // Pagination states
   const [pageNumber, setPageNumber] = useState(1);
-  const [tenantPerPage, setTenantPerPage] = useState(10);
+  const [tenantPerPage, setTenantPerPage] = useState(5);
   const [totalTenants, setTotalTenants] = useState(0);
 
   const [tenants, setTenants] = useState([]);
@@ -728,72 +728,43 @@ const TenantInfo = () => {
 
             <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-4 mt-4 space-y-4">
               {/* Search and Filter Bar */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 {/* Search input */}
-                <div className="w-full sm:w-auto flex-grow relative flex">
+                <div className="flex w-full md:w-1/2 lg:w-1/3">
                   <input
                     type="text"
                     placeholder="Search tenant details..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    onKeyPress={(e) => {
+                    onKeyDown={(e) => {
                       if (e.key === "Enter") handleSearch();
                     }}
-                    className="w-[30%] text-black border-gray-200 p-3 pr-10 border rounded-l-lg shadow-md"
+                    className="flex-grow text-black border border-gray-300 p-3 rounded-l-lg shadow-sm focus:outline-none "
                   />
                   <button
                     onClick={handleSearch}
-                    className="bg-blue-500 text-white py-2 px-4 rounded-r-lg hover:bg-blue-600 transition duration-200"
+                    className="bg-blue-500 text-white px-4 rounded-r-lg hover:bg-blue-600 transition duration-200"
                   >
                     <FaSearch />
                   </button>
                 </div>
 
-                {/* Filter and Create New Buttons */}
-                <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                  {/* <button
-                    onClick={() => setFilterOpen(!filterOpen)}
-                    className="flex items-center gap-2 justify-center px-4 py-2 border rounded-lg bg-gray-100 hover:bg-gray-200 shadow-md cursor-pointer"
-                    aria-expanded={filterOpen}
-                    aria-controls="filter-panel"
-                  >
-                    {filterOpen ? "Hide Filters" : "Show Filters"}
-                    <RiFilterLine />
-                  </button> */}
+                {/* Filter and Create New Button */}
+                <div className="flex flex-col sm:flex-row w-full md:w-auto gap-2">
                   <button
                     onClick={() => {
                       resetForm();
                       setShowTenantFormModal(true);
                     }}
-                    className="flex items-center justify-center gap-2 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 hover:scale-105 transition duration-200 shadow-md cursor-pointer"
+                    className="flex items-center cursor-pointer justify-center gap-2 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 hover:scale-105 transition duration-200 shadow-md"
                   >
-                    <FaUserPlus className="text-white" />
-                    Create New
+                    <FaUserPlus />
+                    <span className="whitespace-nowrap">Create New</span>
                   </button>
                 </div>
               </div>
 
-              {/* Filter Panel */}
-              {/* <FilterComponent
-                filterOpen={filterOpen}
-                onFilterChange={handleFilterChange}
-                onResetFilters={handleResetFilters}
-                filters={filters}
-              /> */}
-
-              {/* Tenant Table */}
-              {/* <PaginatedTenantTable
-                tenants={tenants}
-                handleViewClick={handleViewClick}
-                handleEditClick={handleEditClick}
-                handleDeleteClick={handleDeleteClick}
-                loading={loading && tenants.length > 0}
-                currentPage={pageNumber}
-                totalItems={totalTenants}
-                itemsPerPage={tenantPerPage}
-                onPageChange={handlePageChange}
-                onItemsPerPageChange={handleItemsPerPageChange}
-              /> */}
+              {/* Paginated Table Component */}
               <PaginatedTenantTable
                 tenants={tenants}
                 handleViewClick={handleViewClick}

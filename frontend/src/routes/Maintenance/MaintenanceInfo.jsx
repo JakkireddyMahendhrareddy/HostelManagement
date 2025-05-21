@@ -832,103 +832,111 @@ const MaintenanceInfo = () => {
   const updateMaintenanceStatus = async (id, status) => {
     setLoading(true);
     try {
-        console.log(`Updating status for issue ID: ${id} to ${status}`);
-        
-        const response = await axios.patch(
-            `${backendUrl}/api/maintenance/${id}/status`,
-            { status },
-            {
-                withCredentials: true,
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-        
-        console.log("Status update response:", response);
-        
-        if (response.status >= 200 && response.status < 300) {
-            toast.success(
-                `Status updated to ${status} successfully`,
-                toastNoficationSettings
-            );
-            await fetchMaintenanceIssues(); // refresh after update
-            return true;
-        } else {
-            const errorData = response.data;
-            toast.error(
-                errorData.message || "Failed to update status",
-                toastNoficationSettings
-            );
-            return false;
-        }
-    } catch (error) {
-        console.error("Error updating maintenance status:", error);
-        
-        if (error.response) {
-            console.error("Error response data:", error.response.data);
-            const errorMessage = error.response.data?.message || "Failed to update status";
-            toast.error(errorMessage, toastNoficationSettings);
-        } else {
-            toast.error("Something went wrong while updating status", toastNoficationSettings);
-        }
-        
-        return false;
-    } finally {
-        setLoading(false);
-    }
-};
+      console.log(`Updating status for issue ID: ${id} to ${status}`);
 
-// Function to assign maintenance to staff
-const assignMaintenanceToStaff = async (id, assignedTo) => {
+      const response = await axios.patch(
+        `${backendUrl}/api/maintenance/${id}/status`,
+        { status },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Status update response:", response);
+
+      if (response.status >= 200 && response.status < 300) {
+        toast.success(
+          `Status updated to ${status} successfully`,
+          toastNoficationSettings
+        );
+        await fetchMaintenanceIssues(); // refresh after update
+        return true;
+      } else {
+        const errorData = response.data;
+        toast.error(
+          errorData.message || "Failed to update status",
+          toastNoficationSettings
+        );
+        return false;
+      }
+    } catch (error) {
+      console.error("Error updating maintenance status:", error);
+
+      if (error.response) {
+        console.error("Error response data:", error.response.data);
+        const errorMessage =
+          error.response.data?.message || "Failed to update status";
+        toast.error(errorMessage, toastNoficationSettings);
+      } else {
+        toast.error(
+          "Something went wrong while updating status",
+          toastNoficationSettings
+        );
+      }
+
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Function to assign maintenance to staff
+  const assignMaintenanceToStaff = async (id, assignedTo) => {
     setLoading(true);
     try {
-        console.log(`Assigning issue ID: ${id} to ${assignedTo}`);
-        
-        const response = await axios.patch(
-            `${backendUrl}/api/maintenance/${id}/assign`,
-            { assignedTo },
-            {
-                withCredentials: true,
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
+      console.log(`Assigning issue ID: ${id} to ${assignedTo}`);
+
+      const response = await axios.patch(
+        `${backendUrl}/api/maintenance/${id}/assign`,
+        { assignedTo },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Assignment response:", response);
+
+      if (response.status >= 200 && response.status < 300) {
+        toast.success(
+          `Issue assigned to ${assignedTo} successfully`,
+          toastNoficationSettings
         );
-        
-        console.log("Assignment response:", response);
-        
-        if (response.status >= 200 && response.status < 300) {
-            toast.success(
-                `Issue assigned to ${assignedTo} successfully`,
-                toastNoficationSettings
-            );
-            await fetchMaintenanceIssues(); // refresh after update
-            return true;
-        } else {
-            const errorData = response.data;
-            toast.error(
-                errorData.message || "Failed to assign maintenance issue",
-                toastNoficationSettings
-            );
-            return false;
-        }
-    } catch (error) {
-        console.error("Error assigning maintenance:", error);
-        
-        if (error.response) {
-            console.error("Error response data:", error.response.data);
-            const errorMessage = error.response.data?.message || "Failed to assign maintenance issue";
-            toast.error(errorMessage, toastNoficationSettings);
-        } else {
-            toast.error("Something went wrong while assigning maintenance issue", toastNoficationSettings);
-        }
-        
+        await fetchMaintenanceIssues(); // refresh after update
+        return true;
+      } else {
+        const errorData = response.data;
+        toast.error(
+          errorData.message || "Failed to assign maintenance issue",
+          toastNoficationSettings
+        );
         return false;
+      }
+    } catch (error) {
+      console.error("Error assigning maintenance:", error);
+
+      if (error.response) {
+        console.error("Error response data:", error.response.data);
+        const errorMessage =
+          error.response.data?.message || "Failed to assign maintenance issue";
+        toast.error(errorMessage, toastNoficationSettings);
+      } else {
+        toast.error(
+          "Something went wrong while assigning maintenance issue",
+          toastNoficationSettings
+        );
+      }
+
+      return false;
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
+  };
 
   // Delete maintenance issue
   const deleteMaintenanceIssue = async () => {
@@ -1145,8 +1153,8 @@ const assignMaintenanceToStaff = async (id, assignedTo) => {
   };
 
   return (
-    <div className="w-full bg-white pt-0 min-h-screen flex justify-center items-start relative">
-      <div className="w-full pt-4 max-w-7xl px-4">
+    <div className="w-full min-h-screen bg-white flex justify-center items-start pt-0">
+      <div className="w-full max-w-7xl px-4 pt-4">
         {loading && maintenanceIssues.length === 0 ? (
           <div className="flex justify-center items-center h-60">
             <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
@@ -1154,9 +1162,10 @@ const assignMaintenanceToStaff = async (id, assignedTo) => {
         ) : !hostel || Object.keys(hostel).length === 0 ? (
           <NoHostelMessage />
         ) : (
-          <div className="min-h-screen bg-white shadow-lg p-4 md:p-8">
-            <div className="flex justify-between items-center mb-6">
-              <h1 className="text-3xl md:text-4xl font-bold text-blue-800 drop-shadow-md ">
+          <div className="min-h-screen bg-white shadow-lg p-4 sm:p-6 md:p-8 rounded-lg">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-800 drop-shadow-md">
                 Hostel Maintenance Records
               </h1>
               <button
@@ -1164,17 +1173,18 @@ const assignMaintenanceToStaff = async (id, assignedTo) => {
                   resetForm();
                   setShowFormModal(true);
                 }}
-                className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-md shadow-md transition-colors cursor-pointer"
+                className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 sm:py-3 sm:px-5 rounded-md shadow-md transition-colors cursor-pointer text-sm sm:text-base"
               >
                 <Plus size={20} />
                 Report Issue
               </button>
             </div>
 
+            {/* Empty State or Maintenance Table */}
             {maintenanceIssues.length === 0 ? (
               <div className="text-center py-12 bg-gray-50 rounded-lg border border-gray-200">
                 <AlertCircle size={48} className="mx-auto text-gray-400 mb-4" />
-                <p className="text-gray-500 text-lg font-medium">
+                <p className="text-gray-600 text-base sm:text-lg font-medium">
                   No maintenance issues found. Report a new issue to get
                   started.
                 </p>
@@ -1189,7 +1199,7 @@ const assignMaintenanceToStaff = async (id, assignedTo) => {
               />
             )}
 
-            {/* Maintenance Form Modal */}
+            {/* Modals */}
             {showFormModal && (
               <MaintenanceFormModal
                 setShowFormModal={setShowFormModal}
@@ -1203,7 +1213,6 @@ const assignMaintenanceToStaff = async (id, assignedTo) => {
               />
             )}
 
-            {/* Maintenance Details Modal */}
             {showDetailsModal && (
               <MaintenanceDetailsModal
                 issue={selectedIssue}
@@ -1211,7 +1220,6 @@ const assignMaintenanceToStaff = async (id, assignedTo) => {
               />
             )}
 
-            {/* Confirm Delete Modal */}
             {showConfirmModal && (
               <ConfirmModal
                 confirmType="maintenance"

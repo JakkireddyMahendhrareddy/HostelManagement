@@ -21,7 +21,7 @@ const PaginatedTenantTable = ({
   onPageChange,
   onItemsPerPageChange,
   handleSort,
-  sortConfig
+  sortConfig,
 }) => {
   // Calculate total pages
   const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
@@ -40,170 +40,84 @@ const PaginatedTenantTable = ({
         </div>
       ) : (
         <>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-100 shadow-lg ">
+          <div className="w-full mt-4 overflow-x-auto rounded-xl border border-gray-200 shadow-md">
+            <table className="min-w-[700px] w-full divide-y divide-gray-200 text-sm text-left">
+              <thead className="bg-gray-100">
                 <tr>
-                  <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-16">
+                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
                     S.No
                   </th>
-                  <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-40">
+                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
                     Tenant
                   </th>
-                  <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-32">
+                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
                     Contact
                   </th>
-                  <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-24">
+                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
                     Room
                   </th>
-                  <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-28">
+                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
                     Join Date
                   </th>
-                  <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-24">
+                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
                     Rent
                   </th>
-                  <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-32">
+                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
                     Actions
                   </th>
                 </tr>
               </thead>
-              {/* <thead className="bg-gray-100">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    S.NO
-                  </th>
-                  <th
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                    onClick={() => handleSort("tenantName")}
-                  >
-                    Tenant
-                    {sortConfig.field === "tenantName" && (
-                      <span className="ml-1">
-                        {sortConfig.direction === "asc" ? "↑" : "↓"}
-                      </span>
-                    )}
-                  </th>
-                  <th
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                    onClick={() => handleSort("contact")}
-                  >
-                    Contact
-                    {sortConfig.field === "contact" && (
-                      <span className="ml-1">
-                        {sortConfig.direction === "asc" ? "↑" : "↓"}
-                      </span>
-                    )}
-                  </th>
-                  <th
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                    onClick={() => handleSort("roomNumber")}
-                  >
-                    Room
-                    {sortConfig.field === "roomNumber" && (
-                      <span className="ml-1">
-                        {sortConfig.direction === "asc" ? "↑" : "↓"}
-                      </span>
-                    )}
-                  </th>
-                  <th
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                    onClick={() => handleSort("moveInDate")}
-                  >
-                    Join Date
-                    {sortConfig.field === "moveInDate" && (
-                      <span className="ml-1">
-                        {sortConfig.direction === "asc" ? "↑" : "↓"}
-                      </span>
-                    )}
-                  </th>
-                  <th
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                    onClick={() => handleSort("rentAmount")}
-                  >
-                    Rent
-                    {sortConfig.field === "rentAmount" && (
-                      <span className="ml-1">
-                        {sortConfig.direction === "asc" ? "↑" : "↓"}
-                      </span>
-                    )}
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead> */}
-
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="divide-y divide-gray-200 bg-white">
                 {tenants.map((tenant, index) => (
                   <tr
                     key={tenant._id || index}
-                    className="hover:bg-gray-100 group relative"
+                    className="hover:bg-gray-100 group"
                   >
-                    {/* Column 1: S.No */}
-                    <td className="px-6 py-4 whitespace-nowrap text- text-gray-900 w-16">
+                    <td className="px-2 sm:px-4 md:px-6 py-3 whitespace-nowrap">
                       {(currentPage - 1) * itemsPerPage + index + 1}
                     </td>
-
-                    {/* Column 2: Tenant Name */}
-                    <td className="px-6 py-4 whitespace-nowrap text- text-gray-900 w-40">
+                    <td className="px-2 sm:px-4 md:px-6 py-3 whitespace-nowrap">
                       {tenant.tenantName}
                     </td>
-
-                    {/* Column 3: Contact */}
-                    <td className="px-6 py-4 whitespace-nowrap text- text-gray-900 w-32">
+                    <td className="px-2 sm:px-4 md:px-6 py-3 whitespace-nowrap">
                       {tenant.contact}
                     </td>
-
-                    {/* Column 4: Room Number */}
-                    <td className="px-6 py-4 whitespace-nowrap text- text-gray-900 w-24">
+                    <td className="px-2 sm:px-4 md:px-6 py-3 whitespace-nowrap">
                       {tenant.roomNumber}
                     </td>
-
-                    <td className="px-6 py-4 whitespace-nowrap text- text-gray-900 w-28">
+                    <td className="px-2 sm:px-4 md:px-6 py-3 whitespace-nowrap">
                       {tenant.moveInDate
                         ? new Date(tenant.moveInDate)
-                            .toLocaleDateString("en-GB", {
-                              day: "numeric",
-                              month: "numeric",
-                              year: "numeric",
-                            })
+                            .toLocaleDateString("en-GB")
                             .replace(/\//g, "-")
                         : tenant.joinDate
                         ? new Date(tenant.joinDate)
-                            .toLocaleDateString("en-GB", {
-                              day: "numeric",
-                              month: "numeric",
-                              year: "numeric",
-                            })
+                            .toLocaleDateString("en-GB")
                             .replace(/\//g, "-")
                         : "-"}
                     </td>
-
-                    {/* Column 6: Rent Amount */}
-                    <td className="px-6 py-4 whitespace-nowrap text- text-gray-900 w-24">
+                    <td className="px-2 sm:px-4 md:px-6 py-3 whitespace-nowrap">
                       {tenant.rentAmount}
                     </td>
-
-                    {/* Column 7: Actions */}
-                    <td className="px-6 py-4 whitespace-nowrap text- text-gray-900 w-32">
-                      <div className="flex justify-start space-x-5">
+                    <td className="px-2 sm:px-4 md:px-6 py-3 whitespace-nowrap">
+                      <div className="flex space-x-4">
                         <button
                           onClick={() => handleViewClick(tenant)}
-                          className="text-gray-700 hover:text-gray-900 cursor-pointer"
+                          className="text-gray-700 cursor-pointer hover:text-gray-900"
                           title="View"
                         >
                           <FaEye size={18} />
                         </button>
                         <button
                           onClick={() => handleEditClick(tenant)}
-                          className="text-gray-700 hover:text-gray-900 cursor-pointer"
+                          className="text-gray-700 cursor-pointer hover:text-gray-900"
                           title="Edit"
                         >
                           <FaEdit size={18} />
                         </button>
                         <button
                           onClick={() => handleDeleteClick(tenant._id)}
-                          className="text-gray-700 hover:text-gray-900 cursor-pointer"
+                          className="text-gray-700 cursor-pointer hover:text-gray-900"
                           title="Delete"
                         >
                           <AiFillDelete size={18} />
@@ -217,34 +131,30 @@ const PaginatedTenantTable = ({
           </div>
 
           {/* Pagination Controls */}
-          <div className="flex flex-wrap justify-between items-center mt-6 text-">
-            <div className="flex items-center mb-2 :mb-0">
-              <span className="mr-2">Items per page:</span>
+          <div className="flex flex-col sm:flex-row flex-wrap justify-between items-center mt-6 gap-4 text-sm">
+            {/* Items Per Page Selector */}
+            <div className="flex items-center gap-2">
+              <span className="text-gray-700">Items per page:</span>
               <select
                 value={itemsPerPage}
                 onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
-                className="border rounded p-1 cursor-pointer"
+                className="border border-gray-300 rounded-md p-1 px-2 text-gray-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option className="cursor-pointer" value={5}>
-                  5
-                </option>
-                <option className="cursor-pointer" value={10}>
-                  10
-                </option>
-                <option className="cursor-pointer" value={20}>
-                  20
-                </option>
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
               </select>
             </div>
 
-            <div className="flex items-center gap-2">
+            {/* Pagination Controls */}
+            <div className="flex items-center gap-2 flex-wrap justify-center">
               <button
                 onClick={() => onPageChange(1)}
                 disabled={currentPage === 1}
-                className={`p-2 border rounded ${
+                className={`p-2 border cursor-pointer rounded-md transition ${
                   currentPage === 1
-                    ? "text-gray-400 cursor-not-allowed"
-                    : "hover:bg-gray-100"
+                    ? "text-gray-400 cursor-not-allowed bg-gray-100"
+                    : "hover:bg-gray-200 text-gray-700"
                 }`}
               >
                 <FaAngleDoubleLeft />
@@ -252,25 +162,25 @@ const PaginatedTenantTable = ({
               <button
                 onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className={`p-2 border rounded ${
+                className={`p-2 border cursor-pointer rounded-md transition ${
                   currentPage === 1
-                    ? "text-gray-400 cursor-not-allowed"
-                    : "hover:bg-gray-100"
+                    ? "text-gray-400 cursor-not-allowed bg-gray-100"
+                    : "hover:bg-gray-200 text-gray-700"
                 }`}
               >
                 <FaChevronLeft />
               </button>
-              <span>
+              <span className="text-gray-700 px-2">
                 Page <strong>{currentPage}</strong> of{" "}
                 <strong>{totalPages}</strong>
               </span>
               <button
                 onClick={() => onPageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className={`p-2 border rounded ${
+                className={`p-2 border cursor-pointer rounded-md transition ${
                   currentPage === totalPages
-                    ? "text-gray-400 cursor-not-allowed"
-                    : "hover:bg-gray-100"
+                    ? "text-gray-400 cursor-not-allowed bg-gray-100"
+                    : "hover:bg-gray-200 text-gray-700"
                 }`}
               >
                 <FaChevronRight />
@@ -278,10 +188,10 @@ const PaginatedTenantTable = ({
               <button
                 onClick={() => onPageChange(totalPages)}
                 disabled={currentPage === totalPages}
-                className={`p-2 border rounded ${
+                className={`p-2 border cursor-pointer rounded-md transition ${
                   currentPage === totalPages
-                    ? "text-gray-400 cursor-not-allowed"
-                    : "hover:bg-gray-100"
+                    ? "text-gray-400 cursor-not-allowed bg-gray-100"
+                    : "hover:bg-gray-200 text-gray-700"
                 }`}
               >
                 <FaAngleDoubleRight />

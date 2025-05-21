@@ -18,20 +18,23 @@ const HostelAndRoomDetails = ({
   totalPages,
 }) => {
   return (
-    <div className="w-full mx-auto p-4">
-      <div className="w-full flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-gray-600">Hostel Overview</h2>
-        <div className="flex gap-6 items-center">
+    <div className="w-full max-w-7xl mx-auto px-4 py-6">
+      {/* Header: Hostel Overview + Action Buttons */}
+      <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <h2 className="text-2xl font-semibold text-gray-700">
+          Hostel Overview
+        </h2>
+        <div className="flex gap-4 flex-wrap">
           <button
             onClick={() => setIsEditingHostel(true)}
-            className="text-blue-500 flex gap-2 p-1 w-24 border-2 border-blue-500 cursor-pointer justify-center items-center rounded-lg hover:scale-110 duration-300 transition"
+            className="text-blue-500 border-2 border-blue-500 px-4 py-1.5 rounded-lg flex items-center gap-2 hover:scale-105 transition"
           >
             <FaEdit size={18} />
             Edit
           </button>
           <button
             onClick={handleDeleteHostelClick}
-            className="text-white bg-blue-500 cursor-pointer flex gap-2 p-2 w-24 justify-center items-center rounded-lg hover:scale-110 duration-300 transition"
+            className="bg-blue-500 text-white px-4 py-1.5 rounded-lg flex items-center gap-2 hover:bg-blue-600 hover:scale-105 transition"
           >
             <FaTrash size={18} />
             Delete
@@ -39,29 +42,32 @@ const HostelAndRoomDetails = ({
         </div>
       </div>
 
-      {/* changes to card data wise */}
-      <div className="p-6 rounded-2xl border border-gray-300 bg-white shadow-md text-lg w-1/2 grid grid-cols-1 gap-3">
-        <p className="text-gray-700 text-lg">
+      {/* Hostel Details Card */}
+      <div className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 p-5 rounded-2xl border border-gray-300 bg-white shadow-md text-lg grid gap-4">
+        <p className="text-gray-700">
           Hostel Name:{" "}
           <span className="font-semibold text-xl">{hostel.name}</span>
         </p>
-        <p className="text-gray-700 text-lg">
+        <p className="text-gray-700">
           Category:{" "}
           <span className="font-semibold text-xl">{hostel.category}</span>
         </p>
-        <p className="text-gray-700 text-lg">
+        <p className="text-gray-700">
           Rooms:{" "}
           <span className="font-semibold text-xl">{hostel.totalRooms}</span>
         </p>
-        <p className="text-gray-700 text-lg">
+        <p className="text-gray-700">
           Max Capacity:{" "}
           <span className="font-semibold text-xl">{hostel.maxCapacity}</span>
         </p>
       </div>
 
-      <div className="bg-white border border-gray-300 rounded-2xl shadow-md p-4 mt-4 space-y-3">
-        <div className="flex flex-row justify-between items-center">
-          <h3 className="text-2xl font-bold text-gray-800">Rooms List</h3>
+      {/* Rooms List Section */}
+      <div className="bg-white border border-gray-300 rounded-2xl shadow-md p-4 mt-6 space-y-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-800">
+            Rooms List
+          </h3>
           <button
             onClick={() => {
               setShowRoomFormModal(true);
@@ -75,36 +81,40 @@ const HostelAndRoomDetails = ({
                 status: "available",
               });
             }}
-            className="bg-blue-500 cursor-pointer text-white py-2 px-4 flex items-center gap-2 rounded-lg hover:bg-blue-700 hover:scale-105 transition duration-200"
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 hover:scale-105 transition"
           >
             <FaPlus className="text-white" />
             Add New Room
           </button>
         </div>
 
-        <Table
-          headingList={[
-            "Room No.",
-            "Room Type",
-            "Beds",
-            "Available Beds",
-            "Room Rent",
-            "Room Status",
-          ]}
-          bodyData={displayedRooms}
-          editRoom={editRoom}
-          handleDeleteRoomClick={handleDeleteRoomClick}
-        />
+        {/* Rooms Table */}
+        <div className="overflow-x-auto">
+          <Table
+            headingList={[
+              "Room No.",
+              "Room Type",
+              "Beds",
+              "Available Beds",
+              "Room Rent",
+              "Room Status",
+            ]}
+            bodyData={displayedRooms}
+            editRoom={editRoom}
+            handleDeleteRoomClick={handleDeleteRoomClick}
+          />
+        </div>
 
+        {/* Empty State */}
         {rooms.length === 0 && (
-          <p className="text-center font-medium text-lg mt-4 text-red-500 py-4">
+          <p className="text-center font-medium text-lg text-red-500 py-4">
             No rooms available. Add a new room to get started.
           </p>
         )}
 
         {/* Pagination */}
         {rooms.length !== 0 && (
-          <div className="flex justify-center items-center gap-6 mt-4 text-sm font-medium text-gray-700">
+          <div className="flex justify-center items-center gap-6 mt-4 text-sm font-medium text-gray-700 flex-wrap">
             <button
               disabled={pageNumber === 1}
               onClick={() => setPageNumber((prev) => prev - 1)}

@@ -25,24 +25,35 @@ const MessTable = ({
   );
 
   return (
-    <div className="overflow-x-auto divide-y divide-gray-200  border border-gray-200 rounded-lg border-t-0">
-      <table className="min-w-full bg-white  border border-gray-200 shadow-md  overflow-hidden">
-        <thead className="bg-blue-500 text-white ">
+    <div className="w-full mt-1 overflow-x-auto rounded-xl border border-gray-200 shadow-md">
+      <table className="min-w-[700px] w-full divide-y divide-gray-200 text-sm md:text-base">
+        <thead className="bg-blue-100 text-gray-700">
           <tr>
-            <th className="py-3 px-4 text-left font-semibold">Day</th>
-            <th className="py-3 px-4 text-left font-semibold">Breakfast</th>
-            <th className="py-3 px-4 text-left font-semibold">Lunch</th>
-            <th className="py-3 px-4 text-left font-semibold">Dinner</th>
-            <th className="py-3 px-4 text-center font-semibold">Actions</th>
+            <th className="px-4 py-3 text-left font-semibold whitespace-nowrap">
+              Day
+            </th>
+            <th className="px-4 py-3 text-left font-semibold whitespace-nowrap">
+              Breakfast
+            </th>
+            <th className="px-4 py-3 text-left font-semibold whitespace-nowrap">
+              Lunch
+            </th>
+            <th className="px-4 py-3 text-left font-semibold whitespace-nowrap">
+              Dinner
+            </th>
+            <th className="px-4 py-3 text-left font-semibold whitespace-nowrap">
+              Actions
+            </th>
           </tr>
         </thead>
-        <tbody>
+
+        <tbody className="bg-white divide-y divide-gray-100">
           {loading ? (
             <tr>
               <td colSpan="5" className="py-10 text-center text-gray-500">
                 <div className="flex justify-center items-center">
-                  <div className="w-8 h-8 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
-                  <span className="ml-2">Loading menu data...</span>
+                  <div className="w-6 h-6 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
+                  <span className="ml-3">Loading menu data...</span>
                 </div>
               </td>
             </tr>
@@ -54,15 +65,12 @@ const MessTable = ({
             </tr>
           ) : (
             sortedMenuData.map((menu) => (
-              <tr
-                key={menu.id}
-                className="border-b border-gray-200 hover:bg-gray-50"
-              >
+              <tr key={menu.id} className="hover:bg-gray-50 transition-colors">
                 <td className="py-3 px-4 font-medium text-gray-800">
                   {menu.day}
                 </td>
-                <td className="py-3 px-4">
-                  <div className="text-sm text-gray-600">
+                <td className="py-3 px-4 text-gray-700">
+                  <div className="text-sm">
                     {menu.breakfast ? (
                       <div className="line-clamp-1">{menu.breakfast}</div>
                     ) : (
@@ -75,8 +83,8 @@ const MessTable = ({
                     </div>
                   </div>
                 </td>
-                <td className="py-3 px-4">
-                  <div className="text-sm text-gray-600">
+                <td className="py-3 px-4 text-gray-700">
+                  <div className="text-sm">
                     {menu.lunch ? (
                       <div className="line-clamp-1">{menu.lunch}</div>
                     ) : (
@@ -89,8 +97,8 @@ const MessTable = ({
                     </div>
                   </div>
                 </td>
-                <td className="py-3 px-4">
-                  <div className="text-sm text-gray-600">
+                <td className="py-3 px-4 text-gray-700">
+                  <div className="text-sm">
                     {menu.dinner ? (
                       <div className="line-clamp-1">{menu.dinner}</div>
                     ) : (
@@ -103,26 +111,26 @@ const MessTable = ({
                     </div>
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text- text-gray-900 w-32">
-                  <div className="flex justify-start space-x-5">
+                <td className="py-3 px-4 w-32">
+                  <div className="flex items-center space-x-4 text-gray-600">
                     <button
                       onClick={() => handleViewClick(menu)}
-                      className="text-gray-700 hover:text-gray-900 cursor-pointer"
                       title="View"
+                      className="hover:text-blue-600 cursor-pointer"
                     >
                       <FaEye size={18} />
                     </button>
                     <button
                       onClick={() => handleEditClick(menu)}
-                      className="text-gray-700 hover:text-gray-900 cursor-pointer"
                       title="Edit"
+                      className="hover:text-green-600 cursor-pointer"
                     >
                       <FaEdit size={18} />
                     </button>
                     <button
                       onClick={() => handleDeleteClick(menu.id)}
-                      className="text-gray-700 hover:text-gray-900 cursor-pointer"
                       title="Delete"
+                      className="hover:text-red-600 cursor-pointer"
                     >
                       <AiFillDelete size={18} />
                     </button>

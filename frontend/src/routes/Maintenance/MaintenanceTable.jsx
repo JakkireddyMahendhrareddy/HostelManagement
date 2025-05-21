@@ -37,20 +37,34 @@ const MaintenanceTable = ({
   };
 
   return (
-    <div className="overflow-x-auto divide-y divide-gray-200 border border-gray-200 rounded-lg border-t-0">
-      <table className="min-w-full bg-white border border-gray-200 shadow-md">
-        <thead className="bg-blue-500 text-white">
+    <div className="w-full mt-2 overflow-x-auto rounded-xl border border-gray-200 shadow-md mx-auto">
+      <table className="min-w-[700px] w-full divide-y divide-gray-200 text-sm">
+        <thead className="bg-gray-100 shadow-md">
           <tr>
-            <th className="py-3 px-4 border-b text-left">Room</th>
-            <th className="py-3 px-4 border-b text-left">Issue</th>
-            <th className="py-3 px-4 border-b text-left">Status</th>
-            <th className="py-3 px-4 border-b text-left">Priority</th>
-            <th className="py-3 px-4 border-b text-left">Requested</th>
-            <th className="py-3 px-4 border-b text-left">Date</th>
-            <th className="py-3 px-4 border-b text-left">Actions</th>
+            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
+              Room
+            </th>
+            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
+              Issue
+            </th>
+            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
+              Status
+            </th>
+            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
+              Priority
+            </th>
+            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
+              Requested
+            </th>
+            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
+              Date
+            </th>
+            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
+              Actions
+            </th>
           </tr>
         </thead>
-        <tbody className="text-sm">
+        <tbody className="bg-white divide-y divide-gray-200">
           {loading ? (
             <tr>
               <td colSpan="7" className="py-4 px-4 text-center">
@@ -68,13 +82,14 @@ const MaintenanceTable = ({
             </tr>
           ) : (
             issues.map((issue) => (
-              <tr
-                key={issue._id}
-                className="border-b border-gray-200 hover:bg-gray-50"
-              >
-                <td className="py-3 px-4">{issue.roomNo || "N/A"}</td>
-                <td className="py-3 px-4">{truncateText(issue.issue)}</td>
-                <td className="py-3 px-4">
+              <tr key={issue._id} className="hover:bg-gray-50">
+                <td className="py-3 px-4 whitespace-nowrap">
+                  {issue.roomNo || "N/A"}
+                </td>
+                <td className="py-3 px-4 whitespace-nowrap">
+                  {truncateText(issue.issue)}
+                </td>
+                <td className="py-3 px-4 whitespace-nowrap">
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium ${
                       statusColors[issue.status] || "bg-gray-100 text-gray-800"
@@ -83,7 +98,7 @@ const MaintenanceTable = ({
                     {issue.status || "Pending"}
                   </span>
                 </td>
-                <td className="py-3 px-4">
+                <td className="py-3 px-4 whitespace-nowrap">
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium ${
                       priorityColors[issue.priority] ||
@@ -93,27 +108,31 @@ const MaintenanceTable = ({
                     {issue.priority || "Medium"}
                   </span>
                 </td>
-                <td className="py-3 px-4">{issue.requestedBy || "N/A"}</td>
-                <td className="py-3 px-4">{formatDate(issue.createdDate)}</td>
-                <td className="py-3 px-4">
-                  <div className="flex justify-start space-x-5">
+                <td className="py-3 px-4 whitespace-nowrap">
+                  {issue.requestedBy || "N/A"}
+                </td>
+                <td className="py-3 px-4 whitespace-nowrap">
+                  {formatDate(issue.createdDate)}
+                </td>
+                <td className="py-3 px-4 whitespace-nowrap">
+                  <div className="flex justify-start space-x-4">
                     <button
                       onClick={() => handleViewClick(issue)}
-                      className="text-gray-700 hover:text-gray-900 cursor-pointer"
+                      className="text-gray-700 hover:text-gray-900"
                       title="View"
                     >
                       <FaEye size={18} />
                     </button>
                     <button
                       onClick={() => handleEditClick(issue)}
-                      className="text-gray-700 hover:text-gray-900 cursor-pointer"
+                      className="text-gray-700 hover:text-gray-900"
                       title="Edit"
                     >
                       <FaEdit size={18} />
                     </button>
                     <button
                       onClick={() => handleDeleteClick(issue._id)}
-                      className="text-gray-700 hover:text-gray-900 cursor-pointer"
+                      className="text-gray-700 hover:text-gray-900"
                       title="Delete"
                     >
                       <AiFillDelete size={18} />

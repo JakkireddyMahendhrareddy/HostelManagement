@@ -119,57 +119,39 @@ const PaginatedFeesTable = ({
         </div>
       ) : (
         <>
-          <div className="w-full">
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-100 shadow-lg ">
+          <div className="w-full mt-2 overflow-x-auto rounded-xl border border-gray-200 shadow-md">
+            <div className="min-w-[700px] w-full overflow-x-scroll scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+              <table className="w-full divide-y divide-gray-200 text-sm text-left">
+                <thead className="bg-gray-100 shadow sticky top-0 z-10">
                   <tr>
-                    <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-32">
-                      S.NO
-                    </th>
-                    <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-32 ">
-                      TENANT
-                    </th>
-                    <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-32">
-                      CONTACT
-                    </th>
-                    <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-32">
-                      ROOM
-                    </th>
-                    <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-32">
-                      JOIN DATE
-                    </th>
-
-                    <th className="px-6 py-3 text-center text-xs font-bold text-blue-600 uppercase tracking-wider w-32 relative cursor-default">
-                      <div className="absolute inset-0 flex justify-center items-center">
-                        <span>DUE DATE</span>
-                      </div>
-                    </th>
-
-                    <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-32">
-                      RENT
-                    </th>
-                    <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-32 relative cursor-default">
-                      <div className="absolute inset-0 flex items-center">
-                        <span>RENT STATUS</span>
-                      </div>
-                    </th>
-                    <th className="px-6 py-3 text-start text-xs font-bold text-blue-600 uppercase tracking-wider w-32">
-                      ACTIONS
-                    </th>
+                    {[
+                      "S.NO",
+                      "TENANT",
+                      "CONTACT",
+                      "ROOM",
+                      "JOIN DATE",
+                      "DUE DATE",
+                      "RENT",
+                      "STATUS",
+                      "ACTIONS",
+                    ].map((col, i) => (
+                      <th
+                        key={i}
+                        className={`px-2 sm:px-4 py-3 font-semibold text-gray-700 tracking-wide whitespace-nowrap text-xs sm:text-sm ${
+                          col === "ACTIONS" ? "text-center" : "text-left"
+                        }`}
+                      >
+                        {col}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {processedTenants.map((tenant, index) => {
-                    // Format due date for display using the tenant's own processed data
                     const dueDate = tenant.processedDueDate
                       ? new Date(tenant.processedDueDate).toLocaleDateString()
                       : "-";
-
-                    // Get the rent status directly from the tenant's processed data
                     const rentStatus = tenant.processedRentStatus || "Due";
-
-                    // Check if rent is overdue using the tenant's own due date
                     const isOverdue =
                       tenant.processedDueDate &&
                       new Date(tenant.processedDueDate) < new Date() &&
@@ -178,54 +160,46 @@ const PaginatedFeesTable = ({
                     return (
                       <tr
                         key={tenant._id}
-                        className={`hover:bg-gray-100 group relative ${
+                        className={`hover:bg-gray-100 ${
                           isOverdue ? "bg-red-50" : ""
-                        }`}
+                        } transition-all`}
                       >
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-2 sm:px-4 py-3 text-gray-900 text-xs sm:text-sm">
                           {(pageNumber - 1) * tenantPerPage + index + 1}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-2 sm:px-4 py-3 text-gray-900 text-xs sm:text-sm">
                           {tenant.tenantName}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-2 sm:px-4 py-3 text-gray-900 text-xs sm:text-sm">
                           {tenant.contact}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-2 sm:px-4 py-3 text-gray-900 text-xs sm:text-sm">
                           {tenant.roomNumber}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 w-28">
+                        <td className="px-2 sm:px-4 py-3 text-gray-900 text-xs sm:text-sm">
                           {tenant.moveInDate
                             ? new Date(tenant.moveInDate)
-                                .toLocaleDateString("en-GB", {
-                                  day: "numeric",
-                                  month: "numeric",
-                                  year: "numeric",
-                                })
+                                .toLocaleDateString("en-GB")
                                 .replace(/\//g, "-")
                             : tenant.joinDate
                             ? new Date(tenant.joinDate)
-                                .toLocaleDateString("en-GB", {
-                                  day: "numeric",
-                                  month: "numeric",
-                                  year: "numeric",
-                                })
+                                .toLocaleDateString("en-GB")
                                 .replace(/\//g, "-")
                             : "-"}
                         </td>
                         <td
-                          className={`px-6 py-4 whitespace-nowrap text-sm ${
+                          className={`px-2 sm:px-4 py-3 text-xs sm:text-sm ${
                             isOverdue
                               ? "text-red-600 font-bold"
                               : "text-gray-900"
-                          } w-28`}
+                          }`}
                         >
                           {dueDate}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-2 sm:px-4 py-3 text-gray-900 text-xs sm:text-sm">
                           ₹{tenant.rentAmount}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-2 sm:px-4 py-3 text-xs sm:text-sm">
                           {rentStatus === "Paid" ? (
                             <span className="text-green-600 font-medium">
                               Paid
@@ -240,19 +214,18 @@ const PaginatedFeesTable = ({
                             </span>
                           )}
                         </td>
-
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          <div className="flex justify-start gap-2">
+                        <td className="px-2 sm:px-4 py-3 text-center text-xs sm:text-sm">
+                          <div className="flex justify-center sm:justify-start gap-2 flex-nowrap">
                             <button
                               onClick={() => handlePayment(tenant)}
-                              className="bg-green-600 text-white text-xs px-2 py-1 rounded hover:bg-green-700 shadow-sm flex items-start gap-1 transition cursor-pointer"
+                              className="bg-green-600 text-white px-2 cursor-pointer py-1 rounded hover:bg-green-700 shadow-sm text-xs flex items-center gap-1"
                             >
                               <FaMoneyBillWave size={12} />
                               Pay
                             </button>
                             <button
                               onClick={() => handleHistoryClick(tenant)}
-                              className="bg-yellow-500 text-white text-xs px-2 py-1 rounded hover:bg-yellow-600 shadow-sm flex items-start gap-1 transition cursor-pointer"
+                              className="bg-yellow-500 text-white px-2 py-1 cursor-pointer rounded hover:bg-yellow-600 shadow-sm text-xs flex items-center gap-1"
                             >
                               <FaHistory size={12} />
                               Previous
@@ -265,80 +238,82 @@ const PaginatedFeesTable = ({
                 </tbody>
               </table>
             </div>
+          </div>
 
-            {/* Pagination Controls */}
-            <div className="flex flex-wrap justify-between items-start mt-6 text-sm">
-              <div className="flex items-start mb-2 sm:mb-0">
-                <span className="mr-2">Items per page:</span>
-                <select
-                  value={tenantPerPage}
-                  onChange={(e) =>
-                    handleItemsPerPageChange(Number(e.target.value))
-                  }
-                  className="border rounded p-1 cursor-pointer"
-                >
-                  <option value={5}>5</option>
-                  <option value={10}>10</option>
-                  <option value={20}>20</option>
-                </select>
-              </div>
+          {/* Pagination */}
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6 text-sm">
+            <div className="flex items-center gap-2">
+              <span className="text-gray-600">Items per page:</span>
+              <select
+                value={tenantPerPage}
+                onChange={(e) =>
+                  handleItemsPerPageChange(Number(e.target.value))
+                }
+                className="border rounded p-1 text-sm cursor-pointer"
+              >
+                {[5, 10, 20].map((num) => (
+                  <option key={num} value={num}>
+                    {num}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handlePageChange(1)}
-                  disabled={pageNumber === 1}
-                  className={`p-2 border rounded ${
-                    pageNumber === 1
-                      ? "text-gray-400 cursor-not-allowed"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  <FaAngleDoubleLeft />
-                </button>
-                <button
-                  onClick={() => handlePageChange(pageNumber - 1)}
-                  disabled={pageNumber === 1}
-                  className={`p-2 border rounded ${
-                    pageNumber === 1
-                      ? "text-gray-400 cursor-not-allowed"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  <FaChevronLeft />
-                </button>
-                <span>
-                  Page <strong>{pageNumber}</strong> of{" "}
-                  <strong>{Math.ceil(totalTenants / tenantPerPage)}</strong>
-                </span>
-                <button
-                  onClick={() => handlePageChange(pageNumber + 1)}
-                  disabled={
-                    pageNumber === Math.ceil(totalTenants / tenantPerPage)
-                  }
-                  className={`p-2 border rounded ${
-                    pageNumber === Math.ceil(totalTenants / tenantPerPage)
-                      ? "text-gray-400 cursor-not-allowed"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  <FaChevronRight />
-                </button>
-                <button
-                  onClick={() =>
-                    handlePageChange(Math.ceil(totalTenants / tenantPerPage))
-                  }
-                  disabled={
-                    pageNumber === Math.ceil(totalTenants / tenantPerPage)
-                  }
-                  className={`p-2 border rounded ${
-                    pageNumber === Math.ceil(totalTenants / tenantPerPage)
-                      ? "text-gray-400 cursor-not-allowed"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  <FaAngleDoubleRight />
-                </button>
-              </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => handlePageChange(1)}
+                disabled={pageNumber === 1}
+                className={`p-2 border cursor-pointer rounded ${
+                  pageNumber === 1
+                    ? "text-gray-400 cursor-not-allowed"
+                    : "hover:bg-gray-100"
+                }`}
+              >
+                <FaAngleDoubleLeft />
+              </button>
+              <button
+                onClick={() => handlePageChange(pageNumber - 1)}
+                disabled={pageNumber === 1}
+                className={`p-2 border cursor-pointer rounded ${
+                  pageNumber === 1
+                    ? "text-gray-400 cursor-not-allowed"
+                    : "hover:bg-gray-100"
+                }`}
+              >
+                <FaChevronLeft />
+              </button>
+              <span className="text-gray-700">
+                Page <strong>{pageNumber}</strong> of{" "}
+                <strong>{Math.ceil(totalTenants / tenantPerPage)}</strong>
+              </span>
+              <button
+                onClick={() => handlePageChange(pageNumber + 1)}
+                disabled={
+                  pageNumber === Math.ceil(totalTenants / tenantPerPage)
+                }
+                className={`p-2 border cursor-pointer rounded ${
+                  pageNumber === Math.ceil(totalTenants / tenantPerPage)
+                    ? "text-gray-400 cursor-not-allowed"
+                    : "hover:bg-gray-100"
+                }`}
+              >
+                <FaChevronRight />
+              </button>
+              <button
+                onClick={() =>
+                  handlePageChange(Math.ceil(totalTenants / tenantPerPage))
+                }
+                disabled={
+                  pageNumber === Math.ceil(totalTenants / tenantPerPage)
+                }
+                className={`p-2 border cursor-pointer rounded ${
+                  pageNumber === Math.ceil(totalTenants / tenantPerPage)
+                    ? "text-gray-400 cursor-not-allowed"
+                    : "hover:bg-gray-100"
+                }`}
+              >
+                <FaAngleDoubleRight />
+              </button>
             </div>
           </div>
         </>

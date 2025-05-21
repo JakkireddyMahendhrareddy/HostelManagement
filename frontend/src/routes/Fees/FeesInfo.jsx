@@ -747,7 +747,7 @@ const FeesInfo = () => {
 
   // Pagination states
   const [pageNumber, setPageNumber] = useState(1);
-  const [tenantPerPage, setTenantPerPage] = useState(10);
+  const [tenantPerPage, setTenantPerPage] = useState(5);
   const [totalTenants, setTotalTenants] = useState(0);
 
   // API URLs
@@ -1116,7 +1116,6 @@ const FeesInfo = () => {
   };
 
   const deleteTransaction = async (transactionId) => {
-    console.log(transactionId, "************");
     try {
       if (!transactionId) {
         throw new Error("Invalid transaction ID");
@@ -1234,111 +1233,83 @@ const FeesInfo = () => {
             <h1 className="text-2xl font-bold mb-6">Payments</h1>
 
             <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-4 mt-4 space-y-4">
-              <div className="flex flex-wrap sm:flex-nowrap justify-between items-center p-4 rounded-lg gap-4 w-full">
+              {/* Search and Filter Bar */}
+              {/* Search and Filter Bar */}
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between flex-wrap">
                 {/* Search Bar */}
-                <div className="flex w-full sm:max-w-md ml-0">
+                <div className="flex w-full sm:w-auto">
                   <input
                     type="text"
                     placeholder="Search tenant details..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="w-[60%] text-black border-gray-200 p-3 border rounded-l-lg shadow-md relative"
+                    className="flex-1 min-w-0 text-black border border-gray-300 rounded-l-lg p-3 shadow-sm"
                   />
                   <button
                     onClick={handleSubmit}
-                    className="bg-blue-500 text-white py-2 px-4 rounded-r-lg hover:bg-blue-600 duration-200 cursor-pointer"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600 transition"
                   >
                     <FaSearch />
                   </button>
                 </div>
-                <div className="flex flex-wrap sm:flex-nowrap gap-2 items-center justify-end">
+
+                {/* Filter Controls */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex gap-2 w-full sm:w-auto">
                   {/* Room Dropdown */}
-                  <div className="relative">
-                    <select
-                      value={room}
-                      onChange={(e) => setRoom(e.target.value)}
-                      className="block appearance-none w-full bg-white border rounded-lg border-blue-500 border-2 hover:border-blue-500 px-4 py-2 pr-8 shadow-sm  text-sm  cursor-pointer"
-                    >
-                      <option value="Room 101">Room 101</option>
-                      <option value="Room 201">Room 201</option>
-                      <option value="Room 104">Room 104</option>
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-blue-600">
-                      <svg
-                        className="fill-current h-4 w-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                      </svg>
-                    </div>
-                  </div>
+                  <select
+                    value={room}
+                    onChange={(e) => setRoom(e.target.value)}
+                    className="w-full cursor-pointer bg-white border border-blue-500 text-sm rounded-md py-2 px-6 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  >
+                    <option value="">Select Room</option>
+                    <option value="Room 101">Room 101</option>
+                    <option value="Room 201">Room 201</option>
+                    <option value="Room 104">Room 104</option>
+                  </select>
 
                   {/* Month Dropdown */}
-                  <div className="relative">
-                    <select
-                      value={month}
-                      onChange={(e) => setMonth(e.target.value)}
-                      className="block appearance-none w-full bg-white rounded-lg border-blue-500 border-2 hover:border-blue-500 px-4 py-2 pr-8 shadow-sm  text-sm transition-colors "
-                    >
-                      {[
-                        "January",
-                        "February",
-                        "March",
-                        "April",
-                        "May",
-                        "June",
-                        "July",
-                        "August",
-                        "September",
-                        "October",
-                        "November",
-                        "December",
-                      ].map((m) => (
-                        <option key={m} value={m}>
-                          {m}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-blue-600 cursor-pointer">
-                      <svg
-                        className="fill-current h-4 w-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                      </svg>
-                    </div>
-                  </div>
+                  <select
+                    value={month}
+                    onChange={(e) => setMonth(e.target.value)}
+                    className="w-full cursor-pointer bg-white border border-blue-500 text-sm rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  >
+                    {[
+                      "January",
+                      "February",
+                      "March",
+                      "April",
+                      "May",
+                      "June",
+                      "July",
+                      "August",
+                      "September",
+                      "October",
+                      "November",
+                      "December",
+                    ].map((m) => (
+                      <option key={m} value={m}>
+                        {m}
+                      </option>
+                    ))}
+                  </select>
 
                   {/* Year Dropdown */}
-                  <div className="relative">
-                    <select
-                      value={year}
-                      onChange={(e) => setYear(e.target.value)}
-                      className="block appearance-none w-full bg-white rounded-lg border-blue-500 border-2 hover:border-blue-500 px-4 py-2 pr-8 shadow-sm  text-sm  cursor-pointer"
-                    >
-                      {["2024", "2025", "2026"].map((y) => (
-                        <option key={y} value={y}>
-                          {y}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-blue-600 cursor-pointer">
-                      <svg
-                        className="fill-current h-4 w-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                      </svg>
-                    </div>
-                  </div>
+                  <select
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                    className="w-full cursor-pointer bg-white border border-blue-500 text-sm rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  >
+                    {["2024", "2025", "2026"].map((y) => (
+                      <option key={y} value={y}>
+                        {y}
+                      </option>
+                    ))}
+                  </select>
 
                   {/* Submit Button */}
                   <button
                     onClick={handleSubmit}
-                    className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-700 text-sm shadow-sm  cursor-pointer"
+                    className="bg-blue-600 cursor-pointer text-white font-medium px-4 py-2 rounded-md text-sm hover:bg-blue-700 transition w-full sm:w-auto"
                   >
                     Submit
                   </button>

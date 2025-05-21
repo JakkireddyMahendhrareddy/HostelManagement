@@ -1,49 +1,44 @@
 import React from "react";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import NoHostelMessage from "./NoHostelMessage";
+import { toast } from "react-toastify";
 import { backendUrl, toastNoficationSettings } from "../utils/utils";
-
-
 
 const InnerDashboard = () => {
   const headingColor = "text-blue-600";
 
   const getHostelUrl = `${backendUrl}/api/hostel/view`;
-  
 
   const [loading, setLoading] = useState(true);
   const [hostel, setHostel] = useState(null);
-  
 
-    const fetchHostel = async () => {
+   const fetchHostel = async () => {
       try {
         setLoading(true);
         const response = await fetch(getHostelUrl, {
           method: "GET",
           credentials: "include",
         });
+        console.log(response,"response")
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           if (data) {
             setHostel(data);
-            fetchRooms();
+            fetchMessMenu();
           } else {
             setHostel(null);
           }
         }
       } catch (error) {
-        toast.warning("Something Went Wrong", toastNoficationSettings);
+        // toast.warning("Something Went Wrong", toastNoficationSettings);
       } finally {
         setLoading(false);
       }
     };
-  
-    useEffect(() => {
-      fetchHostel();
-    }, []);
-  
-  
+
+  useEffect(() => {
+    fetchHostel();
+  }, []);
 
   return (
     <div>
