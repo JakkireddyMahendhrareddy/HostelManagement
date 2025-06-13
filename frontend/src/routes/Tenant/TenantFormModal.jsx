@@ -915,7 +915,7 @@ const TenantFormModal = ({
                       id="termsAgreement"
                       name="termsAgreement"
                       type="checkbox"
-                      checked={newTenant.termsAgreement  || false}
+                      checked={newTenant.termsAgreement || false}
                       onChange={(e) =>
                         handleTenantChange({
                           target: {

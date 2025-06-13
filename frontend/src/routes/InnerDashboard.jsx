@@ -5,36 +5,36 @@ import { toast } from "react-toastify";
 import { backendUrl, toastNoficationSettings } from "../utils/utils";
 
 const InnerDashboard = () => {
-  const headingColor = "text-blue-600";
+  const headingColor = "text-gray-600";
 
   const getHostelUrl = `${backendUrl}/api/hostel/view`;
 
   const [loading, setLoading] = useState(true);
   const [hostel, setHostel] = useState(null);
 
-   const fetchHostel = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(getHostelUrl, {
-          method: "GET",
-          credentials: "include",
-        });
-        console.log(response,"response")
-        if (response.ok) {
-          const data = await response.json();
-          if (data) {
-            setHostel(data);
-            fetchMessMenu();
-          } else {
-            setHostel(null);
-          }
+  const fetchHostel = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(getHostelUrl, {
+        method: "GET",
+        credentials: "include",
+      });
+      console.log(response, "response");
+      if (response.ok) {
+        const data = await response.json();
+        if (data) {
+          setHostel(data);
+          fetchMessMenu();
+        } else {
+          setHostel(null);
         }
-      } catch (error) {
-        // toast.warning("Something Went Wrong", toastNoficationSettings);
-      } finally {
-        setLoading(false);
       }
-    };
+    } catch (error) {
+      // toast.warning("Something Went Wrong", toastNoficationSettings);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchHostel();

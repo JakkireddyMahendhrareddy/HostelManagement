@@ -1,192 +1,132 @@
-import { Link } from "react-router-dom";
-import { MdLocationPin } from "react-icons/md";
-import { IoMdCall, IoIosMail } from "react-icons/io";
-import { FaFacebook } from "react-icons/fa";
-import { AiFillTwitterCircle, AiFillInstagram } from "react-icons/ai";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaInstagram,
+  FaPhone,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaClock,
+} from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-blue-50 text-blue-500 py-4 px-6 sm:px-32 relative top-[200px]">
-      <div className="container grid grid-cols-1 md:grid-cols-3 gap-x-8">
-        <div>
-          <Link to="/">
-            <div className="text-blue-500 text-2xl">logo</div>
-          </Link>
-          <p className="mt-2 text-gray-600 text-md">
-            One shot Visualization Platform to manage your hostel
-          </p>
+    <footer className="bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4 sm:px-6 lg:px-8 border-t border-gray-200">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {/* Logo and Description */}
+          <div className="space-y-3">
+            <h2 className="text-xl font-bold text-blue-600 tracking-wide">
+              logo
+            </h2>
+            <p className="text-gray-600 text-sm leading-relaxed max-w-xs">
+              One shot Visualization Platform to manage your hostel
+            </p>
+          </div>
+
+          {/* Quick Links */}
+          <div className="space-y-3">
+            <h3 className="text-lg font-semibold text-blue-600">Quick Links</h3>
+            <ul className="space-y-1.5">
+              <li>
+                <a
+                  href="/"
+                  className="text-gray-600 hover:text-blue-600 transition-colors duration-200 text-sm inline-block"
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/about"
+                  className="text-gray-600 hover:text-blue-600 transition-colors duration-200 text-sm inline-block"
+                >
+                  About
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/services"
+                  className="text-gray-600 hover:text-blue-600 transition-colors duration-200 text-sm inline-block"
+                >
+                  Services
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact Us */}
+          <div className="space-y-3">
+            <h3 className="text-lg font-semibold text-blue-600">Contact Us</h3>
+            <div className="space-y-2">
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <FaPhone className="text-blue-500 text-xs flex-shrink-0" />
+                  <span className="text-gray-600 text-sm">
+                    Call Now: +91 xxxxx xxxxx
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <FaEnvelope className="text-blue-500 text-xs flex-shrink-0" />
+                  <span className="text-gray-600 text-sm break-all">
+                    Email: xyz@example.com
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <FaMapMarkerAlt className="text-blue-500 text-xs flex-shrink-0" />
+                  <span className="text-gray-600 text-sm">
+                    Address: 123 Main Street, Hyderabad, Telangana - 500001
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <FaClock className="text-blue-500 text-xs flex-shrink-0" />
+                  <span className="text-gray-600 text-sm">
+                    Timings: Mon - Sat, 9:00 AM to 7:00 PM
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div>
-          <h3 className="text-md font-semibold">Quick Links</h3>
-          <ul className="mt-2 space-y-2 text-gray-600">
-            <li className="text-sm">
-              <Link to="/about" className="hover:text-blue-500">
-                About
-              </Link>
-            </li>
-            <li className="text-sm">
-              <Link to="/contact-us" className="hover:text-blue-500">
-                Contact
-              </Link>
-            </li>
-            <li className="text-sm">
-              <Link to="/contact-us" className="hover:text-blue-500">
-                Refund Policy
-              </Link>
-            </li>
-          </ul>
+        {/* Social Media and Follow Us */}
+        <div className="mt-8 pt-6 border-t border-gray-200">
+          <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+            <div className="flex items-center space-x-4">
+              <h3 className="text-sm font-medium text-blue-600">Follow Us:</h3>
+              <div className="flex space-x-3">
+                <a
+                  href="#"
+                  className="w-8 h-8 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center transition-colors duration-300 group"
+                  aria-label="Facebook"
+                >
+                  <FaFacebookF className="text-white text-xs group-hover:scale-110 transition-transform duration-200" />
+                </a>
+                <a
+                  href="#"
+                  className="w-8 h-8 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors duration-300 group"
+                  aria-label="Twitter"
+                >
+                  <FaTwitter className="text-white text-xs group-hover:scale-110 transition-transform duration-200" />
+                </a>
+                <a
+                  href="#"
+                  className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 rounded-full flex items-center justify-center transition-all duration-300 group"
+                  aria-label="Instagram"
+                >
+                  <FaInstagram className="text-white text-xs group-hover:scale-110 transition-transform duration-200" />
+                </a>
+              </div>
+            </div>
+
+            {/* Copyright */}
+            <p className="text-center text-gray-500 text-xs">
+              © 2025 PGO Hostel. All rights reserved.
+            </p>
+          </div>
         </div>
-
-        <div>
-          <h3 className="text-md font-semibold mb-2">Contact Us</h3>
-
-          <Link
-            to="tel:+919876543210"
-            className="text-gray-600 hover:text-blue-500 flex items-center gap-x-2 mb-2"
-          >
-            <IoMdCall className="text-xl" />
-            <span className="text-sm">Call Now: +91 xxxxx xxxxx</span>
-          </Link>
-
-          <Link
-            className="text-gray-600 hover:text-blue-500 flex items-center gap-x-2 mb-2"
-            to="https://mail.google.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <IoIosMail className="text-xl" />
-            <span className="text-sm">Email: xyz@example.com</span>
-          </Link>
-        </div>
-      </div>
-
-      <div className="mt-6 text-center">
-        <h3 className="text-md font-semibold">Follow Us</h3>
-        <div className="flex justify-center mt-3 space-x-4 gap-x-2">
-          <Link
-            to="https://www.facebook.com/login/"
-            target="_blank"
-            className="text-gray-600 hover:text-blue-500"
-          >
-            <FaFacebook className="text-xl" />
-          </Link>
-          <Link
-            to="https://x.com/i/flow/login"
-            target="_blank"
-            className="text-gray-600 hover:text-blue-500"
-          >
-            <AiFillTwitterCircle className="text-2xl" />
-          </Link>
-          <Link
-            to="https://www.instagram.com/accounts/login/?hl=en"
-            target="_blank"
-            className="text-gray-600 hover:text-blue-500"
-          >
-            <AiFillInstagram className="text-2xl" />
-          </Link>
-        </div>
-      </div>
-
-      <hr className="my-4 border-gray-300" />
-      <div className="mt-4 text-center text-gray-600 cursor-pointer hover:text-blue-500">
-        <span className="text-sm">
-          &copy; 2025 PGO Hostel. All rights reserved.
-        </span>
       </div>
     </footer>
   );
 };
 
 export default Footer;
-
-
-// <footer className="bg-blue-50  text-white py-4  px-6 sm:px-32">
-// <div className="container grid grid-cols-1 md:grid-cols-3 gap-x-8">
-//   <div className="flex gap-x-4  h-fit items-center">
-//     {/* <h2 className="text-xl font-semibold">Paying Guest Online</h2> */}
-//     <Link to="/">
-//       <div className="text-blue-500 text-2xl">logo</div>
-//     </Link>
-//     <p className="mt-2 text-gray-400 text-sm">
-//       One shot Visualization Platform to manage your hostel
-//     </p>
-//   </div>
-
-//   <div>
-//     <h3 className="text-md font-semibold">Quick Links</h3>
-//     <ul className="mt-2 space-y-2 text-gray-400">
-//       <li className="text-sm">
-//         <Link to="/about" className="hover:text-white">
-//           About
-//         </Link>
-//       </li>
-//       <li className="text-sm">
-//         <Link to="/contact-us" className="hover:text-white">
-//           Contact
-//         </Link>
-//       </li>
-//       <li className="text-sm">
-//         <Link to="/contact-us" className="hover:text-white">
-//           Refund Policy
-//         </Link>
-//       </li>
-//     </ul>
-//   </div>
-
-//   <div>
-//     <h3 className="text-md font-semibold mb-2">Contact Us</h3>
-
-//     <Link
-//       to="tel:+919876543210"
-//       className="text-gray-400 hover:text-white flex items-center gap-x-2 mb-2"
-//     >
-//       <IoMdCall className="text-xl" />
-//       <span className="text-sm">Call Now: +91 xxxxx xxxxx</span>
-//     </Link>
-
-//     <Link
-//       className="text-gray-400 hover:text-white flex items-center gap-x-2 mb-2"
-//       to="https://mail.google.com/"
-//       target="_blank"
-//       rel="noopener noreferrer"
-//     >
-//       <IoIosMail className="text-xl" />
-//       <span className="text-sm">Email: xyz@example.com</span>
-//     </Link>
-//   </div>
-// </div>
-
-// <div className="mt-6 text-center">
-//   <h3 className="text-md font-semibold">Follow Us</h3>
-//   <div className="flex justify-center mt-3 space-x-4 gap-x-2">
-//     <Link
-//       to="https://www.facebook.com/login/"
-//       target="_blank"
-//       className="text-gray-400 hover:text-white"
-//     >
-//       <FaFacebook className="text-xl" />
-//     </Link>
-//     <Link
-//       to="https://x.com/i/flow/login"
-//       target="_blank"
-//       className="text-gray-400 hover:text-white"
-//     >
-//       <AiFillTwitterCircle className="text-2xl" />
-//     </Link>
-//     <Link
-//       to="https://www.instagram.com/accounts/login/?hl=en"
-//       target="_blank"
-//       className="text-gray-400 hover:text-white"
-//     >
-//       <AiFillInstagram className="text-2xl" />
-//     </Link>
-//   </div>
-// </div>
-// <hr className="my-4 border-gray-600" />
-// <div className="mt-4 text-center text-gray-400 cursor-pointer hover:text-white">
-//   <span className="text-sm">
-//     &copy; 2025 PGO Hostel. All rights reserved.
-//   </span>
-// </div>
-// </footer>

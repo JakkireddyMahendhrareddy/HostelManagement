@@ -18,6 +18,7 @@ import {
 } from "react-icons/fa";
 
 const TenantDetailsModal = ({ tenant = {}, setShowDetailsModal }) => {
+  console.log(tenant, "///////////////////");
   // Format date for display
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
@@ -371,7 +372,7 @@ const TenantDetailsModal = ({ tenant = {}, setShowDetailsModal }) => {
                           className="w-40 h-40 object-cover rounded shadow-md"
                           onError={(e) => {
                             e.target.onerror = null;
-                            e.target.src = "/placeholder-image.png";
+                            // e.target.src = "/placeholder-image.png";
                           }}
                         />
                       </div>

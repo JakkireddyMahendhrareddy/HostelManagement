@@ -10,6 +10,8 @@ import Dashboard from "./routes/Dashboard";
 import Profile from "./components/Profile";
 // Lazy loaded components
 const Home = lazy(() => import("./routes/Home"));
+const Contact = lazy(() => import("./routes/Contact"));
+const Services = lazy(() => import("./routes/Services"));
 const About = lazy(() => import("./routes/About"));
 const Registration = lazy(() => import("./routes/Registration"));
 const Login = lazy(() => import("./routes/Login"));
@@ -30,20 +32,39 @@ const App = () => {
           <Route
             path="/"
             element={
-              <>
+              <div className="h-[80vh] bg-red-700">
                 <Header />
                 <Home />
-                <Footer />
-              </>
+                {/* <Footer /> */}
+              </div>
             }
           />
+
           <Route
             path="/about"
             element={
               <>
                 <Header />
                 <About />
-                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <>
+                <Header />
+                <Contact />
+                {/* <Footer /> */}
+              </>
+            }
+          />
+          <Route
+            path="/services"
+            element={
+              <>
+                <Header />
+                <Services />
               </>
             }
           />
@@ -65,7 +86,6 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-
 
           {/* 404 */}
           <Route path="*" element={<PageNotFound />} />
