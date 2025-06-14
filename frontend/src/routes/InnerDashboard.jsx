@@ -52,12 +52,12 @@ const InnerDashboard = () => {
             <NoHostelMessage />
           ) : (
             <div>
-              <div className="min-h-screen bg-white px-4 sm:px-6 lg:px-8 py-6">
+              <div className="min-h-screen  px-4 sm:px-6 lg:px-8 py-6">
                 <div className="max-w-7xl mx-auto space-y-6">
                   {/* Rooms, Payment, Amenities */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {/* Rooms */}
-                    <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition duration-300 transform hover:scale-[1.02]">
+                    <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl shadow hover:shadow-lg transition duration-300 transform hover:scale-[1.02]">
                       <h3 className={`${headingColor} font-bold text-lg mb-4`}>
                         Rooms
                       </h3>

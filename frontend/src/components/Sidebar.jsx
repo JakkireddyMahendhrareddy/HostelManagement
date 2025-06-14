@@ -454,7 +454,7 @@ export default function Sidebar() {
         <div className="md:hidden fixed top-4 left-4 z-50">
           <button
             onClick={toggleSidebar}
-            className="relative bg-white/10 backdrop-blur-xl border border-white/20 text-white p-3 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-110 hover:rotate-3 group overflow-hidden"
+            className="relative bg-white/10 backdrop-blur-xl  text-white p-3 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-110 hover:rotate-3 group overflow-hidden"
             style={{
               background:
                 "linear-gradient(135deg, rgba(147, 51, 234, 0.8), rgba(219, 39, 119, 0.8))",
@@ -484,7 +484,7 @@ export default function Sidebar() {
         <aside
           className={`${
             sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-          } fixed md:relative z-40 w-72 md:w-80 h-screen flex flex-col transition-all duration-700 ease-out transform border-r border-gray-100`}
+          } fixed md:relative z-40 w-72 md:w-80 h-screen flex flex-col transition-all duration-700 ease-out transform `}
           style={{
             background:
               "linear-gradient(145deg, #0f0f23 0%, #1a1a3e 25%, #2d1b3d 50%, #1e1e3f 75%, #0f0f23 100%)",
@@ -686,15 +686,15 @@ export default function Sidebar() {
         {/* Main Content */}
         <main className="flex-1 flex flex-col bg-gradient-to-br from-slate-50 to-blue-50 overflow-hidden relative w-full md:ml-0">
           {/* Fixed Topbar */}
-          <div className="sticky top-0 left-0 right-0 h-16 z-10 shadow-lg bg-white/80 backdrop-blur-md border-b border-gray-200">
+          <div className="sticky top-0 left-0 right-0 h-20 z-10 shadow-lg bg-white/80 backdrop-blur-md border-b border-gray-200">
             <div className="pl-16 md:pl-0">
               <Topbar />
             </div>
           </div>
 
           {/* Content Area */}
-          <div className="flex-1 overflow-auto p-4 md:p-6">
-            <div className="bg-white rounded-3xl shadow-xl border border-gray-100 min-h-full backdrop-blur-sm">
+          <div className="flex-1 overflow-auto ">
+            <div className="bg-gradient-to-br from-[#2b2a5d] to-[#1e1e3f] rounded-sm shadow-xl border border-gray-100 min-h-full backdrop-blur-sm">
               <div className="p-6">{renderContent()}</div>
             </div>
           </div>

@@ -436,7 +436,7 @@ const HostelInfo = () => {
     //     </div>
     //   </div>
     // </div>
-    <div className="min-h-screen w-full bg-gray-50 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen w-full px-4 sm:px-6 lg:px-8">
   <div className="max-w-7xl mx-auto py-6 sm:py-8 lg:py-10">
     {loading ? (
       <div className="flex justify-center items-center h-60">
