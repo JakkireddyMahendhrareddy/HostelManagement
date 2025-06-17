@@ -2,7 +2,7 @@ import TableBodyRow from "./TableBodyRow";
 
 const TableBody = ({ bodyData, editRoom, handleDeleteRoomClick }) => {
   return (
-    <tbody className="divide-y divide-gray-200 bg-white">
+    <tbody className="divide-y divide-white/10 bg-white/5">
       {bodyData.map((room, index) => (
         <TableBodyRow
           key={room.number}

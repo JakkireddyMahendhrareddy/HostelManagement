@@ -33,7 +33,7 @@ const About = () => {
                 <h2 className="text-3xl font-bold text-white text-center mb-12 tracking-widest">
                   What We Offer ?
                 </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-6xl mx-auto">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:gird-cols-4 gap-4 felx items-center lg:gap-4 max-w-6xl mx-auto">
                   {[
                     {
                       icon: "🏢",
@@ -54,6 +54,16 @@ const About = () => {
                       icon: "⚡",
                       title: "Smooth User Experience",
                       text: "No more clutter. Just clean visuals, smooth navigation, and powerful tools that make management feel easy.",
+                    },
+                    {
+                      icon: "🏢",
+                      title: "Easy Hostel Registration",
+                      text: "Add details like the number of rooms, floors, pricing, and availability — all from a single dashboard.",
+                    },
+                    {
+                      icon: "🔐",
+                      title: "Secure Verification Process",
+                      text: "Your submission is reviewed by our admin team to ensure genuine listings and a trusted platform for everyone.",
                     },
                   ].map((item, index) => (
                     <div

@@ -695,7 +695,7 @@ export default function Sidebar() {
           {/* Content Area */}
           <div className="flex-1 overflow-auto ">
             <div className="bg-gradient-to-br from-[#2b2a5d] to-[#1e1e3f] rounded-sm shadow-xl border border-gray-100 min-h-full backdrop-blur-sm">
-              <div className="p-6">{renderContent()}</div>
+              <div className="p-0">{renderContent()}</div>
             </div>
           </div>
         </main>

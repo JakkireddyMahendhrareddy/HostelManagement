@@ -1,6 +1,7 @@
 import React from "react";
 import { FaEdit, FaEye } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
+import TableHeading from "../../ui/Table/TableHeading";
 
 const statusColors = {
   Pending: "bg-yellow-100 text-yellow-800",
@@ -39,31 +40,17 @@ const MaintenanceTable = ({
   return (
     <div className="w-full mt-2 overflow-x-auto rounded-xl border border-gray-200 shadow-md mx-auto">
       <table className="min-w-[700px] w-full divide-y divide-gray-200 text-sm">
-        <thead className="bg-gray-100 shadow-md">
-          <tr>
-            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
-              Room
-            </th>
-            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
-              Issue
-            </th>
-            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
-              Status
-            </th>
-            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
-              Priority
-            </th>
-            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
-              Requested
-            </th>
-            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
-              Date
-            </th>
-            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
-              Actions
-            </th>
-          </tr>
-        </thead>
+        <TableHeading
+          headingList={[
+            "Room No.",
+            "Issue",
+            "Status",
+            "Priority",
+            "Requested By",
+            "Created Date",
+            "Actions",
+          ]}
+        />
         <tbody className="bg-white divide-y divide-gray-200">
           {loading ? (
             <tr>
@@ -149,3 +136,30 @@ const MaintenanceTable = ({
 };
 
 export default MaintenanceTable;
+{
+  /* <thead className="bg-gray-100 shadow-md">
+          <tr>
+            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
+              Room
+            </th>
+            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
+              Issue
+            </th>
+            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
+              Status
+            </th>
+            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
+              Priority
+            </th>
+            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
+              Requested
+            </th>
+            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
+              Date
+            </th>
+            <th className="px-3 sm:px-4 md:px-6 py-3 text-left font-semibold text-gray-700 tracking-wide whitespace-nowrap">
+              Actions
+            </th>
+          </tr>
+        </thead> */
+}
