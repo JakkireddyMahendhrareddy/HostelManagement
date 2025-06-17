@@ -35,7 +35,7 @@ const TableBodyRow = ({ roomInfo, index, editRoom, handleDeleteRoomClick }) => {
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 font-medium">
         {type}
       </td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 font-medium">
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-white font-medium">
         {beds}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 font-medium">

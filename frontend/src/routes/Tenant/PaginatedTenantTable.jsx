@@ -8,6 +8,7 @@ import {
   FaAngleDoubleRight,
 } from "react-icons/fa";
 import { useState } from "react";
+import TableHeading from "../../ui/Table/TableHeading";
 
 const PaginatedTenantTable = ({
   tenants,
@@ -42,31 +43,18 @@ const PaginatedTenantTable = ({
         <>
           <div className="w-full mt-4 overflow-x-auto rounded-xl border border-gray-200 shadow-md">
             <table className="min-w-[700px] w-full divide-y divide-gray-200 text-sm text-left">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
-                    S.No
-                  </th>
-                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
-                    Tenant
-                  </th>
-                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
-                    Contact
-                  </th>
-                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
-                    Room
-                  </th>
-                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
-                    Join Date
-                  </th>
-                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
-                    Rent
-                  </th>
-                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
+              <TableHeading
+                headingList={[
+                  "Room No.",
+                  "Room Type",
+                  "Beds",
+                  "Available Beds",
+                  "Room Rent",
+                  "Room Status",
+                  "Actions",
+                ]}
+              />
+
               <tbody className="divide-y divide-gray-200 bg-white">
                 {tenants.map((tenant, index) => (
                   <tr
@@ -205,3 +193,300 @@ const PaginatedTenantTable = ({
 };
 
 export default PaginatedTenantTable;
+
+{
+  /* <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
+                    S.No
+                  </th>
+                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
+                    Tenant
+                  </th>
+                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
+                    Contact
+                  </th>
+                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
+                    Room
+                  </th>
+                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
+                    Join Date
+                  </th>
+                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
+                    Rent
+                  </th>
+                  <th className="px-2 sm:px-4 md:px-6 py-3 font-semibold text-gray-700 whitespace-nowrap">
+                    Actions
+                  </th>
+                </tr>
+              </thead> */
+}
+
+// Table.jsx - Main Table Component
+// import React from 'react';
+// import { FaAngleDoubleLeft, FaAngleDoubleRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+
+// // Main Table Container
+// export const Table = ({ children, className = "" }) => {
+//   return (
+//     <div className={`w-full mt-4 overflow-x-auto rounded-xl border border-slate-600/30 shadow-lg backdrop-blur-sm ${className}`}>
+//       <table className="min-w-[700px] w-full divide-y divide-slate-600/30 text-sm text-left">
+//         {children}
+//       </table>
+//     </div>
+//   );
+// };
+
+// // Table Heading Component
+// export const TableHeading = ({ headings, className = "" }) => {
+//   return (
+//     <thead className={`bg-gradient-to-r from-slate-800/80 to-purple-900/60 ${className}`}>
+//       <tr>
+//         {headings.map((heading, index) => (
+//           <th
+//             key={index}
+//             className="px-2 sm:px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-200 uppercase tracking-wider border-b border-slate-600/30"
+//           >
+//             {heading}
+//           </th>
+//         ))}
+//       </tr>
+//     </thead>
+//   );
+// };
+
+// // Table Body Component
+// export const TableBody = ({ children, className = "" }) => {
+//   return (
+//     <tbody className={`divide-y divide-slate-600/20 bg-gradient-to-b from-slate-800/40 to-purple-900/20 ${className}`}>
+//       {children}
+//     </tbody>
+//   );
+// };
+
+// // Table Row Component
+// export const TableRow = ({ children, onClick, className = "", hover = true }) => {
+//   return (
+//     <tr
+//       onClick={onClick}
+//       className={`
+//         ${hover ? 'hover:bg-slate-700/50 hover:shadow-md transition-all duration-200' : ''}
+//         ${onClick ? 'cursor-pointer' : ''}
+//         group
+//         ${className}
+//       `}
+//     >
+//       {children}
+//     </tr>
+//   );
+// };
+
+// // Table Cell Component
+// export const TableCell = ({ children, className = "", ...props }) => {
+//   return (
+//     <td
+//       className={`px-2 sm:px-4 md:px-6 py-3 whitespace-nowrap text-gray-200 ${className}`}
+//       {...props}
+//     >
+//       {children}
+//     </td>
+//   );
+// };
+
+// // Action Buttons Component
+// export const ActionButtons = ({ actions, className = "" }) => {
+//   return (
+//     <TableCell className={className}>
+//       <div className="flex space-x-3">
+//         {actions.map((action, index) => (
+//           <button
+//             key={index}
+//             onClick={action.onClick}
+//             className={`
+//               text-gray-400 cursor-pointer hover:text-white transition-colors duration-200
+//               hover:scale-110 transform
+//               ${action.className || ''}
+//             `}
+//             title={action.title}
+//             disabled={action.disabled}
+//           >
+//             {action.icon}
+//           </button>
+//         ))}
+//       </div>
+//     </TableCell>
+//   );
+// };
+
+// // Status Badge Component
+// export const StatusBadge = ({ status, variant = "default", className = "" }) => {
+//   const variants = {
+//     success: "bg-green-500/20 text-green-400 border-green-500/30",
+//     warning: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+//     error: "bg-red-500/20 text-red-400 border-red-500/30",
+//     info: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+//     default: "bg-gray-500/20 text-gray-400 border-gray-500/30"
+//   };
+
+//   return (
+//     <span className={`
+//       inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+//       border backdrop-blur-sm
+//       ${variants[variant]}
+//       ${className}
+//     `}>
+//       {status}
+//     </span>
+//   );
+// };
+
+// // Pagination Component
+// export const Pagination = ({
+//   currentPage,
+//   totalPages,
+//   itemsPerPage,
+//   onPageChange,
+//   onItemsPerPageChange,
+//   className = ""
+// }) => {
+//   return (
+//     <div className={`flex flex-col sm:flex-row flex-wrap justify-between items-center mt-6 gap-4 text-sm ${className}`}>
+//       {/* Items Per Page Selector */}
+//       <div className="flex items-center gap-2">
+//         <span className="text-gray-300">Items per page:</span>
+//         <select
+//           value={itemsPerPage}
+//           onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
+//           className="border border-slate-600/50 rounded-md p-1 px-2 text-gray-200 bg-slate-800/60 cursor-pointer
+//                      focus:outline-none focus:ring-2 focus:ring-purple-500/50 backdrop-blur-sm"
+//         >
+//           <option value={5}>5</option>
+//           <option value={10}>10</option>
+//           <option value={20}>20</option>
+//           <option value={50}>50</option>
+//         </select>
+//       </div>
+
+//       {/* Pagination Controls */}
+//       <div className="flex items-center gap-2 flex-wrap justify-center">
+//         <button
+//           onClick={() => onPageChange(1)}
+//           disabled={currentPage === 1}
+//           className={`p-2 border border-slate-600/50 cursor-pointer rounded-md transition-all duration-200 ${
+//             currentPage === 1
+//               ? "text-gray-500 cursor-not-allowed bg-slate-800/30"
+//               : "hover:bg-slate-700/50 text-gray-300 hover:text-white hover:border-purple-500/50"
+//           }`}
+//         >
+//           <FaAngleDoubleLeft />
+//         </button>
+//         <button
+//           onClick={() => onPageChange(currentPage - 1)}
+//           disabled={currentPage === 1}
+//           className={`p-2 border border-slate-600/50 cursor-pointer rounded-md transition-all duration-200 ${
+//             currentPage === 1
+//               ? "text-gray-500 cursor-not-allowed bg-slate-800/30"
+//               : "hover:bg-slate-700/50 text-gray-300 hover:text-white hover:border-purple-500/50"
+//           }`}
+//         >
+//           <FaChevronLeft />
+//         </button>
+//         <span className="text-gray-300 px-3 py-2 bg-slate-800/40 rounded-md border border-slate-600/30">
+//           Page <strong className="text-purple-400">{currentPage}</strong> of{" "}
+//           <strong className="text-purple-400">{totalPages}</strong>
+//         </span>
+//         <button
+//           onClick={() => onPageChange(currentPage + 1)}
+//           disabled={currentPage === totalPages}
+//           className={`p-2 border border-slate-600/50 cursor-pointer rounded-md transition-all duration-200 ${
+//             currentPage === totalPages
+//               ? "text-gray-500 cursor-not-allowed bg-slate-800/30"
+//               : "hover:bg-slate-700/50 text-gray-300 hover:text-white hover:border-purple-500/50"
+//           }`}
+//         >
+//           <FaChevronRight />
+//         </button>
+//         <button
+//           onClick={() => onPageChange(totalPages)}
+//           disabled={currentPage === totalPages}
+//           className={`p-2 border border-slate-600/50 cursor-pointer rounded-md transition-all duration-200 ${
+//             currentPage === totalPages
+//               ? "text-gray-500 cursor-not-allowed bg-slate-800/30"
+//               : "hover:bg-slate-700/50 text-gray-300 hover:text-white hover:border-purple-500/50"
+//           }`}
+//         >
+//           <FaAngleDoubleRight />
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// // Usage Example:
+// /*
+// import { Table, TableHeading, TableBody, TableRow, TableCell, ActionButtons, StatusBadge, Pagination } from './Table';
+// import { FaEye, FaEdit, AiFillDelete } from 'react-icons/fa';
+
+// const MyTableComponent = () => {
+//   const handleView = (item) => console.log('View:', item);
+//   const handleEdit = (item) => console.log('Edit:', item);
+//   const handleDelete = (id) => console.log('Delete:', id);
+
+//   return (
+//     <>
+//       <Table>
+//         <TableHeading
+//           headings={["Room No.", "Room Type", "Beds", "Available Beds", "Room Rent", "Status", "Actions"]}
+//         />
+//         <TableBody>
+//           {data.map((item, index) => (
+//             <TableRow key={item.id}>
+//               <TableCell>{item.roomNo}</TableCell>
+//               <TableCell>{item.roomType}</TableCell>
+//               <TableCell>{item.beds}</TableCell>
+//               <TableCell>{item.availableBeds}</TableCell>
+//               <TableCell>₹{item.rent}</TableCell>
+//               <TableCell>
+//                 <StatusBadge
+//                   status={item.status}
+//                   variant={item.status === 'Available' ? 'success' : 'error'}
+//                 />
+//               </TableCell>
+//               <ActionButtons
+//                 actions={[
+//                   {
+//                     icon: <FaEye size={16} />,
+//                     onClick: () => handleView(item),
+//                     title: "View",
+//                     className: "hover:text-blue-400"
+//                   },
+//                   {
+//                     icon: <FaEdit size={16} />,
+//                     onClick: () => handleEdit(item),
+//                     title: "Edit",
+//                     className: "hover:text-green-400"
+//                   },
+//                   {
+//                     icon: <AiFillDelete size={16} />,
+//                     onClick: () => handleDelete(item.id),
+//                     title: "Delete",
+//                     className: "hover:text-red-400"
+//                   }
+//                 ]}
+//               />
+//             </TableRow>
+//           ))}
+//         </TableBody>
+//       </Table>
+
+//       <Pagination
+//         currentPage={currentPage}
+//         totalPages={totalPages}
+//         itemsPerPage={itemsPerPage}
+//         onPageChange={setCurrentPage}
+//         onItemsPerPageChange={setItemsPerPage}
+//       />
+//     </>
+//   );
+// };
+// */

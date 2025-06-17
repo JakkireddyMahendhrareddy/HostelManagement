@@ -723,10 +723,12 @@ const TenantInfo = () => {
         ) : !hostel || Object.keys(hostel).length === 0 ? (
           <NoHostelMessage />
         ) : (
-          <div>
-            <h1 className="text-2xl font-bold mb-6">Tenant Management</h1>
+          <div className="mt-6">
+            <h2 className="text-3xl font-bold text-white mb-2">
+              Tenant Management
+            </h2>
 
-            <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-4 mt-4 space-y-4">
+            <div className=" rounded-2xl shadow-md p-4 mt-4 space-y-4">
               {/* Search and Filter Bar */}
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 {/* Search input */}

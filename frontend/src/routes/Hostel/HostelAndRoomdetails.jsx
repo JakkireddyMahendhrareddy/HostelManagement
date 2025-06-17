@@ -202,25 +202,25 @@ const HostelAndRoomDetails = ({
             <div className="flex justify-between items-center py-3 border-b border-white/10">
               <span className="text-gray-300 font-medium">Hostel Name:</span>
               <span className="font-bold text-xl text-purple-400">
-                {hostel.name}
+                {hostel.data?.name}
               </span>
             </div>
             <div className="flex justify-between items-center py-3 border-b border-white/10">
               <span className="text-gray-300 font-medium">Category:</span>
               <span className="font-bold text-xl text-cyan-400">
-                {hostel.category}
+                {hostel.data?.category}
               </span>
             </div>
             <div className="flex justify-between items-center py-3 border-b border-white/10">
               <span className="text-gray-300 font-medium">Total Rooms:</span>
               <span className="font-bold text-xl text-green-400">
-                {hostel.totalRooms}
+                {hostel.data?.totalRooms}
               </span>
             </div>
             <div className="flex justify-between items-center py-3">
               <span className="text-gray-300 font-medium">Max Capacity:</span>
               <span className="font-bold text-xl text-yellow-400">
-                {hostel.maxCapacity}
+                {hostel.data?.maxCapacity}
               </span>
             </div>
           </div>
