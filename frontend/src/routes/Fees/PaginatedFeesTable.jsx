@@ -6,6 +6,7 @@ import {
   FaChevronRight,
   FaAngleDoubleRight,
 } from "react-icons/fa";
+import TableHeading from "../../ui/Table/TableHeading";
 
 const PaginatedFeesTable = ({
   tenants,
@@ -107,216 +108,253 @@ const PaginatedFeesTable = ({
   return (
     <div className="w-full">
       {/* Tenants Table */}
-      {loading ? (
-        <div className="flex justify-start items-start h-60">
-          <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
-        </div>
-      ) : processedTenants.length === 0 ? (
-        <div className="text-start py-10">
-          <p className="text-gray-800 text-center">
-            No tenants found. Did they ghost us? 👻
-          </p>
-        </div>
-      ) : (
-        <>
-          <div className="w-full mt-2 overflow-x-auto rounded-xl border border-gray-200 shadow-md">
-            <div className="min-w-[700px] w-full overflow-x-scroll scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-              <table className="w-full divide-y divide-gray-200 text-sm text-left">
-                <thead className="bg-gray-100 shadow sticky top-0 z-10">
-                  <tr>
-                    {[
-                      "S.NO",
-                      "TENANT",
-                      "CONTACT",
-                      "ROOM",
-                      "JOIN DATE",
-                      "DUE DATE",
-                      "RENT",
-                      "STATUS",
-                      "ACTIONS",
-                    ].map((col, i) => (
-                      <th
-                        key={i}
-                        className={`px-2 sm:px-4 py-3 font-semibold text-gray-700 tracking-wide whitespace-nowrap text-xs sm:text-sm ${
-                          col === "ACTIONS" ? "text-center" : "text-left"
+      <table className="min-w-[700px] w-full divide-y divide-white/10 text-sm">
+        <TableHeading
+          headingList={[
+            "S.NO",
+            "TENANT",
+            "CONTACT",
+            "ROOM",
+            "JOIN DATE",
+            "DUE DATE",
+            "RENT",
+            "STATUS",
+            "ACTIONS",
+          ]}
+        />
+        <tbody className="divide-y divide-slate-600/30 bg-slate-800/40">
+          {loading ? (
+            <tr>
+              <td colSpan="9" className="py-10 text-center text-white">
+                <div className="flex justify-center items-center">
+                  <div className="w-6 h-6 border-4 border-dashed rounded-full animate-spin border-purple-500"></div>
+                  <span className="ml-3">Loading payment data...</span>
+                </div>
+              </td>
+            </tr>
+          ) : processedTenants.length === 0 ? (
+            <tr>
+              <td colSpan="9" className="py-10 text-center text-gray-300">
+                No payment records found. Add your first payment to get started.
+              </td>
+            </tr>
+          ) : (
+            processedTenants.map((tenant, index) => {
+              const dueDate = tenant.processedDueDate
+                ? new Date(tenant.processedDueDate).toLocaleDateString()
+                : "-";
+              const rentStatus = tenant.processedRentStatus || "Due";
+              const isOverdue =
+                tenant.processedDueDate &&
+                new Date(tenant.processedDueDate) < new Date() &&
+                rentStatus === "Due";
+
+              return (
+                <tr
+                  key={tenant._id}
+                  className={`group relative hover:bg-white/10 transition-all duration-300 even:bg-white/5 cursor-pointer border-b border-white/5 ${
+                    isOverdue ? "bg-red-900/20" : ""
+                  }`}
+                >
+                  <td className="px-4 md:px-6 py-4 whitespace-nowrap text-white font-medium">
+                    <span className="bg-purple-500/20 text-purple-400 px-2 py-1 rounded-lg text-sm">
+                      {(pageNumber - 1) * tenantPerPage + index + 1}
+                    </span>
+                  </td>
+                  <td className="px-4 md:px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm">
+                      <div className="line-clamp-1 text-white">
+                        {tenant.tenantName || (
+                          <span className="text-gray-400 italic">
+                            Not specified
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-4 md:px-6 py-4 text-gray-300">
+                    <div className="text-sm">
+                      <div className="line-clamp-1 text-white">
+                        {tenant.contact || (
+                          <span className="text-gray-400 italic">
+                            Not specified
+                          </span>
+                        )}
+                      </div>
+                      {tenant.email && (
+                        <div className="text-xs text-cyan-400 mt-1 truncate max-w-[150px]">
+                          {tenant.email}
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-4 md:px-6 py-4 whitespace-nowrap">
+                    <span className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded-lg text-sm">
+                      {tenant.roomNumber}
+                    </span>
+                  </td>
+                  <td className="px-4 md:px-6 py-4 text-gray-300">
+                    <div className="text-sm">
+                      <div className="line-clamp-1 text-white">
+                        {tenant.moveInDate || tenant.joinDate ? (
+                          "Joined"
+                        ) : (
+                          <span className="text-gray-400 italic">
+                            Not specified
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-xs text-cyan-400 mt-1">
+                        {tenant.moveInDate
+                          ? new Date(tenant.moveInDate)
+                              .toLocaleDateString("en-GB")
+                              .replace(/\//g, "-")
+                          : tenant.joinDate
+                          ? new Date(tenant.joinDate)
+                              .toLocaleDateString("en-GB")
+                              .replace(/\//g, "-")
+                          : "-"}
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-4 md:px-6 py-4 text-gray-300">
+                    <div className="text-sm">
+                      <div
+                        className={`line-clamp-1 ${
+                          isOverdue ? "text-red-400 font-bold" : "text-white"
                         }`}
                       >
-                        {col}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {processedTenants.map((tenant, index) => {
-                    const dueDate = tenant.processedDueDate
-                      ? new Date(tenant.processedDueDate).toLocaleDateString()
-                      : "-";
-                    const rentStatus = tenant.processedRentStatus || "Due";
-                    const isOverdue =
-                      tenant.processedDueDate &&
-                      new Date(tenant.processedDueDate) < new Date() &&
-                      rentStatus === "Due";
-
-                    return (
-                      <tr
-                        key={tenant._id}
-                        className={`hover:bg-gray-100 ${
-                          isOverdue ? "bg-red-50" : ""
-                        } transition-all`}
-                      >
-                        <td className="px-2 sm:px-4 py-3 text-gray-900 text-xs sm:text-sm">
-                          {(pageNumber - 1) * tenantPerPage + index + 1}
-                        </td>
-                        <td className="px-2 sm:px-4 py-3 text-gray-900 text-xs sm:text-sm">
-                          {tenant.tenantName}
-                        </td>
-                        <td className="px-2 sm:px-4 py-3 text-gray-900 text-xs sm:text-sm">
-                          {tenant.contact}
-                        </td>
-                        <td className="px-2 sm:px-4 py-3 text-gray-900 text-xs sm:text-sm">
-                          {tenant.roomNumber}
-                        </td>
-                        <td className="px-2 sm:px-4 py-3 text-gray-900 text-xs sm:text-sm">
-                          {tenant.moveInDate
-                            ? new Date(tenant.moveInDate)
-                                .toLocaleDateString("en-GB")
-                                .replace(/\//g, "-")
-                            : tenant.joinDate
-                            ? new Date(tenant.joinDate)
-                                .toLocaleDateString("en-GB")
-                                .replace(/\//g, "-")
-                            : "-"}
-                        </td>
-                        <td
-                          className={`px-2 sm:px-4 py-3 text-xs sm:text-sm ${
-                            isOverdue
-                              ? "text-red-600 font-bold"
-                              : "text-gray-900"
-                          }`}
+                        {dueDate !== "-" ? "Due on" : "Not set"}
+                      </div>
+                      {dueDate !== "-" && (
+                        <div
+                          className={`text-xs ${
+                            isOverdue ? "text-red-400" : "text-cyan-400"
+                          } mt-1`}
                         >
                           {dueDate}
-                        </td>
-                        <td className="px-2 sm:px-4 py-3 text-gray-900 text-xs sm:text-sm">
-                          ₹{tenant.rentAmount}
-                        </td>
-                        <td className="px-2 sm:px-4 py-3 text-xs sm:text-sm">
-                          {rentStatus === "Paid" ? (
-                            <span className="text-green-600 font-medium">
-                              Paid
-                            </span>
-                          ) : (
-                            <span
-                              className={`font-medium ${
-                                isOverdue ? "text-red-600" : "text-orange-500"
-                              }`}
-                            >
-                              {rentStatus}
-                            </span>
-                          )}
-                        </td>
-                        <td className="px-2 sm:px-4 py-3 text-center text-xs sm:text-sm">
-                          <div className="flex justify-center sm:justify-start gap-2 flex-nowrap">
-                            <button
-                              onClick={() => handlePayment(tenant)}
-                              className="bg-green-600 text-white px-2 cursor-pointer py-1 rounded hover:bg-green-700 shadow-sm text-xs flex items-center gap-1"
-                            >
-                              <FaMoneyBillWave size={12} />
-                              Pay
-                            </button>
-                            <button
-                              onClick={() => handleHistoryClick(tenant)}
-                              className="bg-yellow-500 text-white px-2 py-1 cursor-pointer rounded hover:bg-yellow-600 shadow-sm text-xs flex items-center gap-1"
-                            >
-                              <FaHistory size={12} />
-                              Previous
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-4 md:px-6 py-4 whitespace-nowrap">
+                    <span className="bg-green-500/20 text-green-400 px-2 py-1 rounded-lg text-sm">
+                      ₹{tenant.rentAmount}
+                    </span>
+                  </td>
+                  <td className="px-4 md:px-6 py-4 whitespace-nowrap">
+                    {rentStatus === "Paid" ? (
+                      <span className="bg-green-500/20 text-green-400 px-3 py-1.5 rounded-full text-xs font-medium border border-green-500/30">
+                        Paid
+                      </span>
+                    ) : (
+                      <span
+                        className={`px-3 py-1.5 rounded-full text-xs font-medium border ${
+                          isOverdue
+                            ? "bg-red-500/20 text-red-400 border-red-500/30"
+                            : "bg-orange-500/20 text-orange-400 border-orange-500/30"
+                        }`}
+                      >
+                        {rentStatus}
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-4 md:px-6 py-4 w-32">
+                    <div className="flex items-center space-x-4">
+                      <button
+                        onClick={() => handlePayment(tenant)}
+                        title="Make Payment"
+                        className="text-cyan-400 hover:text-cyan-300 transition-colors"
+                      >
+                        <FaMoneyBillWave size={18} />
+                      </button>
+                      <button
+                        onClick={() => handleHistoryClick(tenant)}
+                        title="View History"
+                        className="text-purple-400 hover:text-purple-300 transition-colors"
+                      >
+                        <FaHistory size={18} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })
+          )}
+        </tbody>
+      </table>
+
+      {/* Pagination */}
+      {!loading && processedTenants.length > 0 && (
+        <div className="flex flex-col sm:flex-row flex-wrap justify-between items-center mt-6 gap-4 text-sm bg-black/30 p-4 rounded-xl border border-white/10">
+          <div className="flex items-center gap-2">
+            <span className="text-gray-300">Items per page:</span>
+            <select
+              value={tenantPerPage}
+              onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
+              className="bg-white/10 border border-white/20 text-white rounded-lg p-1 px-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-500"
+            >
+              {[5, 10, 20].map((num) => (
+                <option key={num} value={num}>
+                  {num}
+                </option>
+              ))}
+            </select>
           </div>
 
-          {/* Pagination */}
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6 text-sm">
-            <div className="flex items-center gap-2">
-              <span className="text-gray-600">Items per page:</span>
-              <select
-                value={tenantPerPage}
-                onChange={(e) =>
-                  handleItemsPerPageChange(Number(e.target.value))
-                }
-                className="border rounded p-1 text-sm cursor-pointer"
-              >
-                {[5, 10, 20].map((num) => (
-                  <option key={num} value={num}>
-                    {num}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => handlePageChange(1)}
-                disabled={pageNumber === 1}
-                className={`p-2 border cursor-pointer rounded ${
-                  pageNumber === 1
-                    ? "text-gray-400 cursor-not-allowed"
-                    : "hover:bg-gray-100"
-                }`}
-              >
-                <FaAngleDoubleLeft />
-              </button>
-              <button
-                onClick={() => handlePageChange(pageNumber - 1)}
-                disabled={pageNumber === 1}
-                className={`p-2 border cursor-pointer rounded ${
-                  pageNumber === 1
-                    ? "text-gray-400 cursor-not-allowed"
-                    : "hover:bg-gray-100"
-                }`}
-              >
-                <FaChevronLeft />
-              </button>
-              <span className="text-gray-700">
-                Page <strong>{pageNumber}</strong> of{" "}
-                <strong>{Math.ceil(totalTenants / tenantPerPage)}</strong>
-              </span>
-              <button
-                onClick={() => handlePageChange(pageNumber + 1)}
-                disabled={
-                  pageNumber === Math.ceil(totalTenants / tenantPerPage)
-                }
-                className={`p-2 border cursor-pointer rounded ${
-                  pageNumber === Math.ceil(totalTenants / tenantPerPage)
-                    ? "text-gray-400 cursor-not-allowed"
-                    : "hover:bg-gray-100"
-                }`}
-              >
-                <FaChevronRight />
-              </button>
-              <button
-                onClick={() =>
-                  handlePageChange(Math.ceil(totalTenants / tenantPerPage))
-                }
-                disabled={
-                  pageNumber === Math.ceil(totalTenants / tenantPerPage)
-                }
-                className={`p-2 border cursor-pointer rounded ${
-                  pageNumber === Math.ceil(totalTenants / tenantPerPage)
-                    ? "text-gray-400 cursor-not-allowed"
-                    : "hover:bg-gray-100"
-                }`}
-              >
-                <FaAngleDoubleRight />
-              </button>
-            </div>
+          <div className="flex items-center gap-2 flex-wrap justify-center">
+            <button
+              onClick={() => handlePageChange(1)}
+              disabled={pageNumber === 1}
+              className={`p-2 border border-white/20 cursor-pointer rounded-lg transition ${
+                pageNumber === 1
+                  ? "text-gray-500 cursor-not-allowed bg-white/5"
+                  : "hover:bg-white/10 text-white"
+              }`}
+            >
+              <FaAngleDoubleLeft />
+            </button>
+            <button
+              onClick={() => handlePageChange(pageNumber - 1)}
+              disabled={pageNumber === 1}
+              className={`p-2 border border-white/20 cursor-pointer rounded-lg transition ${
+                pageNumber === 1
+                  ? "text-gray-500 cursor-not-allowed bg-white/5"
+                  : "hover:bg-white/10 text-white"
+              }`}
+            >
+              <FaChevronLeft />
+            </button>
+            <span className="text-white px-2">
+              Page <strong>{pageNumber}</strong> of{" "}
+              <strong>{Math.ceil(totalTenants / tenantPerPage)}</strong>
+            </span>
+            <button
+              onClick={() => handlePageChange(pageNumber + 1)}
+              disabled={pageNumber === Math.ceil(totalTenants / tenantPerPage)}
+              className={`p-2 border border-white/20 cursor-pointer rounded-lg transition ${
+                pageNumber === Math.ceil(totalTenants / tenantPerPage)
+                  ? "text-gray-500 cursor-not-allowed bg-white/5"
+                  : "hover:bg-white/10 text-white"
+              }`}
+            >
+              <FaChevronRight />
+            </button>
+            <button
+              onClick={() =>
+                handlePageChange(Math.ceil(totalTenants / tenantPerPage))
+              }
+              disabled={pageNumber === Math.ceil(totalTenants / tenantPerPage)}
+              className={`p-2 border border-white/20 cursor-pointer rounded-lg transition ${
+                pageNumber === Math.ceil(totalTenants / tenantPerPage)
+                  ? "text-gray-500 cursor-not-allowed bg-white/5"
+                  : "hover:bg-white/10 text-white"
+              }`}
+            >
+              <FaAngleDoubleRight />
+            </button>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

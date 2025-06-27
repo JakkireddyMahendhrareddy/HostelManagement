@@ -714,74 +714,146 @@ const TenantInfo = () => {
   };
 
   return (
-    <div className="w-full pt-0 min-h-screen flex justify-center items-start relative">
-      <div className="w-full pt-4 max-w-7xl px-4">
+    <div
+      className="w-full px-4 sm:px-6 lg:px-8 min-h-screen bg-gradient-to-br from-slate-900
+              via-slate-900 to-slate-900 p-5"
+    >
+      <div className="max-w-7xl mx-auto py-6 sm:py-8 lg:py-10">
         {loading && tenants.length === 0 ? (
           <div className="flex justify-center items-center h-60">
-            <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
+            <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-purple-500" />
+            <span className="ml-3 text-white">Loading...</span>
           </div>
         ) : !hostel || Object.keys(hostel).length === 0 ? (
           <NoHostelMessage />
         ) : (
-          <div className="mt-6">
-            <h2 className="text-3xl font-bold text-white mb-2">
-              Tenant Management
-            </h2>
-
-            <div className=" rounded-2xl shadow-md p-4 mt-4 space-y-4">
-              {/* Search and Filter Bar */}
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                {/* Search input */}
-                <div className="flex w-full md:w-1/2 lg:w-1/3">
-                  <input
-                    type="text"
-                    placeholder="Search tenant details..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") handleSearch();
-                    }}
-                    className="flex-grow text-black border border-gray-300 p-3 rounded-l-lg shadow-sm focus:outline-none "
-                  />
-                  <button
-                    onClick={handleSearch}
-                    className="bg-blue-500 text-white px-4 rounded-r-lg hover:bg-blue-600 transition duration-200"
-                  >
-                    <FaSearch />
-                  </button>
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 min-h-[70vh]">
+            {/* Header */}
+            <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
+                  <span className="text-white text-2xl">👤</span>
                 </div>
-
-                {/* Filter and Create New Button */}
-                <div className="flex flex-col sm:flex-row w-full md:w-auto gap-2">
-                  <button
-                    onClick={() => {
-                      resetForm();
-                      setShowTenantFormModal(true);
-                    }}
-                    className="flex items-center cursor-pointer justify-center gap-2 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 hover:scale-105 transition duration-200 shadow-md"
-                  >
-                    <FaUserPlus />
-                    <span className="whitespace-nowrap">Create New</span>
-                  </button>
+                <div>
+                  <h2 className="text-3xl font-bold text-white mb-2">
+                    Tenant Management
+                  </h2>
+                  <p className="text-gray-400">
+                    Manage tenant information, room assignments, and records
+                  </p>
                 </div>
               </div>
-
-              {/* Paginated Table Component */}
-              <PaginatedTenantTable
-                tenants={tenants}
-                handleViewClick={handleViewClick}
-                handleEditClick={handleEditClick}
-                handleDeleteClick={handleDeleteClick}
-                loading={loading && tenants.length > 0}
-                currentPage={pageNumber}
-                totalItems={totalTenants}
-                itemsPerPage={tenantPerPage}
-                onPageChange={handlePageChange}
-                onItemsPerPageChange={handleItemsPerPageChange}
-                sortConfig={sortConfig}
-                handleSort={handleSort}
-              />
+              <button
+                onClick={() => {
+                  resetForm();
+                  setShowTenantFormModal(true);
+                }}
+                className="bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-6 py-3 rounded-xl flex items-center gap-2 hover:from-purple-600 hover:to-cyan-600 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-purple-500/25 group"
+              >
+                <FaUserPlus
+                  size={20}
+                  className="group-hover:rotate-90 transition-transform duration-300"
+                />
+                Add New Tenant
+              </button>
             </div>
+
+            {/* Search and Filter Bar */}
+            <div className="bg-black/20 backdrop-blur-md border border-white/20 rounded-xl overflow-hidden mb-6">
+              <div className="flex items-center gap-3 px-6 py-4 border-b border-white/10">
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                  <span className="text-white text-sm">🔍</span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-white">
+                    Search Tenants
+                  </h3>
+                  <p className="text-gray-400 text-sm">
+                    Find tenants by name, room, or other details
+                  </p>
+                </div>
+              </div>
+              <div className="p-4">
+                <div className="flex flex-col md:flex-row md:items-center gap-4">
+                  {/* Search input */}
+                  <div className="flex w-full md:w-1/2 lg:w-1/3">
+                    <input
+                      type="text"
+                      placeholder="Search tenant details..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") handleSearch();
+                      }}
+                      className="flex-grow text-white bg-white/5 border border-white/20 p-3 rounded-l-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <button
+                      onClick={handleSearch}
+                      className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 rounded-r-lg hover:from-blue-600 hover:to-purple-600 transition duration-200"
+                    >
+                      <FaSearch />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Tenants Table or No Data */}
+            {tenants.length === 0 && !loading ? (
+              <div className="text-center py-12">
+                <div className="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-4xl">👤</span>
+                </div>
+                <p className="text-xl font-semibold text-white mb-2">
+                  No Tenants Found
+                </p>
+                <p className="text-gray-400 mb-6">
+                  Add your first tenant to start managing your hostel residents
+                </p>
+                <button
+                  onClick={() => {
+                    resetForm();
+                    setShowTenantFormModal(true);
+                  }}
+                  className="bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-6 py-3 rounded-xl flex items-center gap-2 hover:from-purple-600 hover:to-cyan-600 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-purple-500/25 mx-auto"
+                >
+                  <FaUserPlus size={20} />
+                  Add First Tenant
+                </button>
+              </div>
+            ) : (
+              <div className="bg-black/20 backdrop-blur-md border border-white/20 rounded-xl overflow-hidden">
+                {/* <div className="flex items-center gap-3 px-6 py-4 border-b border-white/10">
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                    <span className="text-white text-sm">📋</span>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-white">
+                      Tenant Directory
+                    </h3>
+                    <p className="text-gray-400 text-sm">
+                      Complete list of your hostel residents
+                    </p>
+                  </div>
+                </div> */}
+                <div className="overflow-x-auto">
+                  <PaginatedTenantTable
+                    tenants={tenants}
+                    handleViewClick={handleViewClick}
+                    handleEditClick={handleEditClick}
+                    handleDeleteClick={handleDeleteClick}
+                    loading={loading && tenants.length > 0}
+                    currentPage={pageNumber}
+                    totalItems={totalTenants}
+                    itemsPerPage={tenantPerPage}
+                    onPageChange={handlePageChange}
+                    onItemsPerPageChange={handleItemsPerPageChange}
+                    sortConfig={sortConfig}
+                    handleSort={handleSort}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         )}
 

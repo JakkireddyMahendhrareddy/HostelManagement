@@ -49,16 +49,21 @@ const TableBodyRow = ({ roomInfo, index, editRoom, handleDeleteRoomClick }) => {
       </td>
 
       {/* 🧊 Floating buttons */}
-      <td className="absolute right-2 top-1/2 -translate-y-1/2 hidden group-hover:flex gap-2 px-2 py-2 z-10">
-        <button onClick={() => editRoom(number)} className="text-gray-700">
-          <FaEdit size={18} />
-        </button>
-        <button
-          onClick={() => handleDeleteRoomClick(number)}
-          className="text-gray-700"
-        >
-          <AiFillDelete size={18} />
-        </button>
+      <td className="absolute right-3 top-1/2 -translate-y-1/2   gap-2 px-3 py-3 z-10">
+        <div className="space-x-3">
+          <button
+            onClick={() => editRoom(number)}
+            className="text-purple-400 hover:text-purple-300 transition-colors cursor-pointer"
+          >
+            <FaEdit size={18} />
+          </button>
+          <button
+            onClick={() => handleDeleteRoomClick(number)}
+            className="text-red-400 hover:text-red-300 transition-colors cursor-pointer"
+          >
+            <AiFillDelete size={18} />
+          </button>
+        </div>
       </td>
     </tr>
   );

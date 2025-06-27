@@ -73,3 +73,41 @@
   font-size: 20px;
   font-weight: 600;
 }
+
+/* Global transition styles */
+.dashboard-transition {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.dashboard-hidden {
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;
+}
+
+/* Profile modal animation */
+.profile-modal {
+  animation: fadeIn 0.3s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}

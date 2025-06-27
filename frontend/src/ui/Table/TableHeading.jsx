@@ -1,11 +1,11 @@
 const TableHeading = ({ headingList = [] }) => {
   return (
-    <thead className="bg-white-100   backdrop-blur-sm top-0 ">
+    <thead className="bg-gradient-to-r from-purple-500 to-cyan-500 backdrop-blur-sm top-0">
       <tr>
         {headingList.map((heading) => (
           <th
             key={heading}
-            className="px-4 md:px-6 py-4 text-left text-gray-100 text-lg font-bold whitespace-nowrap "
+            className="px-4 md:px-6 py-4 text-left text-white text-sm font-semibold whitespace-nowrap"
           >
             <span className="flex items-center gap-2">{heading}</span>
           </th>

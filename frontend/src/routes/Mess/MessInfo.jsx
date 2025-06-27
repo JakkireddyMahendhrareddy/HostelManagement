@@ -479,77 +479,126 @@ const MessInfo = () => {
   };
 
   return (
-    <div className="w-full bg-gray-50 min-h-screen flex justify-center items-start pt-1 sm:pt-3">
-      <div className="w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div
+      className="w-full px-4 sm:px-6 lg:px-8 min-h-screen bg-gradient-to-br from-slate-900
+              via-slate-900 to-slate-900 p-5"
+    >
+      <div className="max-w-7xl mx-auto py-6 sm:py-8 lg:py-10">
         {loading && menuData.length === 0 ? (
           <div className="flex justify-center items-center h-60">
-            <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-blue-500" />
+            <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-purple-500" />
           </div>
         ) : !hostel || Object.keys(hostel).length === 0 ? (
           <NoHostelMessage />
         ) : (
-          <div className="bg-white shadow-md rounded-xl p-4 sm:p-6 lg:p-8 min-h-[70vh]">
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 min-h-[70vh]">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-800 drop-shadow-sm">
-                🍽️ Weekly Mess Menu
-              </h1>
+            <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
+                  <span className="text-white text-2xl">🍽️</span>
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-white mb-2">
+                    Weekly Mess Menu
+                  </h2>
+                  <p className="text-gray-400">
+                    Manage your hostel's weekly meal schedule
+                  </p>
+                </div>
+              </div>
               <button
                 onClick={() => {
                   resetForm();
                   setShowMessFormModal(true);
                 }}
-                className="flex items-center gap-2 cursor-pointer bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base font-semibold py-2.5 px-4 sm:px-6 rounded-lg shadow-sm transition"
+                className="bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-6 py-3 rounded-xl flex items-center gap-2 hover:from-purple-600 hover:to-cyan-600 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-purple-500/25 group"
               >
-                <Plus size={20} />
+                <Plus
+                  size={20}
+                  className="group-hover:rotate-90 transition-transform duration-300"
+                />
                 Create Mess Day
               </button>
             </div>
 
             {/* Table or No Data */}
             {menuData.length === 0 ? (
-              <div className="text-center text-gray-500 mt-8 text-lg font-medium">
-                No mess timetable found. Please add one.
+              <div className="text-center py-12">
+                <div className="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-4xl">🍽️</span>
+                </div>
+                <p className="text-xl font-semibold text-white mb-2">
+                  No Mess Menu Found
+                </p>
+                <p className="text-gray-400 mb-6">
+                  Create your first mess day to get started with meal planning
+                </p>
+                <button
+                  onClick={() => {
+                    resetForm();
+                    setShowMessFormModal(true);
+                  }}
+                  className="bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-6 py-3 rounded-xl flex items-center gap-2 hover:from-purple-600 hover:to-cyan-600 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-purple-500/25 mx-auto"
+                >
+                  <Plus size={20} />
+                  Create First Mess Day
+                </button>
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <MessTable
-                  menuData={menuData}
-                  handleDeleteClick={handleDeleteClick}
-                  loading={loading}
-                  handleEditClick={handleEditClick}
-                  handleViewClick={handleViewClick}
-                />
+              <div className="bg-black/20 backdrop-blur-md border border-white/20 rounded-xl overflow-hidden">
+                {/* <div className="flex items-center gap-3 px-6 py-4 border-b border-white/10">
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                    <span className="text-white text-sm">📋</span>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-white">
+                      Mess Menu Schedule
+                    </h3>
+                    <p className="text-gray-400 text-sm">
+                      Weekly meal plan for your hostel
+                    </p>
+                  </div>
+                </div> */}
+                <div className="overflow-x-auto">
+                  <MessTable
+                    menuData={menuData}
+                    handleDeleteClick={handleDeleteClick}
+                    loading={loading}
+                    handleEditClick={handleEditClick}
+                    handleViewClick={handleViewClick}
+                  />
+                </div>
               </div>
             )}
-
-            {/* Modals */}
-            {showMessFormModal && (
-              <MessFormModal
-                setShowMessFormModal={setShowMessFormModal}
-                newMenu={newMenu}
-                handleMenuChange={handleMenuChange}
-                handleMenuSubmit={submitForm}
-                isEditing={isEditing}
-                resetForm={resetForm}
-                formErrors={formErrors}
-                isSubmitting={isSubmitting}
-              />
-            )}
-            {showDetailsModal && (
-              <MessDetailsModal
-                menu={selectedMenu}
-                setShowDetailsModal={setShowDetailsModal}
-              />
-            )}
-            {showConfirmModal && (
-              <ConfirmModal
-                confirmType="mess"
-                confirmDelete={deleteMessMenu}
-                setShowConfirmModal={setShowConfirmModal}
-              />
-            )}
           </div>
+        )}
+
+        {/* Modals */}
+        {showMessFormModal && (
+          <MessFormModal
+            setShowMessFormModal={setShowMessFormModal}
+            newMenu={newMenu}
+            handleMenuChange={handleMenuChange}
+            handleMenuSubmit={submitForm}
+            isEditing={isEditing}
+            resetForm={resetForm}
+            formErrors={formErrors}
+            isSubmitting={isSubmitting}
+          />
+        )}
+        {showDetailsModal && (
+          <MessDetailsModal
+            menu={selectedMenu}
+            setShowDetailsModal={setShowDetailsModal}
+          />
+        )}
+        {showConfirmModal && (
+          <ConfirmModal
+            confirmType="mess"
+            confirmDelete={deleteMessMenu}
+            setShowConfirmModal={setShowConfirmModal}
+          />
         )}
       </div>
     </div>

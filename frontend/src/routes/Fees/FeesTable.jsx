@@ -3,26 +3,18 @@ import { FaEdit, FaEye } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import TableHeading from "../../ui/Table/TableHeading";
 
-// Status and priority styling with the new dark theme
+// Status styling with the new dark theme
 const statusColors = {
-  Pending: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
-  "In Progress": "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  Resolved: "bg-green-500/20 text-green-400 border-green-500/30",
-  Completed: "bg-green-500/20 text-green-400 border-green-500/30",
-  Cancelled: "bg-gray-500/20 text-gray-400 border-gray-500/30",
-  Rejected: "bg-red-500/20 text-red-400 border-red-500/30",
+  Paid: "bg-green-500/20 text-green-400 border-green-500/30",
+  "Partially Paid": "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+  Pending: "bg-orange-500/20 text-orange-400 border-orange-500/30",
+  Overdue: "bg-red-500/20 text-red-400 border-red-500/30",
+  Waived: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  Refunded: "bg-purple-500/20 text-purple-400 border-purple-500/30",
 };
 
-const priorityColors = {
-  Low: "bg-green-500/20 text-green-400 border-green-500/30",
-  Medium: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  High: "bg-orange-500/20 text-orange-400 border-orange-500/30",
-  Critical: "bg-red-500/20 text-red-400 border-red-500/30",
-  Urgent: "bg-red-500/20 text-red-400 border-red-500/30",
-};
-
-const MaintenanceTable = ({
-  issues,
+const FeesTable = ({
+  fees,
   handleDeleteClick,
   loading,
   handleEditClick,
@@ -34,6 +26,15 @@ const MaintenanceTable = ({
     return date.toLocaleDateString();
   };
 
+  const formatCurrency = (amount) => {
+    if (amount === undefined || amount === null) return "N/A";
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
+
   const truncateText = (text, maxLength = 30) => {
     if (!text) return "";
     return text.length > maxLength
@@ -42,16 +43,16 @@ const MaintenanceTable = ({
   };
 
   return (
-    <div className="w-full mt-0  overflow-x-auto rounded-xl border border-white/20 shadow-2xl mx-auto bg-white/5 backdrop-blur-sm">
+    <div className="w-full mt-2 overflow-x-auto rounded-xl border border-white/20 shadow-2xl mx-auto bg-white/5 backdrop-blur-sm">
       <table className="min-w-[700px] w-full divide-y divide-white/10 text-sm">
         <TableHeading
           headingList={[
+            "Student Name",
             "Room No.",
-            "Issue",
+            "Fee Type",
+            "Amount",
             "Status",
-            "Priority",
-            "Requested By",
-            "Created Date",
+            "Due Date",
             "Actions",
           ]}
         />
@@ -65,72 +66,65 @@ const MaintenanceTable = ({
                 </div>
               </td>
             </tr>
-          ) : issues.length === 0 ? (
+          ) : fees.length === 0 ? (
             <tr>
               <td colSpan="7" className="py-4 px-4 text-center text-gray-300">
-                No maintenance issues found
+                No fee records found
               </td>
             </tr>
           ) : (
-            issues.map((issue, index) => (
+            fees.map((fee, index) => (
               <tr
-                key={issue._id}
+                key={fee._id}
                 className="group relative hover:bg-white/10 transition-all duration-300 even:bg-white/5 cursor-pointer border-b border-white/5"
               >
+                <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-300 font-medium">
+                  {fee.studentName || "N/A"}
+                </td>
                 <td className="px-4 md:px-6 py-4 whitespace-nowrap text-white font-medium">
                   <span className="bg-purple-500/20 text-purple-400 px-2 py-1 rounded-lg text-sm">
-                    {issue.roomNo || "N/A"}
+                    {fee.roomNo || "N/A"}
                   </span>
                 </td>
                 <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-300 font-medium">
-                  {truncateText(issue.issue)}
+                  {fee.feeType || "N/A"}
+                </td>
+                <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-300 font-medium">
+                  {formatCurrency(fee.amount)}
                 </td>
                 <td className="px-4 md:px-6 py-4 whitespace-nowrap">
                   <span
                     className={`px-3 py-1.5 rounded-full text-xs font-medium border ${
-                      statusColors[issue.status] ||
+                      statusColors[fee.status] ||
                       "bg-gray-500/20 text-gray-400 border-gray-500/30"
                     }`}
                   >
-                    {issue.status || "Pending"}
-                  </span>
-                </td>
-                <td className="px-4 md:px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium border ${
-                      priorityColors[issue.priority] ||
-                      "bg-gray-500/20 text-gray-400 border-gray-500/30"
-                    }`}
-                  >
-                    {issue.priority || "Medium"}
+                    {fee.status || "Pending"}
                   </span>
                 </td>
                 <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-300 font-medium">
-                  {issue.requestedBy || "N/A"}
-                </td>
-                <td className="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-300 font-medium">
-                  {formatDate(issue.createdDate)}
+                  {formatDate(fee.dueDate)}
                 </td>
                 <td className="px-4 md:px-6 py-4 whitespace-nowrap">
                   <div className="flex justify-start space-x-4">
                     <button
-                      onClick={() => handleViewClick(issue)}
+                      onClick={() => handleViewClick(fee)}
                       className="text-cyan-400 hover:text-cyan-300 transition-colors"
                       title="View Details"
                     >
                       <FaEye size={18} />
                     </button>
                     <button
-                      onClick={() => handleEditClick(issue)}
+                      onClick={() => handleEditClick(fee)}
                       className="text-purple-400 hover:text-purple-300 transition-colors"
-                      title="Edit Issue"
+                      title="Edit Fee"
                     >
                       <FaEdit size={18} />
                     </button>
                     <button
-                      onClick={() => handleDeleteClick(issue._id)}
+                      onClick={() => handleDeleteClick(fee._id)}
                       className="text-red-400 hover:text-red-300 transition-colors"
-                      title="Delete Issue"
+                      title="Delete Fee"
                     >
                       <AiFillDelete size={18} />
                     </button>
@@ -145,4 +139,4 @@ const MaintenanceTable = ({
   );
 };
 
-export default MaintenanceTable;
+export default FeesTable;

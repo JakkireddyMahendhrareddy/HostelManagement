@@ -1,18 +1,12 @@
 import React from "react";
-import { RxCrossCircled } from "react-icons/rx";
-import { Tooltip as ReactTooltip } from "react-tooltip";
+import { X } from "lucide-react";
 
 const MessDetailsModal = ({ menu, setShowDetailsModal }) => {
   if (!menu) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-600 bg-opacity-50">
       <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-        {/* Overlay */}
-        <div className="fixed inset-0 transition-opacity" aria-hidden="true">
-          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-        </div>
-
         {/* Modal positioning */}
         <span
           className="hidden sm:inline-block sm:align-middle sm:h-screen"
@@ -20,26 +14,18 @@ const MessDetailsModal = ({ menu, setShowDetailsModal }) => {
         >
           &#8203;
         </span>
-        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all w-full max-w-[95%] sm:my-8 sm:align-middle sm:max-w-2xl">
-          <div className="bg-white px-4 py-5 sm:px-6 sm:py-6 relative">
-            <div className="flex justify-between items-center border-b pb-3 mb-5">
-              <h2 className="text-xl sm:text-2xl font-bold text-center text-gray-700 w-full">
+        <div className="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all w-full max-w-[95%] sm:my-8 sm:align-middle sm:max-w-2xl">
+          <div className="bg-white px-6 py-6 sm:p-8 relative">
+            <div className="flex justify-between items-center border-b pb-4 mb-6">
+              <h2 className="text-2xl font-bold text-gray-800">
                 Mess Menu Details - {menu.day}
               </h2>
               <button
                 onClick={() => setShowDetailsModal(false)}
-                className="absolute top-4 right-4"
-                data-tooltip-id="close-tooltip"
-                data-tooltip-content="Close"
+                className="text-gray-500 hover:text-gray-700 transition-colors"
               >
-                <RxCrossCircled className="text-2xl text-red-600 cursor-pointer hover:text-red-900" />
+                <X size={24} />
               </button>
-              <ReactTooltip
-                id="close-tooltip"
-                place="left"
-                effect="solid"
-                className="!bg-red-700 !text-white !text-sm !rounded-sm !px-3 !py-1 shadow-lg"
-              />
             </div>
 
             <div className="space-y-6">
@@ -119,10 +105,10 @@ const MessDetailsModal = ({ menu, setShowDetailsModal }) => {
               </div>
             </div>
 
-            <div className="border-t border-gray-200 pt-5 mt-6 flex justify-end">
+            <div className="mt-8 pt-4 border-t border-gray-200 flex justify-end">
               <button
                 onClick={() => setShowDetailsModal(false)}
-                className="px-4 py-2 bg-blue-500 text-white hover:bg-blue-700 rounded-lg text-sm sm:text-base"
+                className="rounded-lg px-5 py-2.5 bg-blue-600 text-white hover:bg-blue-700 cursor-pointer font-semibold transition-colors"
               >
                 Close
               </button>

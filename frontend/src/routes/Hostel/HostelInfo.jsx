@@ -364,78 +364,80 @@ const HostelInfo = () => {
     pageNumber * roomsPerPage
   );
   return (
-    <div className="min-h-screen w-full px-4 sm:px-6 lg:px-8">
-  <div className="max-w-7xl mx-auto py-6 sm:py-8 lg:py-10">
-    {loading ? (
-      <div className="flex justify-center items-center h-60">
-        <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
+    <div
+      className="w-full px-4 sm:px-6 lg:px-8 min-h-screen bg-gradient-to-br from-slate-900
+              via-slate-900 to-slate-900 p-5"
+    >
+      <div className="max-w-7xl mx-auto py-6 sm:py-8 lg:py-10">
+        {loading ? (
+          <div className="flex justify-center items-center h-60">
+            <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
+          </div>
+        ) : !hostel || Object.keys(hostel).length === 0 ? (
+          <NoHostelMessage
+            setShowAddHostelFormModal={setShowAddHostelFormModal}
+          />
+        ) : (
+          <div className="space-y-6">
+            <HostelAndRoomDetails
+              setIsEditingHostel={setIsEditingHostel}
+              hostel={hostel}
+              handleDeleteHostelClick={handleDeleteHostelClick}
+              setShowRoomFormModal={setShowRoomFormModal}
+              setEditRoomId={setEditRoomId}
+              setNewRoom={setNewRoom}
+              displayedRooms={displayedRooms}
+              editRoom={editRoom}
+              handleDeleteRoomClick={handleDeleteRoomClick}
+              setPageNumber={setPageNumber}
+              rooms={rooms}
+              pageNumber={pageNumber}
+              totalPages={totalPages}
+            />
+          </div>
+        )}
+
+        {showRoomFormModal && (
+          <RoomFormModal
+            setShowRoomFormModal={setShowRoomFormModal}
+            setError={setError}
+            editRoomId={editRoomId}
+            newRoom={newRoom}
+            handleRoomChange={handleRoomChange}
+            handleAvailableBedsChange={handleAvailableBedsChange}
+            error={error}
+            addRoom={addRoom}
+          />
+        )}
+
+        {(isEditingHostel || showAddHostelFormModal) && (
+          <HostelForm
+            setHostelName={setHostelName}
+            setHostelCategory={setHostelCategory}
+            setTotalRooms={setTotalRooms}
+            setMaxCapacity={setMaxCapacity}
+            addNewHostel={addNewHostel}
+            updateHostelDetails={updateHostelDetails}
+            hostelName={hostelName}
+            hostelCategory={hostelCategory}
+            totalRooms={totalRooms}
+            maxCapacity={maxCapacity}
+            setShowAddHostelFormModal={setShowAddHostelFormModal}
+            setIsEditingHostel={setIsEditingHostel}
+            isEditingHostel={isEditingHostel}
+          />
+        )}
+
+        {showConfirmModal && (
+          <ConfirmModal
+            confirmType={confirmType}
+            confirmDelete={confirmDelete}
+            setShowConfirmModal={setShowConfirmModal}
+          />
+        )}
       </div>
-    ) : !hostel || Object.keys(hostel).length === 0 ? (
-      <NoHostelMessage setShowAddHostelFormModal={setShowAddHostelFormModal} />
-    ) : (
-      <div className="space-y-6">
-        <HostelAndRoomDetails
-          setIsEditingHostel={setIsEditingHostel}
-          hostel={hostel}
-          handleDeleteHostelClick={handleDeleteHostelClick}
-          setShowRoomFormModal={setShowRoomFormModal}
-          setEditRoomId={setEditRoomId}
-          setNewRoom={setNewRoom}
-          displayedRooms={displayedRooms}
-          editRoom={editRoom}
-          handleDeleteRoomClick={handleDeleteRoomClick}
-          setPageNumber={setPageNumber}
-          rooms={rooms}
-          pageNumber={pageNumber}
-          totalPages={totalPages}
-        />
-      </div>
-    )}
-
-    {showRoomFormModal && (
-      <RoomFormModal
-        setShowRoomFormModal={setShowRoomFormModal}
-        setError={setError}
-        editRoomId={editRoomId}
-        newRoom={newRoom}
-        handleRoomChange={handleRoomChange}
-        handleAvailableBedsChange={handleAvailableBedsChange}
-        error={error}
-        addRoom={addRoom}
-      />
-    )}
-
-    {(isEditingHostel || showAddHostelFormModal) && (
-      <HostelForm
-        setHostelName={setHostelName}
-        setHostelCategory={setHostelCategory}
-        setTotalRooms={setTotalRooms}
-        setMaxCapacity={setMaxCapacity}
-        addNewHostel={addNewHostel}
-        updateHostelDetails={updateHostelDetails}
-        hostelName={hostelName}
-        hostelCategory={hostelCategory}
-        totalRooms={totalRooms}
-        maxCapacity={maxCapacity}
-        setShowAddHostelFormModal={setShowAddHostelFormModal}
-        setIsEditingHostel={setIsEditingHostel}
-        isEditingHostel={isEditingHostel}
-      />
-    )}
-
-    {showConfirmModal && (
-      <ConfirmModal
-        confirmType={confirmType}
-        confirmDelete={confirmDelete}
-        setShowConfirmModal={setShowConfirmModal}
-      />
-    )}
-  </div>
-</div>
-
+    </div>
   );
 };
 
 export default HostelInfo;
-
-

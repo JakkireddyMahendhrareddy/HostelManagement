@@ -586,81 +586,128 @@ const MaintenanceInfo = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-white flex justify-center items-start pt-0">
-      <div className="w-full max-w-7xl px-4 pt-4">
+    <div
+      className="min-h-screen bg-gradient-to-br from-slate-900
+              via-slate-900 to-slate-900 p-5 w-full px-4 sm:px-6 lg:px-8"
+    >
+      <div className="max-w-7xl mx-auto py-6 sm:py-8 lg:py-10">
         {loading && maintenanceIssues.length === 0 ? (
           <div className="flex justify-center items-center h-60">
-            <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-blue-500"></div>
+            <div className="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-purple-500"></div>
           </div>
         ) : !hostel || Object.keys(hostel).length === 0 ? (
           <NoHostelMessage />
         ) : (
-          <div className="min-h-screen bg-white shadow-lg p-4 sm:p-6 md:p-8 rounded-lg">
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 min-h-[70vh]">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-800 drop-shadow-md">
-                Hostel Maintenance Records
-              </h1>
+            <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
+                  <span className="text-white text-2xl">🔧</span>
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-white mb-2">
+                    Maintenance Records
+                  </h2>
+                  <p className="text-gray-400">
+                    Track and manage maintenance requests
+                  </p>
+                </div>
+              </div>
               <button
                 onClick={() => {
                   resetForm();
                   setShowFormModal(true);
                 }}
-                className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 sm:py-3 sm:px-5 rounded-md shadow-md transition-colors cursor-pointer text-sm sm:text-base"
+                className="bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-6 py-3 rounded-xl flex items-center gap-2 hover:from-purple-600 hover:to-cyan-600 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-purple-500/25 group"
               >
-                <Plus size={20} />
+                <Plus
+                  size={20}
+                  className="group-hover:rotate-90 transition-transform duration-300"
+                />
                 Report Issue
               </button>
             </div>
 
             {/* Empty State or Maintenance Table */}
             {maintenanceIssues.length === 0 ? (
-              <div className="text-center py-12 bg-gray-50 rounded-lg border border-gray-200">
-                <AlertCircle size={48} className="mx-auto text-gray-400 mb-4" />
-                <p className="text-gray-600 text-base sm:text-lg font-medium">
-                  No maintenance issues found. Report a new issue to get
-                  started.
+              <div className="text-center py-12">
+                <div className="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-4xl">🔧</span>
+                </div>
+                <p className="text-xl font-semibold text-white mb-2">
+                  No Maintenance Issues Found
                 </p>
+                <p className="text-gray-400 mb-6">
+                  Report your first maintenance issue to get started
+                </p>
+                <button
+                  onClick={() => {
+                    resetForm();
+                    setShowFormModal(true);
+                  }}
+                  className="bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-6 py-3 rounded-xl flex items-center gap-2 hover:from-purple-600 hover:to-cyan-600 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-purple-500/25 mx-auto"
+                >
+                  <Plus size={20} />
+                  Report First Issue
+                </button>
               </div>
             ) : (
-              <MaintenanceTable
-                issues={maintenanceIssues}
-                handleDeleteClick={handleDeleteClick}
-                loading={loading}
-                handleEditClick={handleEditClick}
-                handleViewClick={handleViewClick}
-              />
-            )}
-
-            {/* Modals */}
-            {showFormModal && (
-              <MaintenanceFormModal
-                setShowFormModal={setShowFormModal}
-                newIssue={newIssue}
-                handleIssueChange={handleIssueChange}
-                handleSubmit={submitForm}
-                isEditing={isEditing}
-                resetForm={resetForm}
-                formErrors={formErrors}
-                isSubmitting={isSubmitting}
-              />
-            )}
-
-            {showDetailsModal && (
-              <MaintenanceDetailsModal
-                issue={selectedIssue}
-                setShowDetailsModal={setShowDetailsModal}
-              />
-            )}
-
-            {showConfirmModal && (
-              <ConfirmModal
-                confirmType="maintenance"
-                confirmDelete={deleteMaintenanceIssue}
-                setShowConfirmModal={setShowConfirmModal}
-              />
+              <div className="bg-black/20 backdrop-blur-md border border-white/20 rounded-xl overflow-hidden">
+                {/* <div className="flex items-center gap-3 px-6 py-4 border-b border-white/10">
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                    <span className="text-white text-sm">📋</span>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-white">
+                      Maintenance Issues List
+                    </h3>
+                    <p className="text-gray-400 text-sm">
+                      All reported maintenance issues
+                    </p>
+                  </div>
+                </div> */}
+                <div className="overflow-x-auto">
+                  <MaintenanceTable
+                    issues={maintenanceIssues}
+                    handleDeleteClick={handleDeleteClick}
+                    loading={loading}
+                    handleEditClick={handleEditClick}
+                    handleViewClick={handleViewClick}
+                  />
+                </div>
+              </div>
             )}
           </div>
+        )}
+
+        {/* Modals */}
+        {showFormModal && (
+          <MaintenanceFormModal
+            setShowFormModal={setShowFormModal}
+            newIssue={newIssue}
+            handleIssueChange={handleIssueChange}
+            handleSubmit={submitForm}
+            isEditing={isEditing}
+            resetForm={resetForm}
+            formErrors={formErrors}
+            isSubmitting={isSubmitting}
+          />
+        )}
+
+        {showDetailsModal && (
+          <MaintenanceDetailsModal
+            issue={selectedIssue}
+            setShowDetailsModal={setShowDetailsModal}
+          />
+        )}
+
+        {showConfirmModal && (
+          <ConfirmModal
+            confirmType="maintenance"
+            confirmDelete={deleteMaintenanceIssue}
+            setShowConfirmModal={setShowConfirmModal}
+          />
         )}
       </div>
     </div>
